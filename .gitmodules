@@ -1,0 +1,27 @@
+[submodule ".emacs.d/gh"]
+	path = .emacs.d/gh
+	url = git://github.com/sigma/gh.el.git
+[submodule ".emacs.d/pcache"]
+	path = .emacs.d/pcache
+	url = git://github.com/sigma/pcache.git
+[submodule ".emacs.d/logito"]
+	path = .emacs.d/logito
+	url = git://github.com/sigma/logito.git
+[submodule ".emacs.d/tabulated-list"]
+	path = .emacs.d/tabulated-list
+	url = git://github.com/sigma/tabulated-list.el.git
+[submodule ".emacs.d/gist"]
+	path = .emacs.d/gist
+	url = git://github.com/defunkt/gist.el.git
+[submodule ".emacs.d/clojure-mode"]
+	path = .emacs.d/clojure-mode
+	url = git://github.com/technomancy/clojure-mode.git
+[submodule ".emacs.d/magit"]
+	path = .emacs.d/magit
+	url = git://github.com/magit/magit.git
+[submodule ".emacs.d/markdown-mode"]
+	path = .emacs.d/markdown-mode
+	url = git://jblevins.org/git/markdown-mode.git
+[submodule ".emacs.d/slime"]
+	path = .emacs.d/slime
+	url = git://sbcl.boinkor.net/slime.git
