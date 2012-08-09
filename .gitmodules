@@ -25,3 +25,6 @@
 [submodule ".emacs.d/slime"]
 	path = .emacs.d/slime
 	url = git://sbcl.boinkor.net/slime.git
+[submodule ".emacs.d/full-ack"]
+	path = .emacs.d/full-ack
+	url = git://github.com/nschum/full-ack.git
