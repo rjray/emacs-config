@@ -1,0 +1,2 @@
+#!/bin/sh
+rsync -auv $* --exclude-from=install-exclude ./ ~

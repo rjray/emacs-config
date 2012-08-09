@@ -1,0 +1,7 @@
+.cvsignore
+.git/
+.gitignore
+.gitmodules
+install
+install-exclude
+README*
