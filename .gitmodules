@@ -28,3 +28,6 @@
 [submodule ".emacs.d/full-ack"]
 	path = .emacs.d/full-ack
 	url = git://github.com/nschum/full-ack.git
+[submodule ".emacs.d/yaml-mode"]
+	path = .emacs.d/yaml-mode
+	url = git://github.com/yoshiki/yaml-mode.git
