@@ -48,7 +48,7 @@
 (when window-system
   (progn
     (global-linum-mode)
-    (server-start 1)))
+    (server-start)))
 
 ;; Turn on font-lock if available
 (when (fboundp 'global-font-lock-mode)
