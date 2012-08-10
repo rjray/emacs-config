@@ -45,7 +45,7 @@
        (list (cons ".*wiki.*\\.txt" 'mediawiki-mode))
 
        ;; Markdown mode
-       (extensions-list 'markdown-mode
+       (extensions-list 'gfm-mode
                         '("\\.md$" "\\.markdown$"))
 
        ;; Edit .gitconfig and .gitmodules in conf-mode

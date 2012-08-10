@@ -40,6 +40,7 @@ and source-file directory for your debugger." t nil)
 (autoload 'clojure-test-maybe-enable "clojure-test-mode" "" t)
 
 (autoload 'markdown-mode "markdown-mode" "Markdown mode" t)
+(autoload 'gfm-mode "markdown-mode" "GitHub-Flavored Markdown mode" t)
 
 (autoload 'mediawiki-mode "mediawiki" "MediaWiki mode" t)
 
