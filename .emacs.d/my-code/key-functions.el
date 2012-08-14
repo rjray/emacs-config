@@ -87,16 +87,14 @@
   "Untabify the entire buffer. If the region is active, only untabify the
 region."
   (interactive)
-  (cond ((symbol-value 'mark-active)
-         (untabify (region-beginning) (region-end)))
+  (cond ((region-active-p) (untabify (region-beginning) (region-end)))
         (t (untabify 0 (point-max))))
   (save-buffer))
 
 (defun fill-paragraph-or-region ()
   "If the region is active, call fill-region. Otherwise, fill-paragraph."
   (interactive)
-  (cond ((symbol-value 'mark-active)
-         (fill-region (region-beginning) (region-end)))
+  (cond ((region-active-p) (fill-region (region-beginning) (region-end)))
         (t (fill-paragraph nil))))
 
 ;; Borrowed from hm--html-mode. These aren't currently bound in nXML or

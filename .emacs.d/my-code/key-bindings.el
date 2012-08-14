@@ -28,7 +28,7 @@
 (global-set-key "\C-w"
                 (lambda (arg)
                   (interactive "p")
-                  (cond ((symbol-value 'mark-active)
+                  (cond ((region-active-p)
                          (kill-region (region-beginning) (region-end)))
                         (t (backward-kill-word arg)))))
 
@@ -46,7 +46,7 @@
 
 (global-set-key [(f8)]           (lambda ()
                                    (interactive)
-                                   (cond ((symbol-value 'mark-active)
+                                   (cond ((region-active-p)
                                           (count-region (region-beginning)
                                                         (region-end)))
                                          (t (count-region (point-min)
