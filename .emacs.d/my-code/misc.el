@@ -39,8 +39,10 @@
  indent-tabs-mode nil)
 
 ;; Set-up for recent-file minor mode
-(setq recentf-auto-cleanup 'never) ;; disable before we start recentf!
-(setq recentf-max-menu-items 40)
+(setq recentf-auto-cleanup 'never ;; disable before we start recentf!
+      recentf-max-menu-items 40
+      recentf-max-saved-items 50
+      recentf-exclude '("\\.ido\\.last" "/itsalltext/"))
 (recentf-mode 1)
 
 ;; Set-up for IDO mode
