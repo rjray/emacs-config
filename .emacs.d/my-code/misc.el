@@ -38,10 +38,28 @@
  tab-width 4
  indent-tabs-mode nil)
 
+;; Set-up for desktop-save-mode
+(setq desktop-save t
+      desktop-restore-eager 5
+      desktop-globals-to-save (append '((extended-command-history . 30)
+                                        (file-name-history        . 100)
+                                        (grep-history             . 30)
+                                        (compile-history          . 30)
+                                        (minibuffer-history       . 50)
+                                        (query-replace-history    . 60)
+                                        (read-expression-history  . 60)
+                                        (regexp-history           . 60)
+                                        (regexp-search-ring       . 20)
+                                        (search-ring              . 20)
+                                        (shell-command-history    . 50)
+                                        tags-file-name
+                                        register-alist)))
+(desktop-save-mode 1)
+
 ;; Set-up for recent-file minor mode
 (setq recentf-auto-cleanup 'never ;; disable before we start recentf!
       recentf-max-menu-items 40
-      recentf-max-saved-items 50
+      recentf-max-saved-items 100
       recentf-exclude '("\\.ido\\.last" "/itsalltext/"))
 (recentf-mode 1)
 
