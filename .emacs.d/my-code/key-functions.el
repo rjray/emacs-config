@@ -64,7 +64,7 @@
 (defun insert-text-hdr (language type)
   "Basic insert-header function, encapsulated by other language-specific calls."
   (interactive)
-  (insert-file-contents (concat homedir "/lib/" language "/" type "_hdr")))
+  (insert-file-contents (concat *homedir* "/lib/" language "/" type "_hdr")))
 
 ;; Create the language- and type-specific calls
 (let ((languages '("perl" "c" "c++" "java" "tcl" "lisp"))
