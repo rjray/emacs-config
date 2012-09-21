@@ -34,6 +34,7 @@
 (require 'magit)
 (require 'recentf)
 (require 'slime)
+(require 'expand-region)
 
 ;; Load my personal code
 (load "key-bindings")

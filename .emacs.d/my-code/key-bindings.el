@@ -16,6 +16,9 @@
 ;; Browse the kill-ring with C-c k:
 (global-set-key (kbd "C-c k") 'browse-kill-ring)
 
+;; Bind expand-region to C-=:
+(global-set-key (kbd "C-=") 'er/expand-region)
+
 ;; Use this instead of hitting M-x all the time:
 (global-set-key "\C-x\C-m" 'execute-extended-command)
 (global-set-key "\C-c\C-m" 'execute-extended-command)

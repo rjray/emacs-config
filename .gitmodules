@@ -31,3 +31,6 @@
 [submodule ".emacs.d/submodules/yaml-mode"]
 	path = .emacs.d/submodules/yaml-mode
 	url = git://github.com/yoshiki/yaml-mode.git
+[submodule ".emacs.d/submodules/expand-region"]
+	path = .emacs.d/submodules/expand-region
+	url = git://github.com/magnars/expand-region.el.git
