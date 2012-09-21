@@ -34,3 +34,9 @@
 [submodule ".emacs.d/submodules/expand-region"]
 	path = .emacs.d/submodules/expand-region
 	url = git://github.com/magnars/expand-region.el.git
+[submodule ".emacs.d/submodules/mark-multiple"]
+	path = .emacs.d/submodules/mark-multiple
+	url = git://github.com/magnars/mark-multiple.el.git
+[submodule ".emacs.d/submodules/zencoding"]
+	path = .emacs.d/submodules/zencoding
+	url = git://github.com/rooney/zencoding.git

@@ -103,6 +103,15 @@
               (bury-buffer)
               (switch-to-buffer-other-frame server-buf))))
 
+(add-hook 'sgml-mode-hook
+          (lambda ()
+            (require 'zencoding-mode)
+            (zencoding-mode)))
+(add-hook 'sgml-mode-hook
+          (lambda ()
+            (require 'rename-sgml-tag)
+            (define-key sgml-mode-map (kbd "C-c C-r") 'rename-sgml-tag)))
+
 (add-hook 'slime-repl-mode-hook
           '(lambda ()
              (paredit-mode t)

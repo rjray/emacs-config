@@ -43,6 +43,8 @@
 (require 'recentf)
 (require 'slime)
 (require 'expand-region)
+(require 'inline-string-rectangle)
+(require 'mark-more-like-this)
 
 ;; Load my personal code
 (load "key-bindings")

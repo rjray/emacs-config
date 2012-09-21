@@ -19,6 +19,13 @@
 ;; Bind expand-region to C-=:
 (global-set-key (kbd "C-=") 'er/expand-region)
 
+;; Bindings for funcs from mark-multiple:
+(global-set-key (kbd "C-x r t") 'inline-string-rectangle)
+(global-set-key (kbd "C-<") 'mark-previous-like-this)
+(global-set-key (kbd "C->") 'mark-next-like-this)
+(global-set-key (kbd "C-M-m") 'mark-more-like-this)
+(global-set-key (kbd "C-*") 'mark-all-like-this)
+
 ;; Use this instead of hitting M-x all the time:
 (global-set-key "\C-x\C-m" 'execute-extended-command)
 (global-set-key "\C-c\C-m" 'execute-extended-command)

@@ -12,9 +12,12 @@
                         '("\\.pm$" "\\.PM$" "\\.PL$" "\\.pl$" "\\.al$"
                           "\\.t$" "\\.thpl$"))
 
-       ;; The PSGML mode is applied to several
-       (extensions-list 'sgml-mode
-                        '("\\.html?" "\\.HTML?" "\\.sgml?"))
+       ;; HTML mode is applied to several
+       (extensions-list 'html-mode
+                        '("\\.html?" "\\.HTML?"))
+
+       ;; PSGML mode, in case I ever edit SGML directly...?
+       (list (cons "\\.sgml?" 'sgml-mode))
 
        ;; NXML
        (extensions-list 'nxml-mode
