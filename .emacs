@@ -2,24 +2,32 @@
 
 ;; These constants are used to manage all the various sub-dirs that need to
 ;; be in the load-path:
-(defconst homedir (if (or (eq system-type 'cygwin)
+(defconst *homedir* (if (or (eq system-type 'cygwin)
                           (eq system-type 'gnu/linux)
                           (eq system-type 'linux)
                           (eq system-type 'darwin))
                       (getenv "HOME")
                     (getenv "USERPROFILE"))
   "My home dir, regardless of host.")
-(defconst emacsdir (concat homedir "/.emacs.d") "Location of emacs lisp code")
-(defconst emacsmodules (concat emacsdir "/submodules") "External submodules")
+(defconst *emacsdir* (concat *homedir* "/.emacs.d/") "Root of emacs lisp code")
+(defconst *emacsmodules* (concat *emacsdir* "submodules") "Git submodules")
 
 ;; Additions to the load-path:
-(add-to-list 'load-path (concat emacsdir "/my-code"))
-(add-to-list 'load-path (concat emacsdir "/other-peoples-code"))
-(dolist (submodule (directory-files emacsmodules t "\\w+"))
+(add-to-list 'load-path (concat *emacsdir* "my-code"))
+(add-to-list 'load-path (concat *emacsdir* "other-peoples-code"))
+(dolist (submodule (directory-files *emacsmodules* t "\\w+"))
   (when (file-directory-p submodule)
     (add-to-list 'load-path submodule)))
 ; Missed this one in the above:
-(add-to-list 'load-path (concat emacsmodules "/slime/contrib"))
+(add-to-list 'load-path (concat *emacsmodules* "/slime/contrib"))
+
+;; If there is a directory under ~/.emacs.d named for this host, load all *.el
+;; files within it:
+(when (getenv "HOSTNAME")
+  (let ((hostdir (concat *emacsdir* (getenv "HOSTNAME"))))
+    (when (file-directory-p hostdir)
+      (dolist (host-el-file (directory-files hostdir t "\\.el$"))
+        (load-file host-el-file)))))
 
 ;; Libs I want visible at all levels:
 (require 'imenu)
