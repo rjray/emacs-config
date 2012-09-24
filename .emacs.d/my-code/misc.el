@@ -113,6 +113,10 @@
 (define-key yas/keymap (kbd "C-a") 'yas/goto-start-of-active-field)
 (setq yas/prompt-functions '(yas/ido-prompt yas/completing-prompt))
 
+;; Whitespace
+(setq whitespace-style '(face tabs lines-tail))
+(global-whitespace-mode 1)
+
 ;; Visual Bell (flash the mode-line instead of an audio bell)
 ;; Cribbed from Jason Filsinger, https://github.com/filsinger/emacs-config
 (setq visible-bell nil

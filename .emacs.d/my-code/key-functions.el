@@ -83,13 +83,27 @@
                      types))
           languages))
 
-(defun untab-buffer ()
+(defun untabify-buffer-or-region ()
   "Untabify the entire buffer. If the region is active, only untabify the
 region."
   (interactive)
   (cond ((region-active-p) (untabify (region-beginning) (region-end)))
-        (t (untabify 0 (point-max))))
-  (save-buffer))
+        (t (untabify (point-min) (point-max)))))
+
+(defun indent-buffer-or-region ()
+  "Indent the entire buffer. If the region is active, only indent the
+region."
+  (interactive)
+  (cond ((region-active-p) (indent-region (region-beginning) (region-end)))
+        (t (indent-region (point-min) (point-max)))))
+
+(defun cleanup-buffer ()
+  "Clean up the current buffer by untabifying it, deleting trailing whitespace
+and re-indenting it. If the region is active, only act on the region."
+  (interactive)
+  (delete-trailing-whitespace)
+  (untabify (point-min) (point-max))
+  (indent-region (point-min) (point-max)))
 
 (defun fill-paragraph-or-region ()
   "If the region is active, call fill-region. Otherwise, fill-paragraph."
@@ -208,3 +222,14 @@ cursor to the new line."
     (if (= (point) position)
         (move-beginning-of-line)
       (goto-char position))))
+
+;; For tweaking around with lisp:
+(defun eval-and-replace ()
+  "Replace the preceding sexp with its value."
+  (interactive)
+  (backward-kill-sexp)
+  (condition-case nil
+      (prin1 (eval (read (current-kill 0)))
+             (current-buffer))
+    (error (message "Invalid expression")
+           (insert (current-kill 0)))))

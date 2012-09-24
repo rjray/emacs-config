@@ -16,8 +16,14 @@
 ;; Browse the kill-ring with C-c k:
 (global-set-key (kbd "C-c k") 'browse-kill-ring)
 
+;; Replace a lisp sexp with its eval'd value:
+(global-set-key (kbd "C-c C-e") 'eval-and-replace)
+
 ;; Bind expand-region to C-=:
 (global-set-key (kbd "C-=") 'er/expand-region)
+
+;; Do buffer clean-up-- untabify, delete trailing space, re-indent:
+(global-set-key (kbd "C-c n") 'cleanup-buffer)
 
 ;; Bindings for funcs from mark-multiple:
 (global-set-key (kbd "C-x r t") 'inline-string-rectangle)
@@ -52,7 +58,7 @@
 (global-set-key [(control f6)]   'search-backward-regexp)
 
 (global-set-key [(f7)]           'fill-paragraph-or-region)
-(global-set-key [(control f7)]   'untab-buffer)
+(global-set-key [(control f7)]   'untabify-buffer-or-region)
 
 (global-set-key [(f8)]           (lambda ()
                                    (interactive)

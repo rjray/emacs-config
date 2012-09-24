@@ -46,6 +46,7 @@
 (require 'inline-string-rectangle)
 (require 'mark-more-like-this)
 (require 'yasnippet)
+(require 'whitespace)
 
 ;; Load my personal code
 (load "key-bindings")
@@ -110,4 +111,6 @@
  '(default ((t (:stipple nil :background "white" :foreground "black" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 90 :width normal :family "dejavu-dejavu sans mono"))))
  '(develock-whitespace-3 ((t nil)))
  '(trailing-whitespace ((t (:underline t))))
- '(whitespace-highlight ((((class color) (background light)) (:background "green1" :underline t)))))
+ '(whitespace-highlight ((((class color) (background light)) (:background "green1" :underline t))))
+ '(whitespace-line ((t (:background "yellow" :foreground "black"))))
+ '(whitespace-tab ((((class color) (background light)) (:background "red" :foreground "lightgray")))))
