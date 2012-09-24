@@ -40,3 +40,6 @@
 [submodule ".emacs.d/submodules/zencoding"]
 	path = .emacs.d/submodules/zencoding
 	url = git://github.com/rooney/zencoding.git
+[submodule ".emacs.d/submodules/yasnippet"]
+	path = .emacs.d/submodules/yasnippet
+	url = git://github.com/capitaomorte/yasnippet.git

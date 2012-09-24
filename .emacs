@@ -45,6 +45,7 @@
 (require 'expand-region)
 (require 'inline-string-rectangle)
 (require 'mark-more-like-this)
+(require 'yasnippet)
 
 ;; Load my personal code
 (load "key-bindings")
