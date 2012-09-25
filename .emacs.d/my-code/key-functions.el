@@ -97,13 +97,19 @@ region."
   (cond ((region-active-p) (indent-region (region-beginning) (region-end)))
         (t (indent-region (point-min) (point-max)))))
 
-(defun cleanup-buffer ()
+(defun cleanup-buffer-or-region ()
   "Clean up the current buffer by untabifying it, deleting trailing whitespace
 and re-indenting it. If the region is active, only act on the region."
   (interactive)
-  (delete-trailing-whitespace)
-  (untabify (point-min) (point-max))
-  (indent-region (point-min) (point-max)))
+  (untabify-buffer-or-region)
+  (indent-buffer-or-region)
+  (cond ((region-active-p)
+         (save-excursion
+           (save-restriction
+             (narrow-to-region (region-beginning) (region-end))
+             (delete-trailing-whitespace)
+             (widen))))
+        (t (delete-trailing-whitespace))))
 
 (defun fill-paragraph-or-region ()
   "If the region is active, call fill-region. Otherwise, fill-paragraph."

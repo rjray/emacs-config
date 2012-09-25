@@ -106,6 +106,7 @@
 (add-hook 'sgml-mode-hook
           (lambda ()
             (require 'zencoding-mode)
+            (setq zencoding-indentation 2)
             (zencoding-mode)))
 (add-hook 'sgml-mode-hook
           (lambda ()

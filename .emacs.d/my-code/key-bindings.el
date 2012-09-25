@@ -23,7 +23,7 @@
 (global-set-key (kbd "C-=") 'er/expand-region)
 
 ;; Do buffer clean-up-- untabify, delete trailing space, re-indent:
-(global-set-key (kbd "C-c n") 'cleanup-buffer)
+(global-set-key (kbd "C-c n") 'cleanup-buffer-or-region)
 
 ;; Bindings for funcs from mark-multiple:
 (global-set-key (kbd "C-x r t") 'inline-string-rectangle)
