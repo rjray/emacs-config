@@ -32,6 +32,9 @@
  auto-save-list-file-name nil
  delete-auto-save-files t
 
+ ; Inhibit "magic" mode selection
+ magic-mode-alist nil
+
  ; Tabs and lines
  tab-stop-list (mapcar (lambda (x) (* 4 x))
                        '(1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20))

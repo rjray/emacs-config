@@ -23,11 +23,10 @@
 
 ;; If there is a directory under ~/.emacs.d named for this host, load all *.el
 ;; files within it:
-(when (getenv "HOSTNAME")
-  (let ((hostdir (concat *emacsdir* (getenv "HOSTNAME"))))
-    (when (file-directory-p hostdir)
-      (dolist (host-el-file (directory-files hostdir t "\\.el$"))
-        (load-file host-el-file)))))
+(let ((hostdir (concat *emacsdir* system-name)))
+  (when (file-directory-p hostdir)
+    (dolist (host-el-file (directory-files hostdir t "\\.el$"))
+      (load-file host-el-file))))
 
 ;; Libs I want visible at all levels:
 (require 'imenu)
