@@ -213,18 +213,18 @@ cursor to the new line."
 
 ;; Some key-functions for YASnippet, taken from
 ;; https://github.com/magnars/.emacs.d/
-(defun yas/goto-end-of-active-field ()
+(defun yas--goto-end-of-active-field ()
   (interactive)
-  (let* ((snippet (car (yas/snippets-at-point)))
-        (position (yas/field-end (yas/snippet-active-field snippet))))
+  (let* ((snippet (car (yas--snippets-at-point)))
+        (position (yas--field-end (yas--snippet-active-field snippet))))
     (if (= (point) position)
         (move-end-of-line)
       (goto-char position))))
 
-(defun yas/goto-start-of-active-field ()
+(defun yas--goto-start-of-active-field ()
   (interactive)
-  (let* ((snippet (car (yas/snippets-at-point)))
-        (position (yas/field-start (yas/snippet-active-field snippet))))
+  (let* ((snippet (car (yas--snippets-at-point)))
+        (position (yas--field-start (yas--snippet-active-field snippet))))
     (if (= (point) position)
         (move-beginning-of-line)
       (goto-char position))))

@@ -58,7 +58,7 @@
 (load "misc")
 
 ;; Diminish some of the minor-mode clutter:
-(diminish 'yas/global-mode)
+(diminish 'yas-global-mode)
 (diminish 'global-whitespace-mode)
 
 ;; Things to do when running in a windowing system (X, MacOS, etc.)
