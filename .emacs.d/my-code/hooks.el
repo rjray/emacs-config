@@ -43,6 +43,7 @@
              (c-set-offset 'inline-open 0)
              (setq tab-width 4)
              (setq cperl-indent-parens-as-block t)
+             (setq cperl-close-paren-offset -4)
              (setq cperl-tab-to-comment t)
              (setq cperl-indent-level 4)
              (setq cperl-continued-statement-offset 4)
@@ -52,8 +53,7 @@
              (setq cperl-label-offset -2)
              (when (string= system-name "rjray")
                (setq perlcritic-profile (concat (getenv "HOME")
-                                                "/"
-                                                ".perlcriticrc-netapp")))))
+                                                "/.perlcriticrc-netapp")))))
 
 (add-hook 'ediff-cleanup-hook
           '(lambda ()
