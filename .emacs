@@ -46,6 +46,7 @@
 (require 'mark-more-like-this)
 (require 'yasnippet)
 (require 'whitespace)
+(require 'diminish)
 
 ;; Load my personal code
 (load "key-bindings")
@@ -56,11 +57,18 @@
 (load "utils")
 (load "misc")
 
-;; Number ALL the lines!
+;; Diminish some of the minor-mode clutter:
+(diminish 'yas/global-mode)
+(diminish 'global-whitespace-mode)
+
+;; Things to do when running in a windowing system (X, MacOS, etc.)
 (when window-system
   (progn
+    ; Number ALL the lines!
     (global-linum-mode)
-    (server-start)))
+    ; Start a server if one isn't already running
+    (unless (server-running-p)
+      (server-start))))
 
 ;; Turn on font-lock if available
 (when (fboundp 'global-font-lock-mode)
