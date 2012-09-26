@@ -40,3 +40,6 @@
 [submodule ".emacs.d/submodules/yasnippet"]
 	path = .emacs.d/submodules/yasnippet
 	url = git://github.com/capitaomorte/yasnippet.git
+[submodule ".emacs.d/submodules/slime"]
+	path = .emacs.d/submodules/slime
+	url = git://github.com/antifuchs/slime.git
