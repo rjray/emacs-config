@@ -22,9 +22,6 @@
 [submodule ".emacs.d/submodules/markdown-mode"]
 	path = .emacs.d/submodules/markdown-mode
 	url = git://jblevins.org/git/markdown-mode.git
-[submodule ".emacs.d/submodules/slime"]
-	path = .emacs.d/submodules/slime
-	url = git://sbcl.boinkor.net/slime.git
 [submodule ".emacs.d/submodules/full-ack"]
 	path = .emacs.d/submodules/full-ack
 	url = git://github.com/nschum/full-ack.git
