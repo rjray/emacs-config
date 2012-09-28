@@ -103,7 +103,7 @@
  '(fill-column 79)
  '(menu-bar-mode t)
  '(save-place t nil (saveplace))
- '(scroll-bar-mode (quote right))
+ '(scroll-bar-mode nil)
  '(show-paren-mode t)
  '(show-trailing-whitespace t)
  '(size-indication-mode t)
