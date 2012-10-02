@@ -49,3 +49,6 @@ and source-file directory for your debugger." t nil)
 (autoload 'perlcritic        "perlcritic" "" t)
 (autoload 'perlcritic-region "perlcritic" "" t)
 (autoload 'perlcritic-mode   "perlcritic" "" t)
+
+;; For Scala, we have a file that sets up all the autoloads for us:
+(require 'scala-mode-auto)
