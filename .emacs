@@ -43,7 +43,7 @@
 (require 'slime)
 (require 'expand-region)
 (require 'inline-string-rectangle)
-(require 'mark-more-like-this)
+(require 'multiple-cursors)
 (require 'yasnippet)
 (require 'whitespace)
 (require 'diminish)

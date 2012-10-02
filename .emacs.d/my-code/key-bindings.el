@@ -27,10 +27,12 @@
 
 ;; Bindings for funcs from mark-multiple:
 (global-set-key (kbd "C-x r t") 'inline-string-rectangle)
-(global-set-key (kbd "C-<") 'mark-previous-like-this)
-(global-set-key (kbd "C->") 'mark-next-like-this)
-(global-set-key (kbd "C-M-m") 'mark-more-like-this)
-(global-set-key (kbd "C-*") 'mark-all-like-this)
+;; Bindings for funcs from multiple-cursors:
+(global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
+(global-set-key (kbd "C->") 'mc/mark-next-like-this)
+(global-set-key (kbd "C-M-m") 'mc/mark-more-like-this-extended)
+(global-set-key (kbd "C-\"") 'mc/mark-all-like-this)
+(global-set-key (kbd "C-'") 'mc/mark-all-in-region)
 
 ;; Use this instead of hitting M-x all the time:
 (global-set-key "\C-x\C-m" 'execute-extended-command)

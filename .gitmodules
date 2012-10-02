@@ -43,3 +43,6 @@
 [submodule ".emacs.d/submodules/slime"]
 	path = .emacs.d/submodules/slime
 	url = git://github.com/antifuchs/slime.git
+[submodule ".emacs.d/submodules/multiple-cursors"]
+	path = .emacs.d/submodules/multiple-cursors
+	url = git://github.com/magnars/multiple-cursors.el.git
