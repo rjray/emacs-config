@@ -47,6 +47,7 @@
 (require 'yasnippet)
 (require 'whitespace)
 (require 'diminish)
+(require 'wrap-region)
 
 ;; Load my personal code
 (load "key-bindings")
@@ -60,6 +61,7 @@
 ;; Diminish some of the minor-mode clutter:
 ;(diminish 'yas/global-mode)
 (diminish 'global-whitespace-mode)
+(diminish 'wrap-region-mode)
 
 ;; Things to do when running in a windowing system (X, MacOS, etc.)
 (when window-system

@@ -120,6 +120,9 @@
 (setq whitespace-style '(face tabs lines-tail))
 (global-whitespace-mode 1)
 
+;; Wrap region minor mode
+(wrap-region-global-mode t)
+
 ;; Visual Bell (flash the mode-line instead of an audio bell)
 ;; Cribbed from Jason Filsinger, https://github.com/filsinger/emacs-config
 (setq visible-bell nil

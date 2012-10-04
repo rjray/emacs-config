@@ -46,3 +46,6 @@
 [submodule ".emacs.d/submodules/multiple-cursors"]
 	path = .emacs.d/submodules/multiple-cursors
 	url = git://github.com/magnars/multiple-cursors.el.git
+[submodule ".emacs.d/submodules/wrap-region"]
+	path = .emacs.d/submodules/wrap-region
+	url = git://github.com/rejeep/wrap-region.git
