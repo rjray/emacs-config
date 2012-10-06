@@ -28,6 +28,9 @@
     (dolist (host-el-file (directory-files hostdir t "\\.el$"))
       (load-file host-el-file))))
 
+;; Libs which have their own set-up code:
+(eval-after-load 'dired '(require 'setup-dired))
+
 ;; Libs I want visible at all levels:
 (require 'imenu)
 (require 'iswitch-buffer)
