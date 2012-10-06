@@ -39,6 +39,7 @@
             (define-key cperl-mode-map "\C-cl" 'perl-insert-lib-hdr)
             (define-key cperl-mode-map "\C-cs" 'perl-insert-sub-hdr)
             (define-key cperl-mode-map "\C-c%" 'match-paren)
+            (define-key cperl-mode-map (kbd "RET") 'newline-and-indent)
             (local-set-key "%" 'self-insert-command)
             (c-set-offset 'inline-open 0)
             (setq tab-width 4)
