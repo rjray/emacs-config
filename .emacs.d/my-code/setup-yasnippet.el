@@ -1,6 +1,6 @@
 ;;; Taken and modified from https://github.com/magnars/.emacs.d
 
-(require 'yasnippit)
+(require 'yasnippet)
 
 ;; Search-dirs: First look in a directory specific to the system I'm on,
 ;; then in the github-shared directory, and lastly in the defaults snippets
