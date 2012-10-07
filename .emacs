@@ -30,6 +30,7 @@
 
 ;; Libs which have their own set-up code:
 (eval-after-load 'dired '(require 'setup-dired))
+(eval-after-load 'magit '(require 'setup-magit))
 
 ;; Libs I want visible at all levels:
 (require 'imenu)
