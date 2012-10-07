@@ -31,6 +31,7 @@
 ;; Libs which have their own set-up code:
 (eval-after-load 'dired '(require 'setup-dired))
 (eval-after-load 'magit '(require 'setup-magit))
+(eval-after-load 'yasnippet '(require 'setup-yasnippet))
 
 ;; Libs I want visible at all levels:
 (require 'imenu)
@@ -66,6 +67,7 @@
 ;(diminish 'yas/global-mode)
 (diminish 'global-whitespace-mode)
 (diminish 'wrap-region-mode)
+(diminish 'yas-minor-mode)
 
 ;; Things to do when running in a windowing system (X, MacOS, etc.)
 (when window-system

@@ -105,17 +105,6 @@
                (sbcl    ("/usr/bin/sbcl"))))))
 (setf slime-default-lisp 'sbcl)
 
-;; Set-up for YASnippet
-(setq yas-snippet-dirs (list
-                        (concat *emacsdir* system-name "/snippets")
-                        (concat *emacsdir* "snippets")
-                        (concat *emacsmodules* "/yasnippet/snippets")))
-(yas-global-mode 1)
-(define-key yas-keymap (kbd "<return>") 'yas-exit-all-snippets)
-(define-key yas-keymap (kbd "C-e") 'yas--goto-end-of-active-field)
-(define-key yas-keymap (kbd "C-a") 'yas--goto-start-of-active-field)
-(setq yas-prompt-functions '(yas-ido-prompt yas-completing-prompt))
-
 ;; Whitespace
 (setq whitespace-style '(face tabs lines-tail))
 (global-whitespace-mode 1)

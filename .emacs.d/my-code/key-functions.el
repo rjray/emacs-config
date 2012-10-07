@@ -211,24 +211,6 @@ cursor to the new line."
       (message "Opening file...")
     (message "Aborting")))
 
-;; Some key-functions for YASnippet, taken from
-;; https://github.com/magnars/.emacs.d/
-(defun yas--goto-end-of-active-field ()
-  (interactive)
-  (let* ((snippet (car (yas--snippets-at-point)))
-        (position (yas--field-end (yas--snippet-active-field snippet))))
-    (if (= (point) position)
-        (move-end-of-line)
-      (goto-char position))))
-
-(defun yas--goto-start-of-active-field ()
-  (interactive)
-  (let* ((snippet (car (yas--snippets-at-point)))
-        (position (yas--field-start (yas--snippet-active-field snippet))))
-    (if (= (point) position)
-        (move-beginning-of-line)
-      (goto-char position))))
-
 ;; For tweaking around with lisp:
 (defun eval-and-replace ()
   "Replace the preceding sexp with its value."
