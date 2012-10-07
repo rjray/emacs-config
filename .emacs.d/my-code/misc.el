@@ -111,6 +111,15 @@
 
 ;; Wrap region minor mode
 (wrap-region-global-mode t)
+;; Don't screw up key bindings in magit-mode
+(add-to-list 'wrap-region-except-modes 'magit-status-mode)
+(wrap-region-add-wrapper "<p>" "</p>" "p" 'html-mode)
+(wrap-region-add-wrapper "<div>" "</div>" "d" 'html-mode)
+(wrap-region-add-wrapper "<li>" "</li>" "l" 'html-mode)
+(wrap-region-add-wrapper "<strong>" "</strong>" "s" 'html-mode)
+(wrap-region-add-wrapper "<a href=\"\">" "</a>" "a" 'html-mode)
+(wrap-region-add-wrapper "<h1>" "</h1>" "h" 'html-mode)
+(wrap-region-add-wrapper "*" "*" "*" 'markdown-mode)
 
 ;; Visual Bell (flash the mode-line instead of an audio bell)
 ;; Cribbed from Jason Filsinger, https://github.com/filsinger/emacs-config
