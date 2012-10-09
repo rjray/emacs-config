@@ -1,13 +1,17 @@
 ;;; .emacs
 
+;; True if this system is MacOS. Used in a few places for paths, etc.
+(defconst *is-mac* (eq system-type 'darwin))
+
 ;; These constants are used to manage all the various sub-dirs that need to
 ;; be in the load-path:
-(defconst *homedir* (if (or (eq system-type 'cygwin)
-                          (eq system-type 'gnu/linux)
-                          (eq system-type 'linux)
-                          (eq system-type 'darwin))
-                      (getenv "HOME")
-                    (getenv "USERPROFILE"))
+(defconst *homedir* (if (or
+                         (eq system-type 'cygwin)
+                         (eq system-type 'gnu/linux)
+                         (eq system-type 'linux)
+                         (eq system-type 'darwin))
+                        (getenv "HOME")
+                      (getenv "USERPROFILE"))
   "My home dir, regardless of host.")
 (defconst *emacsdir* (concat *homedir* "/.emacs.d/") "Root of emacs lisp code")
 (defconst *emacsmodules* (concat *emacsdir* "submodules") "Git submodules")
@@ -18,7 +22,7 @@
 (dolist (submodule (directory-files *emacsmodules* t "\\w+"))
   (when (file-directory-p submodule)
     (add-to-list 'load-path submodule)))
-; Missed this one in the above:
+;; Missed this one in the above:
 (add-to-list 'load-path (concat *emacsmodules* "/slime/contrib"))
 
 ;; If there is a directory under ~/.emacs.d named for this host, load all *.el
@@ -53,6 +57,8 @@
 (require 'whitespace)
 (require 'diminish)
 (require 'wrap-region)
+(require 'uniquify)
+(require 'saveplace)
 
 ;; Load my personal code
 (load "key-bindings")
@@ -64,7 +70,6 @@
 (load "misc")
 
 ;; Diminish some of the minor-mode clutter:
-;(diminish 'yas/global-mode)
 (diminish 'global-whitespace-mode)
 (diminish 'wrap-region-mode)
 (diminish 'yas-minor-mode)
@@ -72,11 +77,14 @@
 ;; Things to do when running in a windowing system (X, MacOS, etc.)
 (when window-system
   (progn
-    ; Number ALL the lines!
+    ;; Number ALL the lines!
     (global-linum-mode)
-    ; Start a server if one isn't already running
+    ;; Start a server if one isn't already running
     (unless (server-running-p)
-      (server-start))))
+      (server-start))
+    (if (fboundp 'menu-bar-mode) (menu-bar-mode 1))
+    (if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
+    (if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))))
 
 ;; Turn on font-lock if available
 (when (fboundp 'global-font-lock-mode)
@@ -91,9 +99,9 @@
       (concat "%b - emacs@" system-name))
 
 ;; Alias some stuff to get preferred behavior
-; cperl-mode is preferred to perl-mode
+;; cperl-mode is preferred to perl-mode
 (defalias 'perl-mode 'cperl-mode)
-; Don't care for typing out "yes" and "no" all the time...
+;; Don't care for typing out "yes" and "no" all the time...
 (defalias 'yes-or-no-p 'y-or-n-p)
 
 ;;enable narrowing
@@ -102,27 +110,16 @@
 ;;; Added/updated by emacs
 
 (custom-set-variables
-  ;; custom-set-variables was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
- '(blink-cursor-mode nil)
- '(column-number-mode t)
- '(fill-column 79)
- '(menu-bar-mode t)
- '(save-place t nil (saveplace))
- '(scroll-bar-mode nil)
- '(show-paren-mode t)
- '(show-trailing-whitespace t)
- '(size-indication-mode t)
- '(tool-bar-mode nil)
- '(transient-mark-mode t)
- '(uniquify-buffer-name-style (quote forward) nil (uniquify)))
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
 (custom-set-faces
-  ;; custom-set-faces was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  '(default ((t (:stipple nil :background "white" :foreground "black" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 90 :width normal :family "dejavu-dejavu sans mono"))))
  '(develock-whitespace-3 ((t nil)))
  '(trailing-whitespace ((t (:underline t))))

@@ -19,23 +19,44 @@
  default-case-fold-search nil
  x-select-enable-clipboard 1
  tramp-default-method "ssh"
+ blink-cursor-mode nil
+ fill-column 79
+ show-paren-mode t
+ show-trailing-whitespace t
+ transient-mark-mode t
 
- ; Startup stuff supression
+ ;; Startup stuff supression
  inhibit-splash-screen t
  inhibit-startup-echo-area-message t
  inhibit-startup-screen t
 
- ; Backup stuff
+ ;; Backup stuff
  backup-inhibited t
  make-backup-files nil
  auto-save-default nil
  auto-save-list-file-name nil
  delete-auto-save-files t
 
- ; Inhibit "magic" mode selection
+ ;; Save places in files between visits
+ save-place t
+
+ ;; How to uniquify similar buffer names
+ uniquify-buffer-name-style 'forward
+
+ ;; Inhibit "magic" mode selection
  magic-mode-alist nil
 
- ; Tabs and lines
+ ;; No double-spaces when I fill a paragraph
+ sentence-end-double-space nil
+
+ ;; Always number lines and columns in the status line
+ line-number-mode t
+ column-number-mode t
+
+ ;; Show indication of the buffer size (right before the line/col)
+ size-indication-mode t
+
+ ;; Tabs and lines
  tab-stop-list (mapcar (lambda (x) (* 4 x))
                        '(1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20))
  tab-width 4
@@ -95,7 +116,7 @@
 (setq slime-multiprocessing t)
 (set-language-environment "UTF-8")
 (setq slime-net-coding-system 'utf-8-unix)
-(cond ((string-match "Aquamacs" emacs-build-system)
+(cond (*is-mac*
        (setq slime-lisp-implementations
              '((clisp   ("/usr/local/bin/clisp" "-K full"))
                (sbcl    ("/usr/local/bin/sbcl")))))
