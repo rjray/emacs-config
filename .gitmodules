@@ -49,3 +49,6 @@
 [submodule ".emacs.d/submodules/wrap-region"]
 	path = .emacs.d/submodules/wrap-region
 	url = git://github.com/rejeep/wrap-region.git
+[submodule ".emacs.d/submodules/elisp-slime-nav"]
+	path = .emacs.d/submodules/elisp-slime-nav
+	url = git://github.com/purcell/elisp-slime-nav.git
