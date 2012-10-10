@@ -67,6 +67,9 @@
               'electrify-return-if-match)
             (highlight-parentheses-mode t)
             (paredit-mode t)))
+(add-hook 'emacs-lisp-mode-hook
+          (lambda ()
+            (elisp-slime-nav-mode t)))
 
 (add-hook 'lisp-mode-hook
           (lambda ()
