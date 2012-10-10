@@ -11,8 +11,13 @@
 (eval-after-load "cperl-mode"
   '(progn (require 'dabbrev) (ad-activate 'cperl-indent-command)))
 
+;; Don't try to adjust rng-schema-locating-files until the file has been loaded
 (eval-after-load 'rng-loc
   '(add-to-list 'rng-schema-locating-files "~/.schema/schemas.xml"))
+
+;; After elisp-slime-nav is loaded, then call diminish for it
+(eval-after-load 'elisp-slime-nav
+  '(diminish 'elisp-slime-nav-mode))
 
 ;; Set some default settings
 (setq-default
