@@ -117,7 +117,10 @@
 (add-hook 'sgml-mode-hook
           (lambda ()
             (require 'rename-sgml-tag)
-            (define-key sgml-mode-map (kbd "C-c C-r") 'rename-sgml-tag)))
+            (define-key sgml-mode-map (kbd "C-c C-r") 'rename-sgml-tag)
+            (define-key sgml-mode-map "<" 'xml--html-smart-less-than)
+            (define-key sgml-mode-map ">" 'xml--html-smart-greater-than)
+            (define-key sgml-mode-map "&" 'xml--html-smart-ampersand)))
 
 (add-hook 'slime-repl-mode-hook
           (lambda ()
@@ -128,3 +131,9 @@
 (add-hook 'text-mode-hook
           (lambda ()
             (turn-on-auto-fill)))
+
+;; This is the only way to get the "<" mapping out of html-mode. It has to be
+;; removed globally, just removing from html-mode doesn't do it.
+(add-hook 'wrap-region-hook
+          (lambda ()
+            (wrap-region-remove-wrapper "<")))
