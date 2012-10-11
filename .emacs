@@ -82,9 +82,14 @@
     ;; Start a server if one isn't already running
     (unless (server-running-p)
       (server-start))
+    (if (fboundp 'blink-cursor-mode) (blink-cursor-mode -1))
     (if (fboundp 'menu-bar-mode) (menu-bar-mode 1))
     (if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
     (if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))))
+
+;; Turn on show-paren if available
+(when (fboundp 'show-paren-mode)
+  (show-paren-mode t))
 
 ;; Turn on font-lock if available
 (when (fboundp 'global-font-lock-mode)

@@ -24,9 +24,7 @@
  default-case-fold-search nil
  x-select-enable-clipboard 1
  tramp-default-method "ssh"
- blink-cursor-mode nil
  fill-column 79
- show-paren-mode t
  show-trailing-whitespace t
  transient-mark-mode t
 
@@ -63,7 +61,7 @@
 
  ;; Tabs and lines
  tab-stop-list (mapcar (lambda (x) (* 4 x))
-                       '(1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20))
+                       (loop for x from 1 to 20 collect x))
  tab-width 4
  indent-tabs-mode nil)
 
