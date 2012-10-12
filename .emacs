@@ -112,6 +112,9 @@
 ;;enable narrowing
 (put 'narrow-to-region 'disabled nil)
 
+;; If this is a Mac, load some Mac-specific code
+(when *is-mac* (require 'mac))
+
 ;;; Added/updated by emacs
 
 (custom-set-variables
