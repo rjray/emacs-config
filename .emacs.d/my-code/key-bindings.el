@@ -1,17 +1,18 @@
 ;;; Global-level key-bindings. Not to be confused with mode-level keys, which
 ;;; should generally be done via mode hooks.
 
-;; Easy one-line-at-a-time scrolling. Find the syntax for this way of
-;; providing the keyspec a little odd, but I couldn't get it to work
-;; any other way...
-(global-set-key [?\C-.]
+;; Easy one-line-at-a-time scrolling.
+(global-set-key (read-kbd-macro (concat *hyper-prefix* "."))
                 (lambda ()
                   (interactive)
                   (scroll-down 1)))
-(global-set-key [?\C-,]
+(global-set-key (read-kbd-macro (concat *hyper-prefix* ","))
                 (lambda ()
                   (interactive)
                   (scroll-up 1)))
+
+(global-set-key (kbd "C-.") 'hippie-expand)
+(global-set-key (kbd "C-,") 'hippie-expand-lines)
 
 ;; Browse the kill-ring with C-c k:
 (global-set-key (kbd "C-c k") 'browse-kill-ring)
