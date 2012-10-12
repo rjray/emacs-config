@@ -1,5 +1,7 @@
 ;;; Taken and modified from https://github.com/magnars/.emacs.d
 
+(require 'magit)
+
 ;; C-x C-k to kill file on line
 (defun magit-kill-file-on-line ()
   "Show file on current magit line and prompt for deletion."

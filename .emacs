@@ -32,10 +32,8 @@
     (dolist (host-el-file (directory-files hostdir t "\\.el$"))
       (load-file host-el-file))))
 
-;; Libs which have their own set-up code:
+;; Libs which have their own set-up code, but are loaded as-needed:
 (eval-after-load 'dired '(require 'setup-dired))
-(eval-after-load 'magit '(require 'setup-magit))
-(eval-after-load 'yasnippet '(require 'setup-yasnippet))
 
 ;; Libs I want visible at all levels:
 (require 'imenu)
@@ -47,13 +45,11 @@
 (require 'gist)
 (require 'highlight-parentheses)
 (require 'paredit)
-(require 'magit)
 (require 'recentf)
 (require 'slime)
 (require 'expand-region)
 (require 'inline-string-rectangle)
 (require 'multiple-cursors)
-(require 'yasnippet)
 (require 'whitespace)
 (require 'diminish)
 (require 'wrap-region)
@@ -62,6 +58,8 @@
 
 ;; These have their own set-up code, but should also be pre-loaded:
 (require 'setup-ace-jump-mode)
+(require 'setup-magit)
+(require 'setup-yasnippet)
 
 ;; Load my personal code
 (load "key-bindings")
