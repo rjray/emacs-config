@@ -60,6 +60,9 @@
 (require 'uniquify)
 (require 'saveplace)
 
+;; These have their own set-up code, but should also be pre-loaded:
+(require 'setup-ace-jump-mode)
+
 ;; Load my personal code
 (load "key-bindings")
 (load "key-functions")

@@ -52,3 +52,6 @@
 [submodule ".emacs.d/submodules/elisp-slime-nav"]
 	path = .emacs.d/submodules/elisp-slime-nav
 	url = git://github.com/purcell/elisp-slime-nav.git
+[submodule ".emacs.d/submodules/ace-jump-mode"]
+	path = .emacs.d/submodules/ace-jump-mode
+	url = git://github.com/winterTTr/ace-jump-mode.git
