@@ -52,7 +52,7 @@
             (setq cperl-brace-offset -4)
             (setq cperl-brace-imaginary-offset 0)
             (setq cperl-label-offset -2)
-            (when (string= system-name "rjray")
+            (when (string= *system-name* "rjray")
               (setq perlcritic-profile (concat (getenv "HOME")
                                                "/.perlcriticrc-netapp")))))
 

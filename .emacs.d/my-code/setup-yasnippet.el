@@ -6,7 +6,7 @@
 ;; then in the github-shared directory, and lastly in the defaults snippets
 ;; shipped with YASnippet.
 (setq yas-snippet-dirs (list
-                        (concat *emacsdir* system-name "/snippets")
+                        (concat *emacsdir* *system-name* "/snippets")
                         (concat *emacsdir* "snippets")
                         (concat *emacsmodules* "/yasnippet/snippets")))
 

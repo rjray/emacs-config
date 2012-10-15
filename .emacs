@@ -1,5 +1,12 @@
 ;;; .emacs
 
+;; The "base" part of system-name, without the domain.
+(defconst *system-name*
+  (if (string-match "^\\([a-zA-Z0-9_-]+\\)\\." system-name)
+      (match-string 1 system-name)
+    system-name)
+  "Host name without the domain")
+
 ;; True if this system is MacOS. Used in a few places for paths, etc.
 (defconst *is-mac* (eq system-type 'darwin))
 
@@ -32,7 +39,7 @@
 
 ;; If there is a directory under ~/.emacs.d named for this host, load all *.el
 ;; files within it:
-(let ((hostdir (concat *emacsdir* system-name)))
+(let ((hostdir (concat *emacsdir* *system-name*)))
   (when (file-directory-p hostdir)
     (dolist (host-el-file (directory-files hostdir t "\\.el$"))
       (load-file host-el-file))))
@@ -108,7 +115,7 @@
 
 ;; default to better frame titles
 (setq frame-title-format
-      (concat "%b - emacs@" system-name))
+      (concat "%b - emacs@" *system-name*))
 
 ;; Alias some stuff to get preferred behavior
 ;; cperl-mode is preferred to perl-mode
