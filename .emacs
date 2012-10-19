@@ -37,12 +37,10 @@
 ;; Missed this one in the above:
 (add-to-list 'load-path (concat *emacsmodules* "/slime/contrib"))
 
-;; If there is a directory under ~/.emacs.d named for this host, load all *.el
-;; files within it:
-(let ((hostdir (concat *emacsdir* *system-name*)))
-  (when (file-directory-p hostdir)
-    (dolist (host-el-file (directory-files hostdir t "\\.el$"))
-      (load-file host-el-file))))
+;; Set the location for customization settings saves, and load it (before
+;; any per-host or Mac-specific settings).
+(setq custom-file (expand-file-name "custom.el" *emacsdir*))
+(load custom-file)
 
 ;; Libs which have their own set-up code, but are loaded as-needed:
 (eval-after-load 'dired '(require 'setup-dired))
@@ -129,22 +127,9 @@
 ;; If this is a Mac, load some Mac-specific code
 (when *is-mac* (require 'mac))
 
-;;; Added/updated by emacs
-
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(default ((t (:stipple nil :background "white" :foreground "black" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 90 :width normal :family "dejavu-dejavu sans mono"))))
- '(develock-whitespace-3 ((t nil)))
- '(trailing-whitespace ((t (:underline t))))
- '(whitespace-highlight ((((class color) (background light)) (:background "green1" :underline t))))
- '(whitespace-line ((t (:background "yellow" :foreground "black"))))
- '(whitespace-tab ((((class color) (background light)) (:background "red" :foreground "lightgray")))))
+;; If there is a directory under ~/.emacs.d named for this host, load all *.el
+;; files within it:
+(let ((hostdir (concat *emacsdir* *system-name*)))
+  (when (file-directory-p hostdir)
+    (dolist (host-el-file (directory-files hostdir t "\\.el$"))
+      (load-file host-el-file))))
