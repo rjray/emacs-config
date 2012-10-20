@@ -11,6 +11,9 @@
                   (interactive)
                   (scroll-up 1)))
 
+(global-set-key (read-kbd-macro (concat *hyper-prefix* "SPC"))
+                'set-rectangular-region-anchor)
+
 (global-set-key (kbd "C-.") 'hippie-expand)
 (global-set-key (kbd "C-,") 'hippie-expand-lines)
 
