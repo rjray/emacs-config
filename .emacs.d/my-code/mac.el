@@ -4,14 +4,14 @@
 (setq ns-function-modifier 'hyper)
 
 ;; A more Mac-friendly font (and size)
-(set-face-attribute 'default nil :family "Monaco" :height 120)
+(set-face-attribute 'default nil :family "dejavu-dejavu sans mono" :height 120)
 
 ;; make sure path is correct when launched as application
 (setenv "PATH" (concat "/usr/local/bin:" (getenv "PATH")))
 (push "/usr/local/bin" exec-path)
 
 ;; keybinding to toggle full screen mode
-(global-set-key (quote [M-f10]) (quote ns-toggle-fullscreen))
+(global-set-key [(meta f10)] 'ns-toggle-fullscreen)
 
 ;; Do something with command+arrow keys
 (global-set-key [(super up)] 'beginning-of-buffer)
