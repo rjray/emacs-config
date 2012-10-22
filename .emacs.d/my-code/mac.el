@@ -7,8 +7,8 @@
 (set-face-attribute 'default nil :family "dejavu-dejavu sans mono" :height 120)
 
 ;; make sure path is correct when launched as application
-(setenv "PATH" (concat "/usr/local/bin:" (getenv "PATH")))
-(push "/usr/local/bin" exec-path)
+(require 'exec-path-from-shell)
+(exec-path-from-shell-initialize)
 
 ;; keybinding to toggle full screen mode
 (global-set-key [(meta f10)] 'ns-toggle-fullscreen)

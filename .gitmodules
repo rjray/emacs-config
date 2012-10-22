@@ -55,3 +55,6 @@
 [submodule ".emacs.d/submodules/ace-jump-mode"]
 	path = .emacs.d/submodules/ace-jump-mode
 	url = git://github.com/winterTTr/ace-jump-mode.git
+[submodule ".emacs.d/submodules/exec-path-from-shell"]
+	path = .emacs.d/submodules/exec-path-from-shell
+	url = git://github.com/purcell/exec-path-from-shell.git
