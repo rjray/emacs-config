@@ -58,3 +58,6 @@
 [submodule ".emacs.d/submodules/exec-path-from-shell"]
 	path = .emacs.d/submodules/exec-path-from-shell
 	url = git://github.com/purcell/exec-path-from-shell.git
+[submodule ".emacs.d/submodules/scala-mode2"]
+	path = .emacs.d/submodules/scala-mode2
+	url = git://github.com/hvesalai/scala-mode2.git
