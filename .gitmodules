@@ -61,3 +61,6 @@
 [submodule ".emacs.d/submodules/scala-mode2"]
 	path = .emacs.d/submodules/scala-mode2
 	url = git://github.com/hvesalai/scala-mode2.git
+[submodule ".emacs.d/submodules/cperl-mode"]
+	path = .emacs.d/submodules/cperl-mode
+	url = git://github.com/jrockway/cperl-mode.git
