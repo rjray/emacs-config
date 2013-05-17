@@ -221,3 +221,21 @@ cursor to the new line."
              (current-buffer))
     (error (message "Invalid expression")
            (insert (current-kill 0)))))
+
+;; From https://gist.github.com/4553672
+(defun collect-regexp-results (regex)
+  ;;; collects all the matches of regex in a buffer called *collect-result*
+  ;;; then switches to that buffer
+  ;;; TODO refactor this to take the region as a parameter
+  (interactive "Mregex to search for: ")
+  (let ((curmin (region-or-buffer-beginning))
+        (curmax (region-or-buffer-end)))
+    (save-excursion
+      (goto-char curmin)
+      ;; (goto-char (region-or-buffer-beginning))
+      (while (re-search-forward regex curmax t)
+        (let ((retval (match-string-no-properties 0)))
+          (with-current-buffer (get-buffer-create "*collect results*")
+            (insert retval)
+            (insert "\n"))))
+      (switch-to-buffer "*collect results*"))))
