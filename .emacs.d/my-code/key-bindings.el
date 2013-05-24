@@ -37,6 +37,7 @@
 (global-set-key (kbd "C-M-m") 'mc/mark-more-like-this-extended)
 (global-set-key (kbd "C-\"") 'mc/mark-all-like-this)
 (global-set-key (kbd "C-'") 'mc/mark-all-in-region)
+(global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
 
 ;; Use this instead of hitting M-x all the time:
 (global-set-key "\C-x\C-m" 'execute-extended-command)
