@@ -69,6 +69,7 @@
 
 ;; These have their own set-up code, but should also be pre-loaded:
 (require 'setup-ace-jump-mode)
+(require 'setup-fiplr)
 (require 'setup-magit)
 (require 'setup-yasnippet)
 
