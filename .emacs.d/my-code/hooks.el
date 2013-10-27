@@ -28,8 +28,7 @@
             (define-key clojure-mode-map (kbd "RET")
               'electrify-return-if-match)
             (highlight-parentheses-mode t)
-            (paredit-mode t)
-            (slime-mode t)))
+            (paredit-mode t)))
 
 (add-hook 'cperl-mode-hook
           (lambda ()
@@ -75,7 +74,6 @@
           (lambda ()
             (highlight-parentheses-mode t)
             (paredit-mode t)
-            (define-key lisp-mode-map "%" 'match-paren)
             (define-key lisp-mode-map (kbd "RET")
               'electrify-return-if-match)
             (if (and (featurep 'menubar)
@@ -122,11 +120,11 @@
             (define-key sgml-mode-map ">" 'xml--html-smart-greater-than)
             (define-key sgml-mode-map "&" 'xml--html-smart-ampersand)))
 
-(add-hook 'slime-repl-mode-hook
-          (lambda ()
-            (paredit-mode t)
-            (define-key slime-repl-mode-map
-              (read-kbd-macro paredit-backward-delete-key) nil)))
+;; (add-hook 'slime-repl-mode-hook
+;;           (lambda ()
+;;             (paredit-mode t)
+;;             (define-key slime-repl-mode-map
+;;               (read-kbd-macro paredit-backward-delete-key) nil)))
 
 (add-hook 'text-mode-hook
           (lambda ()

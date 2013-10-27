@@ -34,8 +34,6 @@
 (dolist (submodule (directory-files *emacsmodules* t "\\w+"))
   (when (file-directory-p submodule)
     (add-to-list 'load-path submodule)))
-;; Missed this one in the above:
-(add-to-list 'load-path (concat *emacsmodules* "/slime/contrib"))
 
 ;; Set the location for customization settings saves, and load it (before
 ;; any per-host or Mac-specific settings).
@@ -57,7 +55,6 @@
 (require 'highlight-parentheses)
 (require 'paredit)
 (require 'recentf)
-(require 'slime)
 (require 'expand-region)
 (require 'inline-string-rectangle)
 (require 'multiple-cursors)
