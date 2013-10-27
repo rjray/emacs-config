@@ -61,3 +61,9 @@
 [submodule ".emacs.d/submodules/cperl-mode"]
 	path = .emacs.d/submodules/cperl-mode
 	url = git://github.com/jrockway/cperl-mode.git
+[submodule ".emacs.d/submodules/dash"]
+	path = .emacs.d/submodules/dash
+	url = https://github.com/magnars/dash.el.git
+[submodule ".emacs.d/submodules/git-modes"]
+	path = .emacs.d/submodules/git-modes
+	url = https://github.com/magit/git-modes.git
