@@ -61,9 +61,3 @@
 [submodule ".emacs.d/submodules/cperl-mode"]
 	path = .emacs.d/submodules/cperl-mode
 	url = git://github.com/jrockway/cperl-mode.git
-[submodule ".emacs.d/submodules/fiplr"]
-	path = .emacs.d/submodules/fiplr
-	url = https://github.com/d11wtq/fiplr.git
-[submodule ".emacs.d/submodules/grizzl"]
-	path = .emacs.d/submodules/grizzl
-	url = https://github.com/d11wtq/grizzl.git

@@ -39,9 +39,6 @@
 (global-set-key (kbd "C-'") 'mc/mark-all-in-region)
 (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
 
-;; Binding for fiplr (Find In Project)
-(global-set-key (kbd "C-x f") 'fiplr-find-file)
-
 ;; Use this instead of hitting M-x all the time:
 (global-set-key "\C-x\C-m" 'execute-extended-command)
 (global-set-key "\C-c\C-m" 'execute-extended-command)
