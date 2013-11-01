@@ -27,7 +27,7 @@
           (lambda ()
             (define-key clojure-mode-map (kbd "RET")
               'electrify-return-if-match)
-            (highlight-parentheses-mode t)
+            (rainbow-delimiters-mode t)
             (paredit-mode t)))
 
 (add-hook 'cperl-mode-hook
@@ -64,7 +64,7 @@
             (define-key emacs-lisp-mode-map "%" 'match-paren)
             (define-key emacs-lisp-mode-map (kbd "RET")
               'electrify-return-if-match)
-            (highlight-parentheses-mode t)
+            (rainbow-delimiters-mode t)
             (paredit-mode t)))
 (add-hook 'emacs-lisp-mode-hook
           (lambda ()
@@ -72,7 +72,7 @@
 
 (add-hook 'lisp-mode-hook
           (lambda ()
-            (highlight-parentheses-mode t)
+            (rainbow-delimiters-mode t)
             (paredit-mode t)
             (define-key lisp-mode-map (kbd "RET")
               'electrify-return-if-match)

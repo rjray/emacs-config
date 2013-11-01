@@ -52,7 +52,7 @@
 (require 'perlcritic)
 (require 'browse-kill-ring)
 (require 'gist)
-(require 'highlight-parentheses)
+(require 'rainbow-delimiters)
 (require 'paredit)
 (require 'recentf)
 (require 'expand-region)
