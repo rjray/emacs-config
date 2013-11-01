@@ -68,6 +68,7 @@
 (require 'setup-ace-jump-mode)
 (require 'setup-magit)
 (require 'setup-yasnippet)
+;(require 'setup-cider)
 
 ;; Load my personal code
 (load "key-bindings")

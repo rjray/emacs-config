@@ -76,3 +76,6 @@
 [submodule ".emacs.d/submodules/rainbow-delimiters"]
 	path = .emacs.d/submodules/rainbow-delimiters
 	url = https://github.com/jlr/rainbow-delimiters.git
+[submodule ".emacs.d/submodules/epl"]
+	path = .emacs.d/submodules/epl
+	url = https://github.com/cask/epl.git
