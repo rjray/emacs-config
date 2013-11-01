@@ -67,3 +67,12 @@
 [submodule ".emacs.d/submodules/git-modes"]
 	path = .emacs.d/submodules/git-modes
 	url = https://github.com/magit/git-modes.git
+[submodule ".emacs.d/submodules/pkg-info"]
+	path = .emacs.d/submodules/pkg-info
+	url = https://github.com/lunaryorn/pkg-info.el.git
+[submodule ".emacs.d/submodules/cider"]
+	path = .emacs.d/submodules/cider
+	url = https://github.com/clojure-emacs/cider.git
+[submodule ".emacs.d/submodules/rainbow-delimiters"]
+	path = .emacs.d/submodules/rainbow-delimiters
+	url = https://github.com/jlr/rainbow-delimiters.git
