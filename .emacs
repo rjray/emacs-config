@@ -68,7 +68,10 @@
 (require 'setup-ace-jump-mode)
 (require 'setup-magit)
 (require 'setup-yasnippet)
-;(require 'setup-cider)
+;; CIDER requires some stuff only in 24.3:
+(when (and (>= emacs-major-version 24)
+           (>= emacs-minor-version 3))
+  (require 'setup-cider))
 
 ;; Load my personal code
 (load "key-bindings")
