@@ -71,7 +71,8 @@
 ;; CIDER requires some stuff only in 24.3:
 (when (and (>= emacs-major-version 24)
            (>= emacs-minor-version 3))
-  (require 'setup-cider))
+  (require 'setup-cider)
+  (require 'setup-scala-mode2))
 
 ;; Load my personal code
 (load "key-bindings")
