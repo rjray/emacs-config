@@ -51,6 +51,3 @@ and source-file directory for your debugger." t nil)
 (autoload 'perlcritic-mode   "perlcritic" "" t)
 
 (autoload 'elisp-slime-nav-mode "elisp-slime-nav" "" t)
-
-;; For Scala, we have a file that sets up all the autoloads for us:
-(require 'scala-mode-auto)
