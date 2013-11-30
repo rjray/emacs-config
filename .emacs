@@ -46,7 +46,6 @@
 
 ;; Libs I want visible at all levels:
 (require 'imenu)
-(require 'iswitch-buffer)
 (require 'linum)
 (require 'compile) ; Needed for perlcritic.el
 (require 'perlcritic)
