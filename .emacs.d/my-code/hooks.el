@@ -94,6 +94,12 @@
             (setq makefile-electric-keys t)
             (setq makefile-use-curly-braces-for-macros-p t)))
 
+(add-hook 'mediawiki-mode-hook
+          (lambda ()
+            (define-key mediawiki-mode-map "<" 'xml--html-smart-less-than)
+            (define-key mediawiki-mode-map ">" 'xml--html-smart-greater-than)
+            (define-key mediawiki-mode-map "&" 'xml--html-smart-ampersand)))
+
 (add-hook 'mouse-track-click-hook 'id-select-double-click-hook)
 
 (add-hook 'server-done-hook 'delete-frame)
