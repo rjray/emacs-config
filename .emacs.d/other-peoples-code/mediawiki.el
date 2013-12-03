@@ -6,13 +6,13 @@
 ;;      Chong Yidong <cyd at stupidchicken com> for wikipedia.el,
 ;;      Uwe Brauer <oub at mat.ucm.es> for wikimedia.el
 ;; Author: Mark A. Hershberger <mah@everybody.org>
-;; Version: 2.2.3
+;; Version: 2.2.4.1
 ;; Created: Sep 17 2004
 ;; Keywords: mediawiki wikipedia network wiki
 ;; URL: http://launchpad.net/mediawiki-el
-;; Last Modified: <2012-05-27 22:06:10 mah>
+;; Last Modified: <2012-12-31 15:54:27 mah>
 
-(defconst mediawiki-version "2.2.4"
+(defconst mediawiki-version "2.2.4.1"
   "Current version of mediawiki.el")
 
 ;; This file is NOT (yet) part of GNU Emacs.
@@ -57,7 +57,8 @@
 ;; Save a wiki buffer:  C-x C-s
 ;; Save a wiki buffer with a different name:  C-x C-w
 
-;;; TODO:
+;;; TODO
+
 ;;  * Optionally use org-mode formatting for editing and translate
 ;;    that to mw
 ;;  * Move url-* methods to url-http
@@ -66,6 +67,13 @@
 ;;  * Improve language support.  Currently there is a toggle for
 ;;    English or German.  This should probably just be replaced with
 ;;    customizable words given MediaWiki's wide language support.
+
+;;; Changes
+
+;; Since 2.2.4:
+;;  * Made it clearer where debugging information is found when
+;;    mediawiki-debug is non-nil by adding messages to the message
+;;    buffer when debug buffers are killed.
 
 ;;; History
 
@@ -453,12 +461,12 @@
   (declare (special url-http-end-of-headers))
   (let ((kill-this-buffer (current-buffer)))
     (when (and (integerp status) (not (< status 300)))
-      (when (not mediawiki-debug) (kill-buffer kill-this-buffer))
+      (mediawiki-debug kill-this-buffer "url-http-response-post-process:1")
       (error "Oops! Invalid status: %d" status))
 
     (when (or (not (boundp 'url-http-end-of-headers))
               (not url-http-end-of-headers))
-      (when (not mediawiki-debug) (kill-buffer kill-this-buffer))
+      (mediawiki-debug kill-this-buffer "url-http-response-post-process:2")
       (error "Oops! Don't see end of headers!"))
 
     ;; FIXME: need to limit redirects
@@ -474,7 +482,7 @@
       (let ((str (decode-coding-string
                   (buffer-substring-no-properties (point) (point-max))
                   'utf-8)))
-        (when (not mediawiki-debug) (kill-buffer (current-buffer)))
+        (mediawiki-debug (current-buffer) "url-http-response-post-process:3")
         (when bufname
           (set-buffer bufname)
           (insert str)
@@ -895,6 +903,16 @@ the base URI of the wiki engine as well as group and page name.")
   "*Archive the reply.")
 
 (defvar mediawiki-draft-mode-map ())
+
+(defun mediawiki-debug (buffer function)
+  "When debugging is turned on, log the name of the buffer so it
+can be examined. If debugging is off, just kill the buffer.  This
+allows you to see what is being sent to and from the server."
+  (if (not mediawiki-debug)
+      (kill-buffer buffer)
+    (message "Examine the '%s' buffer called from '%s'."
+             (buffer-name buffer)
+             function)))
 
 (defun mediawiki-translate-pagename (name)
   "Given NAME, returns the typical name that MediaWiki would use.
@@ -1854,7 +1872,7 @@ region, will be mediawiki-drafted."
       (narrow-to-region b e)
       (run-hook-with-args-until-success 'mediawiki-draft-handler-functions)
     (when (equal mediawiki-draft-buffer (buffer-name))
-      (when (not mediawiki-debug) (kill-buffer (current-buffer)))
+      (mediawiki-debug (current-buffer) "mediawiki-draft-region")
       (jump-to-register mediawiki-draft-register)))))
 
 ;;;###autoload
@@ -1932,7 +1950,7 @@ is set off."
       (with-temp-buffer
 	(insert (concat "\n\n" mediawiki-draft-leader-text)
 		(insert-register mediawiki-draft-reply-register 1)
-		(insert (concat " " (current-time-string) " " 
+		(insert (concat " " (current-time-string) " "
 				mediawiki-draft-leader-text  "\n\n\f\n\n"
 				text "\n\f\n"))
 		(if (not (bolp))
@@ -1947,7 +1965,7 @@ is set off."
 		  (append-to-file (point-min) (point-max)
 				  mediawiki-draft-data-file)))))
     (when (equal mediawiki-draft-buffer (buffer-name))
-      (when (not mediawiki-debug) (kill-buffer (current-buffer))))
+      (mediawiki-debug (current-buffer) "mediawiki-draft-send"))
     (switch-to-buffer target-buffer)))
 
 (define-derived-mode mediawiki-draft-mode text-mode "MW-Draft"
