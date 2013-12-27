@@ -14,8 +14,8 @@
 (global-set-key [(meta f10)] 'ns-toggle-fullscreen)
 
 ;; Do something with command+arrow keys
-(global-set-key [(super up)] 'beginning-of-buffer)
-(global-set-key [(super down)] 'end-of-buffer)
+(global-set-key [(super up)] 'home)
+(global-set-key [(super down)] 'end)
 (global-set-key [(super left)] 'previous-buffer)
 (global-set-key [(super right)] 'next-buffer)
 
