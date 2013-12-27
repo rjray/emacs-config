@@ -58,27 +58,21 @@
 
 ;; Function-key bindings. Don't go above f8, though, because MacOS grabs f9
 ;; through f12. And f1-f4 are already in use.
-(global-set-key [(f5)]           'call-last-kbd-macro)
-(global-set-key [(control f5)]   'edit-last-kbd-macro)
+(global-set-key [(f5)]         'call-last-kbd-macro)
+(global-set-key [(control f5)] 'edit-last-kbd-macro)
 
-(global-set-key [(f6)]           'search-forward-regexp)
-(global-set-key [(control f6)]   'search-backward-regexp)
+(global-set-key [(f6)]         'search-forward-regexp)
+(global-set-key [(control f6)] 'search-backward-regexp)
 
-(global-set-key [(f7)]           'fill-paragraph-or-region)
-(global-set-key [(control f7)]   'untabify-buffer-or-region)
+(global-set-key [(f7)]         'fill-paragraph-or-region)
+(global-set-key [(control f7)] 'untabify-buffer-or-region)
 
-(global-set-key [(f8)]           (lambda ()
-                                   (interactive)
-                                   (cond ((region-active-p)
-                                          (count-region (region-beginning)
-                                                        (region-end)))
-                                         (t (count-region (point-min)
-                                                          (point-max))))))
+(global-set-key [(f8)]         'count-region)
 
 ;; Meta-key combinations
-(global-set-key [(meta g)]       'goto-line)
-(global-set-key [(meta i)]       'overwrite-mode)
-(global-set-key [(meta q)]       'quote)
+(global-set-key [(meta g)] 'goto-line)
+(global-set-key [(meta i)] 'overwrite-mode)
+(global-set-key [(meta q)] 'quote)
 
 ;; I miss these keys on my Macbook... but at least I have them on full
 ;; keyboards...

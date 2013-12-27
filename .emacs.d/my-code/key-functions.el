@@ -30,14 +30,17 @@
     (t (end-of-line)))
   (setq last-last-command last-command))
 
-;; I forget where I got this
-(defun count-region (start end)
+;; I forget where I got this... this is a modified version, anyway.
+(defun count-region ()
   "Count lines, words and characters in region."
-  (interactive "r")
-  (let ((l (count-lines start end))
-        (w (count-words start end))
-        (c (- end start)))
-    (message "Region has %d line%s, %d word%s and %d character%s."
+  (interactive)
+  (let* ((start (if (region-active-p) (region-beginning) (point-min)))
+         (end (if (region-active-p) (region-end) (point-max)))
+         (l (count-lines start end))
+         (w (count-words start end))
+         (c (- end start)))
+    (message "%s has %d line%s, %d word%s and %d character%s."
+             (if (region-active-p) "Region" "Buffer")
              l (if (= 1 l) "" "s")
              w (if (= 1 w) "" "s")
              c (if (= 1 c) "" "s"))))
