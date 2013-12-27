@@ -79,3 +79,6 @@
 [submodule ".emacs.d/submodules/epl"]
 	path = .emacs.d/submodules/epl
 	url = https://github.com/cask/epl.git
+[submodule ".emacs.d/submodules/mykie-el"]
+	path = .emacs.d/submodules/mykie-el
+	url = https://github.com/yuutayamada/mykie-el.git
