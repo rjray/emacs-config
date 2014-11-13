@@ -57,7 +57,7 @@
        auto-mode-alist))
 
 ;; Set it so any file edited UNDER ~/work/perl5 is in perl mode. MUST BE LAST.
-(nconc auto-mode-alist '(("/rjray/work/perl5" . cperl-mode)))
+(add-to-list 'auto-mode-alist '(("/rjray/work/perl5" . cperl-mode)))
 
 (setq interpreter-mode-alist (append interpreter-mode-alist
                      '(("miniperl" . perl-mode))))
