@@ -96,6 +96,7 @@
 
 (add-hook 'mediawiki-mode-hook
           (lambda ()
+            (auto-fill-mode -1)
             (define-key mediawiki-mode-map "<" 'xml--html-smart-less-than)
             (define-key mediawiki-mode-map ">" 'xml--html-smart-greater-than)
             (define-key mediawiki-mode-map "&" 'xml--html-smart-ampersand)))
