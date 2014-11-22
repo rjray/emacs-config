@@ -16,17 +16,10 @@
        (extensions-list 'html-mode
                         '("\\.html?" "\\.HTML?"))
 
-       ;; PSGML mode, in case I ever edit SGML directly...?
-       (list (cons "\\.sgml?" 'sgml-mode))
-
        ;; NXML
        (extensions-list 'nxml-mode
                         '("\\.rdf$" "\\.xsd$" "\\.xslt?$" "\\.xml$"
                           "\\.xhtml?$" "\\.dbx$" "\\.page$"))
-
-       ;; Tcl/Tk
-       (extensions-list 'tcl-mode
-                        '("\\.tcl" "\\.tk"))
 
        ;; Extras for C mode and related
        (list (cons "\\.xs$" 'c-mode))
@@ -56,8 +49,5 @@
 
        auto-mode-alist))
 
-;; Set it so any file edited UNDER ~/work/perl5 is in perl mode. MUST BE LAST.
-(nconc auto-mode-alist '(("/rjray/work/perl5" . cperl-mode)))
-
 (setq interpreter-mode-alist (append interpreter-mode-alist
-                     '(("miniperl" . perl-mode))))
+                                     '(("miniperl" . perl-mode))))
