@@ -4,7 +4,7 @@
 
 (defun add-hyper-char-to-ace-jump-word-mode (c)
   (define-key global-map
-    (read-kbd-macro (concat *hyper-prefix* (string c)))
+    (read-kbd-macro (concat "H-" (string c)))
     `(lambda ()
        (interactive)
        (setq ace-jump-query-char ,c)

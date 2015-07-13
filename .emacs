@@ -10,11 +10,6 @@
 ;; True if this system is MacOS. Used in a few places for paths, etc.
 (defconst *is-mac* (eq system-type 'darwin))
 
-;; What is used as the "hyper" modifier. This is needed because I don't have a
-;; "hyper" on my Linux keyboards, and Unity grabbed the Win (super) key.
-(defconst *hyper-prefix* (cond (*is-mac* "H-")
-                               (t "C-s-")))
-
 ;; These constants are used to manage all the various sub-dirs that need to
 ;; be in the load-path:
 (defconst *homedir* (if (or
