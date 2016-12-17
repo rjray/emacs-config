@@ -45,6 +45,8 @@
 (global-set-key "\C-c\C-i" 'swap-tab-width)
 (global-set-key "\C-x\C-r" 'ido-recentf-open)
 
+(global-set-key (kbd "C-x k") 'kill-this-buffer)
+
 ;; This one is neat-- make C-w kill a region when the region is active, or
 ;; otherwise do a backward-kill-word like C-w behaves in things like bash.
 (global-set-key "\C-w"
