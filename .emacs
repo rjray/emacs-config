@@ -47,7 +47,6 @@
 (require 'compile) ; Needed for perlcritic.el
 (require 'perlcritic)
 (require 'browse-kill-ring)
-(require 'gist)
 (require 'rainbow-delimiters)
 (require 'paredit)
 (require 'recentf)
