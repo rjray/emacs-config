@@ -10,6 +10,9 @@
 ;; True if this system is MacOS. Used in a few places for paths, etc.
 (defconst *is-mac* (eq system-type 'darwin))
 
+;; Turn the two emacs-*-version values into a single comparable int
+(defconst *emacs-version* (+ (* emacs-major-version 1000) emacs-minor-version))
+
 ;; These constants are used to manage all the various sub-dirs that need to
 ;; be in the load-path:
 (defconst *homedir* (if (or
@@ -37,7 +40,6 @@
 
 ;; Libs which have their own set-up code, but are loaded as-needed:
 (eval-after-load 'dired '(require 'setup-dired))
-(eval-after-load 'hippie-exp '(require 'setup-hippie))
 
 ;; Libs I want visible at all levels:
 (require 'imenu)
@@ -50,7 +52,6 @@
 (require 'paredit)
 (require 'recentf)
 (require 'expand-region)
-(require 'inline-string-rectangle)
 (require 'multiple-cursors)
 (require 'whitespace)
 (require 'diminish)
@@ -59,20 +60,14 @@
 (require 'saveplace)
 
 ;; These have their own set-up code, but should also be pre-loaded:
-(require 'setup-ace-jump-mode)
 (require 'setup-magit)
-(require 'setup-yasnippet)
-;; CIDER requires some stuff only in 24.3:
-(when (and (>= emacs-major-version 24)
-           (>= emacs-minor-version 3))
-  (require 'setup-cider)
-  (require 'setup-scala-mode2))
+;; CIDER requires some stuff only in 24.3 and later:
+(when (>= *emacs-version* 24003)
+  (require 'setup-cider))
 
 ;; Load my personal code
 (load "key-bindings")
 (load "key-functions")
-(load "autoloads")
-(load "mode-list")
 (load "hooks")
 (load "utils")
 (load "misc")
@@ -80,7 +75,6 @@
 ;; Diminish some of the minor-mode clutter:
 (diminish 'global-whitespace-mode)
 (diminish 'wrap-region-mode)
-(diminish 'yas-minor-mode)
 
 ;; Things to do when running in a windowing system (X, MacOS, etc.)
 (when window-system

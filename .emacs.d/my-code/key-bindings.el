@@ -13,9 +13,6 @@
 
 (global-set-key (kbd "H-SPC") 'set-rectangular-region-anchor)
 
-(global-set-key (kbd "C-.") 'hippie-expand)
-(global-set-key (kbd "C-,") 'hippie-expand-lines)
-
 ;; Browse the kill-ring with C-c k:
 (global-set-key (kbd "C-c k") 'browse-kill-ring)
 
@@ -25,11 +22,6 @@
 ;; Bind expand-region to C-=:
 (global-set-key (kbd "C-=") 'er/expand-region)
 
-;; Do buffer clean-up-- untabify, delete trailing space, re-indent:
-(global-set-key (kbd "C-c n") 'cleanup-buffer-or-region)
-
-;; Bindings for funcs from mark-multiple:
-(global-set-key (kbd "C-x r t") 'inline-string-rectangle)
 ;; Bindings for funcs from multiple-cursors:
 (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
 (global-set-key (kbd "C->") 'mc/mark-next-like-this)
@@ -41,9 +33,6 @@
 ;; Use this instead of hitting M-x all the time:
 (global-set-key "\C-x\C-m" 'execute-extended-command)
 (global-set-key "\C-c\C-m" 'execute-extended-command)
-
-(global-set-key "\C-c\C-i" 'swap-tab-width)
-(global-set-key "\C-x\C-r" 'ido-recentf-open)
 
 ;; This one is neat-- make C-w kill a region when the region is active, or
 ;; otherwise do a backward-kill-word like C-w behaves in things like bash.

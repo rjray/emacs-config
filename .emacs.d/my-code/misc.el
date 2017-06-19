@@ -15,10 +15,6 @@
 (eval-after-load 'rng-loc
   '(add-to-list 'rng-schema-locating-files "~/.schema/schemas.xml"))
 
-;; After elisp-slime-nav is loaded, then call diminish for it
-(eval-after-load 'elisp-slime-nav
-  '(diminish 'elisp-slime-nav-mode))
-
 ;; Set some default settings
 (setq-default
  default-case-fold-search nil
@@ -112,22 +108,6 @@
           (lambda ()
             (define-key ido-file-dir-completion-map
               (kbd "SPC") 'self-insert-command)))
-
-;; ;; Set-up for SLIME
-;; (slime-setup '(slime-fancy slime-asdf))
-;; (unload-feature 'slime-autodoc t)
-;; (setq slime-multiprocessing t)
-;; (set-language-environment "UTF-8")
-;; (setq slime-net-coding-system 'utf-8-unix)
-;; (cond (*is-mac*
-;;        (setq slime-lisp-implementations
-;;              '((clisp   ("/usr/local/bin/clisp" "-K full"))
-;;                (sbcl    ("/usr/local/bin/sbcl")))))
-;;       (t
-;;        (setq slime-lisp-implementations
-;;              '((clisp   ("/usr/bin/clisp" "-K full"))
-;;                (sbcl    ("/usr/bin/sbcl"))))))
-;; (setf slime-default-lisp 'sbcl)
 
 ;; Whitespace
 (setq whitespace-style '(face tabs lines-tail))
