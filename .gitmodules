@@ -37,9 +37,6 @@
 [submodule ".emacs.d/submodules/zencoding"]
 	path = .emacs.d/submodules/zencoding
 	url = git://github.com/rooney/zencoding.git
-[submodule ".emacs.d/submodules/yasnippet"]
-	path = .emacs.d/submodules/yasnippet
-	url = git://github.com/capitaomorte/yasnippet.git
 [submodule ".emacs.d/submodules/multiple-cursors"]
 	path = .emacs.d/submodules/multiple-cursors
 	url = git://github.com/magnars/multiple-cursors.el.git
@@ -49,15 +46,9 @@
 [submodule ".emacs.d/submodules/elisp-slime-nav"]
 	path = .emacs.d/submodules/elisp-slime-nav
 	url = git://github.com/purcell/elisp-slime-nav.git
-[submodule ".emacs.d/submodules/ace-jump-mode"]
-	path = .emacs.d/submodules/ace-jump-mode
-	url = git://github.com/winterTTr/ace-jump-mode.git
 [submodule ".emacs.d/submodules/exec-path-from-shell"]
 	path = .emacs.d/submodules/exec-path-from-shell
 	url = git://github.com/purcell/exec-path-from-shell.git
-[submodule ".emacs.d/submodules/scala-mode2"]
-	path = .emacs.d/submodules/scala-mode2
-	url = git://github.com/hvesalai/scala-mode2.git
 [submodule ".emacs.d/submodules/cperl-mode"]
 	path = .emacs.d/submodules/cperl-mode
 	url = git://github.com/jrockway/cperl-mode.git
