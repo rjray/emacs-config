@@ -22,7 +22,6 @@
             (c-set-offset 'case-label '*)
             (c-set-offset 'statement-case-intro '*)))
 
-(add-hook 'clojure-mode-hook 'clojure-test-maybe-enable)
 (add-hook 'clojure-mode-hook
           (lambda ()
             (define-key clojure-mode-map (kbd "RET")
