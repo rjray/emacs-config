@@ -93,27 +93,6 @@ region."
   (cond ((region-active-p) (untabify (region-beginning) (region-end)))
         (t (untabify (point-min) (point-max)))))
 
-(defun indent-buffer-or-region ()
-  "Indent the entire buffer. If the region is active, only indent the
-region."
-  (interactive)
-  (cond ((region-active-p) (indent-region (region-beginning) (region-end)))
-        (t (indent-region (point-min) (point-max)))))
-
-(defun cleanup-buffer-or-region ()
-  "Clean up the current buffer by untabifying it, deleting trailing whitespace
-and re-indenting it. If the region is active, only act on the region."
-  (interactive)
-  (untabify-buffer-or-region)
-  (indent-buffer-or-region)
-  (cond ((region-active-p)
-         (save-excursion
-           (save-restriction
-             (narrow-to-region (region-beginning) (region-end))
-             (delete-trailing-whitespace)
-             (widen))))
-        (t (delete-trailing-whitespace))))
-
 (defun fill-paragraph-or-region ()
   "If the region is active, call fill-region. Otherwise, fill-paragraph."
   (interactive)
@@ -182,15 +161,6 @@ and re-indenting it. If the region is active, only act on the region."
     (insert ?&)
     (setq xml--just-insert-ampersand t)))
 
-;; Hack to swap tab-width between 4 and 8 at a whim
-(defun swap-tab-width ()
-  "Swap the tab width between 4 and 8"
-  (interactive)
-  (cond ((= tab-width 4)
-         (setq tab-width 8))
-        (t (setq tab-width 4)))
-  (redraw-display))
-
 ;; Set up electric-return that can be used in Lisp/ParEdit modes
 (defvar electrify-return-match
   "[\]}\)\"]"
@@ -206,13 +176,6 @@ cursor to the new line."
         (save-excursion (newline-and-indent)))
     (newline arg)
     (indent-according-to-mode)))
-
-(defun ido-recentf-open ()
-  "Use `ido-completing-read' to \\[find-file] a recent file"
-  (interactive)
-  (if (find-file (ido-completing-read "Find recent file: " recentf-list))
-      (message "Opening file...")
-    (message "Aborting")))
 
 ;; For tweaking around with lisp:
 (defun eval-and-replace ()

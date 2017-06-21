@@ -50,10 +50,7 @@
             (setq cperl-continued-brace-offset 0)
             (setq cperl-brace-offset -4)
             (setq cperl-brace-imaginary-offset 0)
-            (setq cperl-label-offset -2)
-            (when (string= *system-name* "rjray")
-              (setq perlcritic-profile (concat (getenv "HOME")
-                                               "/.perlcriticrc-netapp")))))
+            (setq cperl-label-offset -2)))
 
 (add-hook 'ediff-cleanup-hook
           (lambda ()
@@ -61,14 +58,10 @@
 
 (add-hook 'emacs-lisp-mode-hook
           (lambda ()
-            (define-key emacs-lisp-mode-map "%" 'match-paren)
             (define-key emacs-lisp-mode-map (kbd "RET")
               'electrify-return-if-match)
             (rainbow-delimiters-mode t)
             (paredit-mode t)))
-(add-hook 'emacs-lisp-mode-hook
-          (lambda ()
-            (elisp-slime-nav-mode t)))
 
 (add-hook 'lisp-mode-hook
           (lambda ()
@@ -113,25 +106,6 @@
             (let ((server-buf (current-buffer)))
               (bury-buffer)
               (switch-to-buffer-other-frame server-buf))))
-
-(add-hook 'sgml-mode-hook
-          (lambda ()
-            (require 'zencoding-mode)
-            (setq zencoding-indentation 2)
-            (zencoding-mode)))
-(add-hook 'sgml-mode-hook
-          (lambda ()
-            (require 'rename-sgml-tag)
-            (define-key sgml-mode-map (kbd "C-c C-r") 'rename-sgml-tag)
-            (define-key sgml-mode-map "<" 'xml--html-smart-less-than)
-            (define-key sgml-mode-map ">" 'xml--html-smart-greater-than)
-            (define-key sgml-mode-map "&" 'xml--html-smart-ampersand)))
-
-;; (add-hook 'slime-repl-mode-hook
-;;           (lambda ()
-;;             (paredit-mode t)
-;;             (define-key slime-repl-mode-map
-;;               (read-kbd-macro paredit-backward-delete-key) nil)))
 
 (add-hook 'text-mode-hook
           (lambda ()
