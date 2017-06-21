@@ -86,29 +86,6 @@
       recentf-exclude '("\\.ido\\.last" "/itsalltext/"))
 (recentf-mode 1)
 
-;; Set-up for IDO mode
-(ido-mode t)
-(setq ido-enable-flex-matching t
-      ido-everywhere t
-      ido-use-filename-at-point 'guess
-      ido-create-new-buffer 'always
-      ido-ignore-extensions t
-      ido-auto-merge-work-directories-length -1
-      ido-file-extensions-order
-      '(".org" ".txt" ".pm" ".pl" ".clj" ".emacs" ".xml" ".el")
-      ido-ignore-buffers (list (rx (or (and bos  " ")
-                                       (and bos
-                                            (or "*Completions*"
-                                                "*Shell Command Output*"
-                                                "*vc-diff*")
-                                            eos)))))
-(define-key ido-file-completion-map (kbd "C-w") 'ido-delete-backward-updir)
-;;; Allow spaces when using ido-find-file
-(add-hook 'ido-make-file-list-hook
-          (lambda ()
-            (define-key ido-file-dir-completion-map
-              (kbd "SPC") 'self-insert-command)))
-
 ;; Whitespace
 (setq whitespace-style '(face tabs lines-tail))
 (global-whitespace-mode 1)
