@@ -29,7 +29,7 @@ source.
 The directory <kbd>.emacs.d/my-code</kbd> contains code that I've written
 and/or cribbed from other sources.
 
-### The `.emacs` File
+### The <kbd>.emacs</kbd> File
 
-Lastly, the file `.emacs` file is here at the top level. I am trying to keep
-this file relatively clean, but there is still a lot of clean-up to do.
+Lastly, the file <kbd>.emacs</kbd> file is here at the top level. I am trying
+to keep this file relatively clean, but there is still a lot of clean-up to do.
