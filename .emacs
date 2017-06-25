@@ -44,16 +44,21 @@
 (add-to-list 'package-archives
              '("melpa" . "http://melpa.milkbox.net/packages/") t)
 
-(defvar rjray/packages '(ac-cider
+(defvar rjray/packages '(ac-c-headers
+                         ac-cider
+                         ac-emmet
                          aggressive-indent
                          auto-complete
                          cider
                          clojure-mode
+                         cuda-mode
                          diminish
                          dired-details
+                         emmet-mode
                          exec-path-from-shell
                          expand-region
                          flycheck
+                         flycheck-clojure
                          fringe-helper
                          gist
                          git
@@ -74,6 +79,7 @@
                          rainbow-mode
                          sass-mode
                          scss-mode
+                         seoul256-theme
                          solarized-theme
                          web-mode
                          wrap-region
@@ -122,11 +128,12 @@
 (diminish 'auto-complete-mode)
 
 ;; Things to do when running in a windowing system (X, MacOS, etc.)
-(when window-system
+(when (display-graphic-p)
   (progn
     (require 'git-gutter-fringe)
     (global-git-gutter-mode +1)
     (diminish 'git-gutter-mode)
+    (setq-default indicate-buffer-boundaries 'left)
     ;; Number ALL the lines!
     (global-linum-mode)
     ;; Start a server if one isn't already running
