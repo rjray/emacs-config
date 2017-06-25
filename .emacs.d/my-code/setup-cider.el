@@ -14,7 +14,6 @@
 
 (add-hook 'cider-repl-mode-hook 'subword-mode)
 (add-hook 'cider-repl-mode-hook 'paredit-mode)
-(add-hook 'cider-repl-mode-hook 'rainbow-delimiters-mode)
 
 (add-hook 'clojure-mode-hook 'cider-mode)
 

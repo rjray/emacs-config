@@ -26,16 +26,11 @@
           (lambda ()
             (define-key clojure-mode-map (kbd "RET")
               'electrify-return-if-match)
-            (rainbow-delimiters-mode t)
             (paredit-mode t)))
 
 (add-hook 'cperl-mode-hook
           (lambda ()
-            (require 'prove)
             (turn-on-font-lock)
-            (define-key cperl-mode-map "\C-cf" 'perl-insert-file-hdr)
-            (define-key cperl-mode-map "\C-cl" 'perl-insert-lib-hdr)
-            (define-key cperl-mode-map "\C-cs" 'perl-insert-sub-hdr)
             (define-key cperl-mode-map "\C-c%" 'match-paren)
             (define-key cperl-mode-map (kbd "RET") 'newline-and-indent)
             (local-set-key "%" 'self-insert-command)
@@ -59,12 +54,10 @@
           (lambda ()
             (define-key emacs-lisp-mode-map (kbd "RET")
               'electrify-return-if-match)
-            (rainbow-delimiters-mode t)
             (paredit-mode t)))
 
 (add-hook 'lisp-mode-hook
           (lambda ()
-            (rainbow-delimiters-mode t)
             (paredit-mode t)
             (define-key lisp-mode-map (kbd "RET")
               'electrify-return-if-match)

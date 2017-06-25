@@ -63,29 +63,6 @@
         ((looking-at "[])}]") (forward-char) (backward-sexp 1))
         (t (self-insert-command (or arg 1)))))
 
-;; Insert, at the point, pre-formed headers for a variety of types
-(defun insert-text-hdr (language type)
-  "Basic insert-header function, encapsulated by other language-specific calls."
-  (interactive)
-  (insert-file-contents (concat *homedir* "/lib/" language "/" type "_hdr")))
-
-;; Create the language- and type-specific calls
-(let ((languages '("perl" "c" "c++" "java" "tcl" "lisp"))
-      (types     '("file" "sub" "lib")))
-  (mapcar '(lambda (language)
-             (mapcar '(lambda (type)
-                        (let ((function-name (format "%s-insert-%s-hdr"
-                                                     language type))
-                              (docu-string
-                               (format "Insert ~/lib/%s/%s_hdr at current point"
-                                       language type)))
-                          (eval (list 'defun (intern function-name) '()
-                                      docu-string
-                                      (list 'interactive)
-                                      (list 'insert-text-hdr language type)))))
-                     types))
-          languages))
-
 (defun untabify-buffer-or-region ()
   "Untabify the entire buffer. If the region is active, only untabify the
 region."
