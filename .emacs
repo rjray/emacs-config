@@ -1,5 +1,7 @@
 ;;; .emacs
 
+(require 'cl)
+
 ;; The "base" part of system-name, without the domain.
 (defconst *system-name*
   (if (string-match "^\\([a-zA-Z0-9_-]+\\)\\." system-name)
@@ -8,10 +10,12 @@
   "Host name without the domain")
 
 ;; True if this system is MacOS. Used in a few places for paths, etc.
-(defconst *is-mac* (eq system-type 'darwin))
+(defconst *is-mac* (eq system-type 'darwin) "Is this a Mac system?")
 
 ;; Turn the two emacs-*-version values into a single comparable int
-(defconst *emacs-version* (+ (* emacs-major-version 1000) emacs-minor-version))
+(defconst *emacs-version*
+  (+ (* emacs-major-version 1000) emacs-minor-version)
+  "Emacs version as a comparable integer")
 
 ;; These constants are used to manage all the various sub-dirs that need to
 ;; be in the load-path:
@@ -24,30 +28,72 @@
                       (getenv "USERPROFILE"))
   "My home dir, regardless of host.")
 (defconst *emacsdir* (concat *homedir* "/.emacs.d/") "Root of emacs lisp code")
-(defconst *emacsmodules* (concat *emacsdir* "submodules") "Git submodules")
 
 ;; Additions to the load-path:
 (add-to-list 'load-path (concat *emacsdir* "my-code"))
-(add-to-list 'load-path (concat *emacsdir* "other-peoples-code"))
-(dolist (submodule (directory-files *emacsmodules* t "\\w+"))
-  (when (file-directory-p submodule)
-    (add-to-list 'load-path submodule)))
 
 ;; Set the location for customization settings saves, and load it (before
 ;; any per-host or Mac-specific settings).
 (setq custom-file (expand-file-name "custom.el" *emacsdir*))
 (load custom-file)
 
-;; Libs which have their own set-up code, but are loaded as-needed:
-(eval-after-load 'dired '(require 'setup-dired))
+(load "package")
+(package-initialize)
+(add-to-list 'package-archives
+             '("marmalade" . "http://marmalade-repo.org/packages/"))
+(add-to-list 'package-archives
+             '("melpa" . "http://melpa.milkbox.net/packages/") t)
+
+(defvar rjray/packages '(ac-cider
+                         aggressive-indent
+                         auto-complete
+                         cider
+                         clojure-mode
+                         diminish
+                         dired-details
+                         exec-path-from-shell
+                         expand-region
+                         flycheck
+                         fringe-helper
+                         gist
+                         git
+                         git-gutter
+                         git-gutter-fringe
+                         highlight-parentheses
+                         js2-mode
+                         json-mode
+                         json-navigator
+                         json-reformat
+                         less-css-mode
+                         magit
+                         markdown-mode
+                         multiple-cursors
+                         paredit
+                         pkg-info
+                         popup
+                         rainbow-mode
+                         sass-mode
+                         scss-mode
+                         solarized-theme
+                         web-mode
+                         wrap-region
+                         yaml-mode)
+  "Default packages")
+
+(defun rjray/packages-installed-p ()
+  (loop for pkg in rjray/packages
+        when (not (package-installed-p pkg)) do (return nil)
+        finally (return t)))
+
+(unless (rjray/packages-installed-p)
+  (message "%s" "Refreshing package database...")
+  (package-refresh-contents)
+  (dolist (pkg rjray/packages)
+    (when (not (package-installed-p pkg))
+      (package-install pkg))))
 
 ;; Libs I want visible at all levels:
-(require 'imenu)
 (require 'linum)
-(require 'compile) ; Needed for perlcritic.el
-(require 'perlcritic)
-(require 'browse-kill-ring)
-(require 'rainbow-delimiters)
 (require 'paredit)
 (require 'recentf)
 (require 'expand-region)
@@ -57,12 +103,10 @@
 (require 'wrap-region)
 (require 'uniquify)
 (require 'saveplace)
-
 ;; These have their own set-up code, but should also be pre-loaded:
+(require 'setup-cider)
+(require 'setup-dired)
 (require 'setup-magit)
-;; CIDER requires some stuff only in 24.3 and later:
-(when (>= *emacs-version* 24003)
-  (require 'setup-cider))
 
 ;; Load my personal code
 (load "key-bindings")
@@ -74,15 +118,22 @@
 ;; Diminish some of the minor-mode clutter:
 (diminish 'global-whitespace-mode)
 (diminish 'wrap-region-mode)
+(diminish 'paredit-mode)
+(diminish 'auto-complete-mode)
 
 ;; Things to do when running in a windowing system (X, MacOS, etc.)
 (when window-system
   (progn
+    (require 'git-gutter-fringe)
+    (global-git-gutter-mode +1)
+    (diminish 'git-gutter-mode)
     ;; Number ALL the lines!
     (global-linum-mode)
     ;; Start a server if one isn't already running
     (unless (server-running-p)
       (server-start))
+    (setq solarized-use-variable-pitch nil)
+    (load-theme 'solarized-light t)
     (if (fboundp 'blink-cursor-mode) (blink-cursor-mode -1))
     (if (fboundp 'menu-bar-mode) (menu-bar-mode 1))
     (if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
