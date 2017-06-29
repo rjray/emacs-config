@@ -34,6 +34,12 @@
 (global-set-key "\C-x\C-m" 'execute-extended-command)
 (global-set-key "\C-c\C-m" 'execute-extended-command)
 
+;; Highlighting symbols:
+(global-set-key (kbd "C-\\") 'highlight-symbol-at-point)
+(global-set-key (kbd "C-.") 'highlight-symbol-next)
+(global-set-key (kbd "C-,") 'highlight-symbol-prev)
+(global-set-key (kbd "C-;") 'highlight-symbol-query-replace)
+
 ;; This one is neat-- make C-w kill a region when the region is active, or
 ;; otherwise do a backward-kill-word like C-w behaves in things like bash.
 (global-set-key "\C-w"
@@ -55,7 +61,7 @@
 (global-set-key [(f7)]         'fill-paragraph-or-region)
 (global-set-key [(control f7)] 'untabify-buffer-or-region)
 
-(global-set-key [(f8)]         'count-region)
+(global-set-key [(f8)]         'cider-jack-in)
 
 ;; Meta-key combinations
 (global-set-key [(meta g)] 'goto-line)

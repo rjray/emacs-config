@@ -5,6 +5,8 @@
           (lambda ()
             (setq font-lock-maximum-decoration 4)))
 
+(add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
+
 (add-hook 'c-mode-hook
           (lambda ()
             (turn-on-font-lock)
@@ -22,6 +24,7 @@
             (c-set-offset 'case-label '*)
             (c-set-offset 'statement-case-intro '*)))
 
+(add-hook 'clojure-mode-hook 'cider-mode)
 (add-hook 'clojure-mode-hook
           (lambda ()
             (define-key clojure-mode-map (kbd "RET")

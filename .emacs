@@ -32,11 +32,6 @@
 ;; Additions to the load-path:
 (add-to-list 'load-path (concat *emacsdir* "my-code"))
 
-;; Set the location for customization settings saves, and load it (before
-;; any per-host or Mac-specific settings).
-(setq custom-file (expand-file-name "custom.el" *emacsdir*))
-(load custom-file)
-
 (load "package")
 (package-initialize)
 (add-to-list 'package-archives
@@ -65,6 +60,7 @@
                          git-gutter
                          git-gutter-fringe
                          highlight-parentheses
+                         highlight-symbol
                          js2-mode
                          json-mode
                          json-navigator
@@ -76,6 +72,7 @@
                          paredit
                          pkg-info
                          popup
+                         rainbow-delimiters
                          rainbow-mode
                          sass-mode
                          scss-mode
@@ -109,6 +106,7 @@
 (require 'wrap-region)
 (require 'uniquify)
 (require 'saveplace)
+(require 'highlight-symbol)
 ;; These have their own set-up code, but should also be pre-loaded:
 (require 'setup-cider)
 (require 'setup-dired)
@@ -125,7 +123,6 @@
 (diminish 'global-whitespace-mode)
 (diminish 'wrap-region-mode)
 (diminish 'paredit-mode)
-(diminish 'auto-complete-mode)
 
 ;; Things to do when running in a windowing system (X, MacOS, etc.)
 (when (display-graphic-p)
@@ -170,6 +167,11 @@
 
 ;;enable narrowing
 (put 'narrow-to-region 'disabled nil)
+
+;; Set the location for customization settings saves, and load it (before
+;; any per-host or Mac-specific settings).
+(setq custom-file (expand-file-name "custom.el" *emacsdir*))
+(load custom-file)
 
 ;; If this is a Mac, load some Mac-specific code
 (when *is-mac* (require 'mac))
