@@ -70,6 +70,7 @@
   "Default packages.")
 
 (defun rjray/packages-installed-p ()
+  "Check that all my desired packages are installed."
   (loop for pkg in rjray/packages
         when (not (package-installed-p pkg)) do (return nil)
         finally (return t)))

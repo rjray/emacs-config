@@ -51,6 +51,10 @@
 (add-hook 'emacs-lisp-mode-hook 'aggressive-indent-mode)
 (add-hook 'emacs-lisp-mode-hook 'paredit-mode)
 
+(add-hook 'flycheck-mode-hook
+          (lambda ()
+            (setq flycheck-emacs-lisp-load-path 'inherit)))
+
 (add-hook 'lisp-mode-hook 'aggressive-indent-mode)
 (add-hook 'lisp-mode-hook 'paredit-mode)
 
