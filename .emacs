@@ -17,20 +17,8 @@
   (+ (* emacs-major-version 1000) emacs-minor-version)
   "Emacs version as a comparable integer.")
 
-;; These constants are used to manage all the various sub-dirs that need to
-;; be in the load-path:
-(defconst *homedir* (if (or
-                         (eq system-type 'cygwin)
-                         (eq system-type 'gnu/linux)
-                         (eq system-type 'linux)
-                         (eq system-type 'darwin))
-                        (getenv "HOME")
-                      (getenv "USERPROFILE"))
-  "My home dir, regardless of host.")
-(defconst *emacsdir* (concat *homedir* "/.emacs.d/") "Root of Emacs Lisp code.")
-
 ;; Additions to the load-path:
-(add-to-list 'load-path (concat *emacsdir* "my-code"))
+(add-to-list 'load-path (concat user-emacs-directory "my-code"))
 
 (load "package")
 (package-initialize)
@@ -178,7 +166,7 @@
 
 ;; Set the location for customization settings saves, and load it (before
 ;; any per-host or Mac-specific settings).
-(setq custom-file (expand-file-name "custom.el" *emacsdir*))
+(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 (load custom-file)
 
 ;; If this is a Mac, load some Mac-specific code
@@ -186,7 +174,7 @@
 
 ;; If there is a directory under ~/.emacs.d named for this host, load all *.el
 ;; files within it:
-(let ((hostdir (concat *emacsdir* *system-name*)))
+(let ((hostdir (concat user-emacs-directory *system-name*)))
   (when (file-directory-p hostdir)
     (dolist (host-el-file (directory-files hostdir t "\\.el$"))
       (load-file host-el-file))))

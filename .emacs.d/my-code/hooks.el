@@ -8,11 +8,12 @@
 (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
 
 (add-hook 'after-init-hook 'global-company-mode)
-(add-hook 'after-init-hook #'global-flycheck-mode)
+(add-hook 'after-init-hook 'global-flycheck-mode)
+(add-hook 'after-init-hook 'global-whitespace-mode)
+(add-hook 'after-init-hook 'wrap-region-global-mode)
 
 (add-hook 'c-mode-hook
           (lambda ()
-            (turn-on-font-lock)
             (setq c-default-style "bsd")
             (setq c-basic-offset 4)
             (c-set-offset 'case-label '*)
@@ -21,25 +22,20 @@
 
 (add-hook 'c++-mode-hook
           (lambda ()
-            (turn-on-font-lock)
             (setq c-default-style "bsd")
             (setq c-basic-offset 4)
             (c-set-offset 'case-label '*)
             (c-set-offset 'statement-case-intro '*)))
 
 (add-hook 'clojure-mode-hook 'cider-mode)
-(add-hook 'clojure-mode-hook
-          (lambda ()
-            (aggressive-indent-mode t)
-            (paredit-mode t)))
+(add-hook 'clojure-mode-hook 'aggressive-indent-mode)
+(add-hook 'clojure-mode-hook 'paredit-mode)
 
 (add-hook 'cperl-mode-hook
           (lambda ()
-            (turn-on-font-lock)
             (define-key cperl-mode-map (kbd "RET") 'newline-and-indent)
             (local-set-key "%" 'self-insert-command)
             (c-set-offset 'inline-open 0)
-            (setq tab-width 4)
             (setq cperl-indent-parens-as-block t)
             (setq cperl-close-paren-offset -4)
             (setq cperl-tab-to-comment t)
@@ -52,30 +48,14 @@
 
 (add-hook 'css-mode-hook 'rainbow-mode)
 
-(add-hook 'ediff-cleanup-hook
-          (lambda ()
-            (ediff-janitor t)))
+(add-hook 'emacs-lisp-mode-hook 'aggressive-indent-mode)
+(add-hook 'emacs-lisp-mode-hook 'paredit-mode)
 
-(add-hook 'emacs-lisp-mode-hook
-          (lambda ()
-            (aggressive-indent-mode t)
-            (paredit-mode t)))
-
-(add-hook 'lisp-mode-hook
-          (lambda ()
-            (aggressive-indent-mode t)
-            (paredit-mode t)
-            (if (and (featurep 'menubar)
-                     current-menubar)
-                (progn
-                  ;; make a local copy of the menubar, so our modes don't
-                  ;; change the global menubar
-                  (set-buffer-menubar current-menubar)
-                  (add-submenu nil emacs-lisp-mode-menubar-menu)))))
+(add-hook 'lisp-mode-hook 'aggressive-indent-mode)
+(add-hook 'lisp-mode-hook 'paredit-mode)
 
 (add-hook 'makefile-mode-hook
           (lambda ()
-            (turn-on-font-lock)
             (setq makefile-target-colon "::")
             (setq makefile-macro-assign " = ")
             (setq makefile-tab-after-target-colon t)

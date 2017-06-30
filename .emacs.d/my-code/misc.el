@@ -86,10 +86,8 @@
 
 ;; Whitespace
 (setq whitespace-style '(face tabs lines-tail))
-(global-whitespace-mode 1)
 
 ;; Wrap region minor mode
-(wrap-region-global-mode t)
 ;; Don't screw up key bindings in magit-mode
 (add-to-list 'wrap-region-except-modes 'magit-status-mode)
 (wrap-region-add-wrapper "<p>" "</p>" "p" 'html-mode)
