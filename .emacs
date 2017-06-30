@@ -84,16 +84,12 @@
 
 ;; Libs I want visible at all levels:
 (require 'linum)
-(require 'paredit)
 (require 'recentf)
-(require 'expand-region)
-(require 'multiple-cursors)
 (require 'whitespace)
 (require 'diminish)
-(require 'wrap-region)
 (require 'uniquify)
 (require 'saveplace)
-(require 'highlight-symbol)
+(require 'solarized)
 ;; These have their own set-up code, but should also be pre-loaded:
 (require 'setup-cider)
 (require 'setup-dired)
