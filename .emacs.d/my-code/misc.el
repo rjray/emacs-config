@@ -2,9 +2,9 @@
 ;;; be loaded after key-bindings.el, et al.
 
 (defadvice cperl-indent-command
-  (around cperl-indent-or-complete)
+    (around cperl-indent-or-complete)
 
-  "Changes \\[cperl-indent-command] so it autocompletes when at the end of a word."
+  "Change \\[cperl-indent-command] so it autocompletes when at the end of a word."
   (if (looking-at "\\>")
       (dabbrev-expand nil)
     ad-do-it))
@@ -56,8 +56,6 @@
  size-indication-mode t
 
  ;; Tabs and lines
- tab-stop-list (mapcar (lambda (x) (* 4 x))
-                       (loop for x from 1 to 20 collect x))
  tab-width 4
  indent-tabs-mode nil)
 

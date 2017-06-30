@@ -4,10 +4,10 @@
 
 ;; The "base" part of system-name, without the domain.
 (defconst *system-name*
-  (if (string-match "^\\([a-zA-Z0-9_-]+\\)\\." system-name)
-      (match-string 1 system-name)
-    system-name)
-  "Host name without the domain")
+  (if (string-match "^\\([a-zA-Z0-9_-]+\\)\\." (system-name))
+      (match-string 1 (system-name))
+    (system-name))
+  "Host name without the domain.")
 
 ;; True if this system is MacOS. Used in a few places for paths, etc.
 (defconst *is-mac* (eq system-type 'darwin) "Is this a Mac system?")
@@ -15,7 +15,7 @@
 ;; Turn the two emacs-*-version values into a single comparable int
 (defconst *emacs-version*
   (+ (* emacs-major-version 1000) emacs-minor-version)
-  "Emacs version as a comparable integer")
+  "Emacs version as a comparable integer.")
 
 ;; These constants are used to manage all the various sub-dirs that need to
 ;; be in the load-path:
@@ -27,7 +27,7 @@
                         (getenv "HOME")
                       (getenv "USERPROFILE"))
   "My home dir, regardless of host.")
-(defconst *emacsdir* (concat *homedir* "/.emacs.d/") "Root of emacs lisp code")
+(defconst *emacsdir* (concat *homedir* "/.emacs.d/") "Root of Emacs Lisp code.")
 
 ;; Additions to the load-path:
 (add-to-list 'load-path (concat *emacsdir* "my-code"))
@@ -39,13 +39,11 @@
 (add-to-list 'package-archives
              '("melpa" . "http://melpa.milkbox.net/packages/") t)
 
-(defvar rjray/packages '(ac-c-headers
-                         ac-cider
-                         ac-emmet
-                         aggressive-indent
-                         auto-complete
+(defvar rjray/packages '(aggressive-indent
                          cider
                          clojure-mode
+                         company
+                         company-c-headers
                          cuda-mode
                          diminish
                          dired-details
@@ -81,7 +79,7 @@
                          web-mode
                          wrap-region
                          yaml-mode)
-  "Default packages")
+  "Default packages.")
 
 (defun rjray/packages-installed-p ()
   (loop for pkg in rjray/packages
@@ -123,21 +121,31 @@
 (diminish 'global-whitespace-mode)
 (diminish 'wrap-region-mode)
 (diminish 'paredit-mode)
+(diminish 'company-mode)
 
 ;; Things to do when running in a windowing system (X, MacOS, etc.)
 (when (display-graphic-p)
   (progn
+    (require 'server)
     (require 'git-gutter-fringe)
+
+    ;; Start a server if one isn't already running:
+    (unless (server-running-p)
+      (server-start))
+
+    ;; Set up gutter decorations:
     (global-git-gutter-mode +1)
     (diminish 'git-gutter-mode)
     (setq-default indicate-buffer-boundaries 'left)
+
     ;; Number ALL the lines!
     (global-linum-mode)
-    ;; Start a server if one isn't already running
-    (unless (server-running-p)
-      (server-start))
+
+    ;; Theme:
     (setq solarized-use-variable-pitch nil)
     (load-theme 'solarized-light t)
+
+    ;; UI tweaks:
     (if (fboundp 'blink-cursor-mode) (blink-cursor-mode -1))
     (if (fboundp 'menu-bar-mode) (menu-bar-mode 1))
     (if (fboundp 'tool-bar-mode) (tool-bar-mode -1))

@@ -56,22 +56,14 @@
           (setq count (1+ count)))))
     count))
 
-(defun match-paren (arg)
-  "Go to the matching parenthesis if on parenthesis, otherwise insert %."
-  (interactive "p")
-  (cond ((looking-at "[({[]") (forward-sexp 1) (backward-char))
-        ((looking-at "[])}]") (forward-char) (backward-sexp 1))
-        (t (self-insert-command (or arg 1)))))
-
 (defun untabify-buffer-or-region ()
-  "Untabify the entire buffer. If the region is active, only untabify the
-region."
+  "Untabify the entire buffer. If region is active, only untabify the region."
   (interactive)
   (cond ((region-active-p) (untabify (region-beginning) (region-end)))
         (t (untabify (point-min) (point-max)))))
 
 (defun fill-paragraph-or-region ()
-  "If the region is active, call fill-region. Otherwise, fill-paragraph."
+  "If the region is active, call `fill-region'. Otherwise, `fill-paragraph'."
   (interactive)
   (cond ((region-active-p) (fill-region (region-beginning) (region-end)))
         (t (fill-paragraph nil))))
@@ -82,7 +74,7 @@ region."
   "Internal variable.")
 
 (defun xml--html-less-than ()
-  "Inserts the entity '&gt;'."
+  "Insert the entity '&gt;'."
   (interactive)
   (insert "&lt;"))
 
@@ -102,7 +94,7 @@ region."
   "Internal variable.")
 
 (defun xml--html-greater-than ()
-  "Inserts the entity '&gt;'."
+  "Insert the entity '&gt;'."
   (interactive)
   (insert "&gt;"))
 
@@ -122,7 +114,7 @@ region."
   "Internal variable.")
 
 (defun xml--html-ampersand ()
-  "Inserts the entity '&amp;'."
+  "Insert the entity '&amp;'."
   (interactive)
   (insert "&amp;"))
 
@@ -138,22 +130,6 @@ region."
     (insert ?&)
     (setq xml--just-insert-ampersand t)))
 
-;; Set up electric-return that can be used in Lisp/ParEdit modes
-(defvar electrify-return-match
-  "[\]}\)\"]"
-  "If this regexp matches the text after the cursor, do an \"electric\" return.")
-
-(defun electrify-return-if-match (arg)
-  "If the text after the cursor matches `electrify-return-match' then
-open and indent an empty line between the cursor and the text.  Move the
-cursor to the new line."
-  (interactive "P")
-  (let ((case-fold-search nil))
-    (if (looking-at electrify-return-match)
-        (save-excursion (newline-and-indent)))
-    (newline arg)
-    (indent-according-to-mode)))
-
 ;; For tweaking around with lisp:
 (defun eval-and-replace ()
   "Replace the preceding sexp with its value."
@@ -165,27 +141,9 @@ cursor to the new line."
     (error (message "Invalid expression")
            (insert (current-kill 0)))))
 
-;; From https://gist.github.com/4553672
-(defun collect-regexp-results (regex)
-  ;;; collects all the matches of regex in a buffer called *collect-result*
-  ;;; then switches to that buffer
-  ;;; TODO refactor this to take the region as a parameter
-  (interactive "Mregex to search for: ")
-  (let ((curmin (region-or-buffer-beginning))
-        (curmax (region-or-buffer-end)))
-    (save-excursion
-      (goto-char curmin)
-      ;; (goto-char (region-or-buffer-beginning))
-      (while (re-search-forward regex curmax t)
-        (let ((retval (match-string-no-properties 0)))
-          (with-current-buffer (get-buffer-create "*collect results*")
-            (insert retval)
-            (insert "\n"))))
-      (switch-to-buffer "*collect results*"))))
-
 ;; From http://www.emacswiki.org/emacs/UnfillParagraph
 (defun unfill-paragraph ()
-  "Takes a multi-line paragraph and makes it into a single line of text."
+  "Take a multi-line paragraph and make it into a single line of text."
   (interactive)
   (let ((fill-column (point-max)))
     (fill-paragraph nil)))

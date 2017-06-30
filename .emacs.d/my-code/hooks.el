@@ -7,6 +7,9 @@
 
 (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
 
+(add-hook 'after-init-hook 'global-company-mode)
+(add-hook 'after-init-hook #'global-flycheck-mode)
+
 (add-hook 'c-mode-hook
           (lambda ()
             (turn-on-font-lock)
@@ -27,14 +30,12 @@
 (add-hook 'clojure-mode-hook 'cider-mode)
 (add-hook 'clojure-mode-hook
           (lambda ()
-            (define-key clojure-mode-map (kbd "RET")
-              'electrify-return-if-match)
+            (aggressive-indent-mode t)
             (paredit-mode t)))
 
 (add-hook 'cperl-mode-hook
           (lambda ()
             (turn-on-font-lock)
-            (define-key cperl-mode-map "\C-c%" 'match-paren)
             (define-key cperl-mode-map (kbd "RET") 'newline-and-indent)
             (local-set-key "%" 'self-insert-command)
             (c-set-offset 'inline-open 0)
@@ -49,21 +50,21 @@
             (setq cperl-brace-imaginary-offset 0)
             (setq cperl-label-offset -2)))
 
+(add-hook 'css-mode-hook 'rainbow-mode)
+
 (add-hook 'ediff-cleanup-hook
           (lambda ()
             (ediff-janitor t)))
 
 (add-hook 'emacs-lisp-mode-hook
           (lambda ()
-            (define-key emacs-lisp-mode-map (kbd "RET")
-              'electrify-return-if-match)
+            (aggressive-indent-mode t)
             (paredit-mode t)))
 
 (add-hook 'lisp-mode-hook
           (lambda ()
+            (aggressive-indent-mode t)
             (paredit-mode t)
-            (define-key lisp-mode-map (kbd "RET")
-              'electrify-return-if-match)
             (if (and (featurep 'menubar)
                      current-menubar)
                 (progn

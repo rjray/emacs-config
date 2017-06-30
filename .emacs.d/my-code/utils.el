@@ -10,6 +10,7 @@
 ;; From Michał Marczyk, via
 ;; http://stackoverflow.com/questions/3887362/clojure-functions-for-emacs
 (defmacro -> (e &rest es)
+  "Port of Clojure's -> to Emacs Lisp."
   (if (and (consp es) (not (consp (cdr es))))
       (if (consp (car es))
           `(,(caar es) ,e ,@(cdar es))
@@ -19,6 +20,7 @@
       e)))
 
 (defmacro ->> (e &rest es)
+  "Port of Clojure's ->> to Emacs Lisp."
   (if (and (consp es) (not (consp (cdr es))))
       (if (consp (car es))
           `(,@(car es) ,e)

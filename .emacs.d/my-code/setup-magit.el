@@ -19,7 +19,7 @@
   (delete-other-windows))
 
 (defun magit-quit-session ()
-  "Restores the previous window configuration and kills the magit buffer"
+  "Restore the previous window configuration and kill the magit buffer."
   (interactive)
   (kill-buffer)
   (jump-to-register :magit-fullscreen))
@@ -28,18 +28,19 @@
 
 ;; ignore whitespace
 (defun magit-toggle-whitespace ()
+  "Toggle the ignoring of whitespace."
   (interactive)
   (if (member "-w" magit-diff-options)
       (magit-dont-ignore-whitespace)
     (magit-ignore-whitespace)))
 
 (defun magit-ignore-whitespace ()
-  (interactive)
+  "Set `magit-diff-options' to ignore whitespace."
   (add-to-list 'magit-diff-options "-w")
   (magit-refresh))
 
 (defun magit-dont-ignore-whitespace ()
-  (interactive)
+  "Set `magit-diff-options' to consider whitespace."
   (setq magit-diff-options (remove "-w" magit-diff-options))
   (magit-refresh))
 
