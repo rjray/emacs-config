@@ -4,7 +4,7 @@
 (defadvice cperl-indent-command
     (around cperl-indent-or-complete)
 
-  "Change \\[cperl-indent-command] so it autocompletes when at the end of a word."
+  "Change `cperl-indent-command' so it autocompletes when at the end of a word."
   (if (looking-at "\\>")
       (dabbrev-expand nil)
     ad-do-it))
@@ -60,6 +60,7 @@
  indent-tabs-mode nil)
 
 ;; Set-up for desktop-save-mode
+(require 'desktop)
 (setq desktop-save t
       desktop-restore-eager 5
       desktop-globals-to-save (append '((extended-command-history . 30)
@@ -78,6 +79,7 @@
 (desktop-save-mode 1)
 
 ;; Set-up for recent-file minor mode
+(require 'recentf)
 (setq recentf-auto-cleanup 'never ;; disable before we start recentf!
       recentf-max-menu-items 40
       recentf-max-saved-items 100
@@ -85,10 +87,12 @@
 (recentf-mode 1)
 
 ;; Whitespace
+(require 'whitespace)
 (setq whitespace-style '(face tabs lines-tail))
 
 ;; Wrap region minor mode
 ;; Don't screw up key bindings in magit-mode
+(require 'wrap-region)
 (add-to-list 'wrap-region-except-modes 'magit-status-mode)
 (wrap-region-add-wrapper "<p>" "</p>" "p" 'html-mode)
 (wrap-region-add-wrapper "<div>" "</div>" "d" 'html-mode)

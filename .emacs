@@ -84,8 +84,6 @@
 
 ;; Libs I want visible at all levels:
 (require 'linum)
-(require 'recentf)
-(require 'whitespace)
 (require 'diminish)
 (require 'uniquify)
 (require 'saveplace)
@@ -102,12 +100,6 @@
 (load "utils")
 (load "misc")
 
-;; Diminish some of the minor-mode clutter:
-(diminish 'global-whitespace-mode)
-(diminish 'wrap-region-mode)
-(diminish 'paredit-mode)
-(diminish 'company-mode)
-
 ;; Things to do when running in a windowing system (X, MacOS, etc.)
 (when (display-graphic-p)
   (progn
@@ -120,7 +112,6 @@
 
     ;; Set up gutter decorations:
     (global-git-gutter-mode +1)
-    (diminish 'git-gutter-mode)
     (setq-default indicate-buffer-boundaries 'left)
 
     ;; Number ALL the lines!
