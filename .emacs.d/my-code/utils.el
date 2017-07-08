@@ -1,9 +1,15 @@
+;;; utils.el --- Utility functions.
+
+;;; Commentary:
+
 ;;; Basic utility functions, most of which were obtained elsewhere. None of
 ;;; these should be directly bound to keys (those belong in keys-functions.el).
 ;;; These should only be things like support code for hooks, menu
 ;;; functionality, etc. Calls to "add-hook" or "add-submenu" are OK here (as
 ;;; opposed to hooks.el or misc.el) as long as they only refer to
 ;;; functionality defined here.
+
+;;; Code:
 
 (require 'cl)
 
@@ -48,3 +54,6 @@
   (intern (replace-regexp-in-string "\\(-mode\\)?$"
                                     "-mode"
                                     (my/->string name))))
+
+(provide 'utils)
+;;; utils.el ends here

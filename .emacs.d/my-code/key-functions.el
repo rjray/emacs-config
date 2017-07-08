@@ -1,9 +1,13 @@
+;;; key-functions.el --- Functions specifically for binding to keys.
+
+;;; Commentary:
+
 ;;; These are the defun's tied to key-combos in the other config files,
 ;;; mostly key-bindings.el.
 
-;; Taken from crisp.el, written by Gary D. Foster <Gary.Foster@corp.sun.com>
-;--------------------------------------------------------------------------
-;                                                                  HOME/END
+;;; Code:
+
+;; Taken from crisp.el, written by Gary D. Foster
 (defvar last-last-command nil
   "Internal variable.")
 
@@ -147,3 +151,6 @@
   (interactive)
   (let ((fill-column (point-max)))
     (fill-paragraph nil)))
+
+(provide 'key-functions)
+;;; key-functions.el ends here

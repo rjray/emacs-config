@@ -1,12 +1,13 @@
-;;; Load and configuration of CIDER
+;;; setup-cider --- Loading and configuration of CIDER
+
+;;; Commentary:
+
+;;; Code:
 
 (require 'cider)
 
 (setq
  nrepl-hide-special-buffers t
- ;cider-repl-pop-to-buffer-on-connect nil
- ;cider-popup-stacktraces nil
- cider-repl-popup-stacktraces t
  cider-auto-select-error-buffer t
  nrepl-buffer-name-show-port t
  cider-repl-display-in-current-window t
@@ -18,3 +19,4 @@
 (add-hook 'clojure-mode-hook 'cider-mode)
 
 (provide 'setup-cider)
+;;; setup-cider.el ends here

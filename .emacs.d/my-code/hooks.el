@@ -1,5 +1,11 @@
+;;; hooks.el --- Mode hooks.
+
+;;; Commentary:
+
 ;;; All my mode-hooks should be defined here, except for those that are
 ;;; platform-dependent.
+
+;;; Code:
 
 (add-hook 'font-lock-mode-hook
           (lambda ()

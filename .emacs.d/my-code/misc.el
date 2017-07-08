@@ -1,5 +1,11 @@
+;;; misc.el --- Miscellaneous things that don't fit anywhere else.
+
+;;; Commentary:
+
 ;;; Anything that doesn't fit into the other files under my-code/. This should
 ;;; be loaded after key-bindings.el, et al.
+
+;;; Code:
 
 (defadvice cperl-indent-command
     (around cperl-indent-or-complete)
@@ -117,3 +123,6 @@
                                                    mode-line-bell-orig-bg)
                               (set-face-foreground 'mode-line
                                                    mode-line-bell-orig-fg))))
+
+(provide 'misc)
+;;; misc.el ends here

@@ -1,6 +1,10 @@
-;;; .emacs
+;;; init.el --- Master Emacs configuration file.
 
-(require 'cl)
+;;; Commentary:
+
+;;; Code:
+
+(eval-when-compile (require 'cl))
 
 ;; The "base" part of system-name, without the domain.
 (defconst *system-name*
@@ -20,12 +24,12 @@
 ;; Additions to the load-path:
 (add-to-list 'load-path (concat user-emacs-directory "my-code"))
 
-(load "package")
-(package-initialize)
+(require 'package)
 (add-to-list 'package-archives
              '("marmalade" . "http://marmalade-repo.org/packages/"))
 (add-to-list 'package-archives
              '("melpa" . "http://melpa.milkbox.net/packages/") t)
+(package-initialize)
 
 (defvar rjray/packages '(aggressive-indent
                          cider
@@ -88,6 +92,8 @@
 (require 'uniquify)
 (require 'saveplace)
 (require 'solarized)
+(require 'git-gutter)
+(require 'git-gutter-fringe)
 ;; These have their own set-up code, but should also be pre-loaded:
 (require 'setup-cider)
 (require 'setup-dired)
@@ -104,7 +110,6 @@
 (when (display-graphic-p)
   (progn
     (require 'server)
-    (require 'git-gutter-fringe)
 
     ;; Start a server if one isn't already running:
     (unless (server-running-p)
@@ -166,3 +171,6 @@
   (when (file-directory-p hostdir)
     (dolist (host-el-file (directory-files hostdir t "\\.el$"))
       (load-file host-el-file))))
+
+(provide 'init)
+;;; init.el ends here

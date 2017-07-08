@@ -1,4 +1,10 @@
+;;; mac --- Setup and configuration specific to the Mac
+
+;;; Commentary:
+
 ;;; Taken and modified from https://github.com/magnars/.emacs.d
+
+;;; Code:
 
 ;; Make the fn key set the "hyper" keysym
 (setq ns-function-modifier 'hyper)
@@ -29,3 +35,4 @@
 (setq ispell-program-name "/usr/local/bin/aspell")
 
 (provide 'mac)
+;;; mac.el ends here

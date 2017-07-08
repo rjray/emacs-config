@@ -1,5 +1,11 @@
+;;; key-bindings --- Global key bindings
+
+;;; Commentary:
+
 ;;; Global-level key-bindings. Not to be confused with mode-level keys, which
 ;;; should generally be done via mode hooks.
+
+;;; Code:
 
 ;; Easy one-line-at-a-time scrolling.
 (global-set-key (kbd "H-.")
@@ -21,6 +27,9 @@
 
 ;; Bind expand-region to C-=:
 (global-set-key (kbd "C-=") 'er/expand-region)
+
+;; Bind count-region to C-c =:
+(global-set-key (kbd "C-c =") 'count-region)
 
 ;; Bindings for funcs from multiple-cursors:
 (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
@@ -73,3 +82,6 @@
 (global-set-key [(insert)] 'overwrite-mode)
 (global-set-key [(home)] 'home)
 (global-set-key [(end)] 'end)
+
+(provide 'key-bindings)
+;;; key-bindings.el ends here
