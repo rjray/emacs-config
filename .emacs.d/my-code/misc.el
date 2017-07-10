@@ -42,9 +42,6 @@
  auto-save-list-file-name nil
  delete-auto-save-files t
 
- ;; Save places in files between visits
- save-place t
-
  ;; How to uniquify similar buffer names
  uniquify-buffer-name-style 'forward
 

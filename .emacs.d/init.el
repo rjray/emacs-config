@@ -90,7 +90,6 @@
 (require 'linum)
 (require 'diminish)
 (require 'uniquify)
-(require 'saveplace)
 (require 'solarized)
 (require 'git-gutter)
 (require 'git-gutter-fringe)
