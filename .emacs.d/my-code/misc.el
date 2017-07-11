@@ -88,6 +88,7 @@
       recentf-max-saved-items 100
       recentf-exclude '("\\.ido\\.last" "/itsalltext/"))
 (recentf-mode 1)
+(run-at-time t (* 5 60) 'recentf-save-list)
 
 ;; Whitespace
 (require 'whitespace)

@@ -31,6 +31,9 @@
 ;; Bind count-region to C-c =:
 (global-set-key (kbd "C-c =") 'count-region)
 
+;; Find files based on the recent-files list:
+(global-set-key (kbd "C-c C-r") 'recentf-open-files-compl)
+
 ;; Bindings for funcs from multiple-cursors:
 (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
 (global-set-key (kbd "C->") 'mc/mark-next-like-this)

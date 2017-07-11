@@ -60,6 +60,16 @@
           (setq count (1+ count)))))
     count))
 
+;; From https://www.emacswiki.org/emacs/RecentFiles
+(defun recentf-open-files-compl ()
+  "Open a file from the recent-files list, with completion."
+  (interactive)
+  (let* ((tocpl (mapcar (lambda (x) (cons (file-name-nondirectory x) x))
+                        recentf-list))
+         (fname (completing-read "File name: " tocpl nil nil)))
+    (when fname
+      (find-file (cdr (assoc-string fname tocpl))))))
+
 (defun untabify-buffer-or-region ()
   "Untabify the entire buffer. If region is active, only untabify the region."
   (interactive)
