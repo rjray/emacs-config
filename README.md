@@ -29,7 +29,11 @@ source.
 The directory <kbd>.emacs.d/my-code</kbd> contains code that I've written
 and/or cribbed from other sources.
 
-### The <kbd>.emacs</kbd> File
+### The <kbd>init.el</kbd> File
 
-Lastly, the file <kbd>.emacs</kbd> file is here at the top level. I am trying
-to keep this file relatively clean, but there is still a lot of clean-up to do.
+I've moved the <kbd>.emacs</kbd> file to <kbd>.emacs.d/init.el</kbd>. I am
+trying to keep this file relatively clean, but there is still a lot of clean-up
+to do. I'm also debating moving most of the <kbd>.emacs.d/my-code</kbd> files
+back into the main file; it would mean fewer `flycheck` warnings and fewer
+duplicated `(require ...)` statements. It would also mean a single file of over
+800 lines...
