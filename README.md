@@ -15,8 +15,8 @@ submodules, to using [package.el](http://wikemacs.org/wiki/Package.el) and the
 [MELPA](https://www.emacswiki.org/emacs/MELPA)
 and [Marmalade](https://www.emacswiki.org/emacs/MarmaladeRepo) repositories.
 
-See the defvar of `rjray/packages` in the <kbd>.emacs</kbd> file for the list
-of packages I am currently using.
+See the defvar of `rjray/packages` in the <kbd>.emacs.d/init.el</kbd> file for
+the list of packages I am currently using.
 
 ### Other People's Code
 
