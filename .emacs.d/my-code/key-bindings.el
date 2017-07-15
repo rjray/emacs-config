@@ -32,7 +32,7 @@
 (global-set-key (kbd "C-c =") 'count-region)
 
 ;; Find files based on the recent-files list:
-(global-set-key (kbd "C-c C-r") 'recentf-open-files-compl)
+(global-set-key (kbd "C-x C-r") 'recentf-open-files-compl)
 
 ;; Bindings for funcs from multiple-cursors:
 (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
