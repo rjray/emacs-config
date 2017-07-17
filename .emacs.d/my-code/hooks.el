@@ -25,6 +25,7 @@
                             paredit
                             company
                             git-gutter
+                            subword
                             eldoc))
               (diminish (my/->mode mode) ""))))
 
@@ -36,6 +37,7 @@
             (c-set-offset 'statement-case-intro '*)
             (c-set-offset 'statement-case-open '*)))
 
+(add-hook 'c++-mode-hook 'subword-mode)
 (add-hook 'c++-mode-hook
           (lambda ()
             (setq c-default-style "bsd")
@@ -46,6 +48,7 @@
 (add-hook 'clojure-mode-hook 'cider-mode)
 (add-hook 'clojure-mode-hook 'aggressive-indent-mode)
 (add-hook 'clojure-mode-hook 'paredit-mode)
+(add-hook 'clojure-mode-hook 'subword-mode)
 
 (add-hook 'cperl-mode-hook
           (lambda ()
