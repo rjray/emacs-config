@@ -7,6 +7,11 @@
 
 ;;; Code:
 
+(require 'diminish)
+(require 'recentf)
+(require 'cperl-mode)
+(require 'flycheck)
+
 (add-hook 'font-lock-mode-hook
           (lambda ()
             (setq font-lock-maximum-decoration 4)))
@@ -18,6 +23,7 @@
 (add-hook 'after-init-hook 'global-whitespace-mode)
 (add-hook 'after-init-hook 'wrap-region-global-mode)
 (add-hook 'after-init-hook 'save-place-mode)
+(add-hook 'after-init-hook 'recentf-mode)
 (add-hook 'after-init-hook
           (lambda ()
             (dolist (mode '(global-whitespace
@@ -57,7 +63,6 @@
             (c-set-offset 'inline-open 0)
             (setq cperl-indent-parens-as-block t)
             (setq cperl-close-paren-offset -4)
-            (setq cperl-tab-to-comment t)
             (setq cperl-indent-level 4)
             (setq cperl-continued-statement-offset 4)
             (setq cperl-continued-brace-offset 0)
@@ -77,15 +82,6 @@
 (add-hook 'lisp-mode-hook 'aggressive-indent-mode)
 (add-hook 'lisp-mode-hook 'paredit-mode)
 
-(add-hook 'makefile-mode-hook
-          (lambda ()
-            (setq makefile-target-colon "::")
-            (setq makefile-macro-assign " = ")
-            (setq makefile-tab-after-target-colon t)
-            (setq makefile-browser-auto-advance-after-selection-p t)
-            (setq makefile-electric-keys t)
-            (setq makefile-use-curly-braces-for-macros-p t)))
-
 (add-hook 'mediawiki-mode-hook
           (lambda ()
             (auto-fill-mode -1)
@@ -94,6 +90,14 @@
             (define-key mediawiki-mode-map "&" 'xml--html-smart-ampersand)))
 
 (add-hook 'mouse-track-click-hook 'id-select-double-click-hook)
+
+(add-hook 'recentf-mode-hook
+          (lambda ()
+            (setq recentf-auto-cleanup 'never
+                  recentf-max-menu-items 40
+                  recentf-max-saved-items 100
+                  recentf-exclude '("\\.ido\\.last" "/itsalltext/" "/recentf$"
+                                    ".emacs.d/elpa/"))))
 
 (add-hook 'server-done-hook 'delete-frame)
 (add-hook 'server-done-hook
@@ -115,3 +119,6 @@
 (add-hook 'wrap-region-hook
           (lambda ()
             (wrap-region-remove-wrapper "<")))
+
+(provide 'hooks)
+;;; hooks.el ends here

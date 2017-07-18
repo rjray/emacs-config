@@ -88,7 +88,6 @@
 
 ;; Libs I want visible at all levels:
 (require 'linum)
-(require 'diminish)
 (require 'uniquify)
 (require 'solarized)
 (require 'git-gutter)

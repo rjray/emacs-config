@@ -81,16 +81,6 @@
                                         register-alist)))
 (desktop-save-mode 1)
 
-;; Set-up for recent-file minor mode
-(require 'recentf)
-(setq recentf-auto-cleanup 'never ;; disable before we start recentf!
-      recentf-max-menu-items 40
-      recentf-max-saved-items 100
-      recentf-exclude '("\\.ido\\.last" "/itsalltext/" "/recentf$"
-                        ".emacs.d/elpa/"))
-(recentf-mode 1)
-(run-at-time t (* 5 60) 'recentf-save-list)
-
 ;; Whitespace
 (require 'whitespace)
 (setq whitespace-style '(face tabs lines-tail))
