@@ -110,9 +110,9 @@
               (bury-buffer)
               (switch-to-buffer-other-frame server-buf))))
 
-(add-hook 'text-mode-hook
-          (lambda ()
-            (turn-on-auto-fill)))
+;(add-hook 'text-mode-hook
+;          (lambda ()
+;            (turn-on-auto-fill)))
 
 ;; This is the only way to get the "<" mapping out of html-mode. It has to be
 ;; removed globally, just removing from html-mode doesn't do it.
