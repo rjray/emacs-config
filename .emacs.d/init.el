@@ -66,8 +66,6 @@
                          rainbow-mode
                          sass-mode
                          scss-mode
-                         seoul256-theme
-                         solarized-theme
                          web-mode
                          wrap-region
                          yaml-mode)
@@ -89,7 +87,6 @@
 ;; Libs I want visible at all levels:
 (require 'linum)
 (require 'uniquify)
-(require 'solarized)
 (require 'git-gutter)
 (require 'git-gutter-fringe)
 ;; These have their own set-up code, but should also be pre-loaded:
@@ -119,10 +116,6 @@
 
     ;; Number ALL the lines!
     (global-linum-mode)
-
-    ;; Theme:
-    (setq solarized-use-variable-pitch nil)
-    (load-theme 'solarized-light t)
 
     ;; UI tweaks:
     (if (fboundp 'blink-cursor-mode) (blink-cursor-mode -1))
