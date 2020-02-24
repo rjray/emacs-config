@@ -10,7 +10,8 @@
 (setq ns-function-modifier 'hyper)
 
 ;; A more Mac-friendly font (and size)
-(set-face-attribute 'default nil :family "dejavu-dejavu sans mono" :height 120)
+;; Disabled for now, as customization seems to be handling this OK.
+;;(set-face-attribute 'default nil :family "DejaVu Sans Mono" :height 100)
 
 ;; make sure path is correct when launched as application
 (require 'exec-path-from-shell)
