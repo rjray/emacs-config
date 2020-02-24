@@ -162,5 +162,10 @@
   (let ((fill-column (point-max)))
     (fill-paragraph nil)))
 
+(defun insert-utf-char ()
+  "Insert a Unicode character selected by name via minibuf."
+  (interactive)
+  (call-interactively 'insert-char))
+
 (provide 'key-functions)
 ;;; key-functions.el ends here
