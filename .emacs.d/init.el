@@ -66,6 +66,7 @@
                          rainbow-mode
                          sass-mode
                          scss-mode
+                         tangotango-theme
                          web-mode
                          wrap-region
                          yaml-mode)
@@ -113,6 +114,9 @@
     ;; Set up gutter decorations:
     (global-git-gutter-mode +1)
     (setq-default indicate-buffer-boundaries 'left)
+
+    ;; Theme
+    (load-theme 'tangotango)
 
     ;; Number ALL the lines!
     (global-linum-mode)
