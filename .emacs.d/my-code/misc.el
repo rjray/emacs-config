@@ -7,20 +7,6 @@
 
 ;;; Code:
 
-(defadvice cperl-indent-command
-    (around cperl-indent-or-complete)
-
-  "Change `cperl-indent-command' so it autocompletes when at the end of a word."
-  (if (looking-at "\\>")
-      (dabbrev-expand nil)
-    ad-do-it))
-(eval-after-load "cperl-mode"
-  '(progn (require 'dabbrev) (ad-activate 'cperl-indent-command)))
-
-;; Don't try to adjust rng-schema-locating-files until the file has been loaded
-(eval-after-load 'rng-loc
-  '(add-to-list 'rng-schema-locating-files "~/.schema/schemas.xml"))
-
 ;; Set some default settings
 (setq-default
  default-case-fold-search nil
@@ -84,18 +70,6 @@
 ;; Whitespace
 (require 'whitespace)
 (setq whitespace-style '(face tabs lines-tail))
-
-;; Wrap region minor mode
-;; Don't screw up key bindings in magit-mode
-(require 'wrap-region)
-(add-to-list 'wrap-region-except-modes 'magit-status-mode)
-(wrap-region-add-wrapper "<p>" "</p>" "p" 'html-mode)
-(wrap-region-add-wrapper "<div>" "</div>" "d" 'html-mode)
-(wrap-region-add-wrapper "<li>" "</li>" "l" 'html-mode)
-(wrap-region-add-wrapper "<strong>" "</strong>" "s" 'html-mode)
-(wrap-region-add-wrapper "<a href=\"\">" "</a>" "a" 'html-mode)
-(wrap-region-add-wrapper "<h1>" "</h1>" "h" 'html-mode)
-(wrap-region-add-wrapper "*" "*" "*" 'markdown-mode)
 
 ;; Visual Bell (flash the mode-line instead of an audio bell)
 ;; Cribbed from Jason Filsinger, https://github.com/filsinger/emacs-config

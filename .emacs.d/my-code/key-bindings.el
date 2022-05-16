@@ -7,18 +7,6 @@
 
 ;;; Code:
 
-;; Easy one-line-at-a-time scrolling.
-(global-set-key (kbd "H-.")
-                (lambda ()
-                  (interactive)
-                  (scroll-down 1)))
-(global-set-key (kbd "H-,")
-                (lambda ()
-                  (interactive)
-                  (scroll-up 1)))
-
-(global-set-key (kbd "H-SPC") 'set-rectangular-region-anchor)
-
 ;; Browse the kill-ring with C-c k:
 (global-set-key (kbd "C-c k") 'browse-kill-ring)
 
@@ -33,14 +21,6 @@
 
 ;; Find files based on the recent-files list:
 (global-set-key (kbd "C-x C-r") 'recentf-open-files-compl)
-
-;; Bindings for funcs from multiple-cursors:
-(global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
-(global-set-key (kbd "C->") 'mc/mark-next-like-this)
-(global-set-key (kbd "C-M-m") 'mc/mark-more-like-this-extended)
-(global-set-key (kbd "C-\"") 'mc/mark-all-like-this)
-(global-set-key (kbd "C-'") 'mc/mark-all-in-region)
-(global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
 
 ;; Use this instead of hitting M-x all the time:
 (global-set-key "\C-x\C-m" 'execute-extended-command)
@@ -77,12 +57,10 @@
 
 ;; Meta-key combinations
 (global-set-key [(meta g)] 'goto-line)
-(global-set-key [(meta i)] 'overwrite-mode)
 (global-set-key [(meta q)] 'quote)
 
 ;; I miss these keys on my Macbook... but at least I have them on full
 ;; keyboards...
-(global-set-key [(insert)] 'overwrite-mode)
 (global-set-key [(home)] 'home)
 (global-set-key [(end)] 'end)
 

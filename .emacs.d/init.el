@@ -23,52 +23,36 @@
 
 ;; Additions to the load-path:
 (add-to-list 'load-path (concat user-emacs-directory "my-code"))
+(add-to-list 'load-path (concat user-emacs-directory "other-peoples-code"))
 
 (require 'package)
 (add-to-list 'package-archives
-             '("marmalade" . "http://marmalade-repo.org/packages/"))
-(add-to-list 'package-archives
-             '("melpa" . "http://melpa.milkbox.net/packages/") t)
+             '("melpa" . "https://melpa.org/packages/") t)
 (package-initialize)
 
 (defvar rjray/packages '(aggressive-indent
                          cider
                          clojure-mode
-                         company
-                         company-c-headers
                          cuda-mode
                          diminish
-                         dired-details
-                         emmet-mode
                          exec-path-from-shell
                          expand-region
                          flycheck
                          flycheck-clojure
                          fringe-helper
-                         gist
                          git
                          git-gutter
                          git-gutter-fringe
+                         github-modern-theme
                          highlight-parentheses
                          highlight-symbol
-                         js2-mode
-                         json-mode
-                         json-navigator
-                         json-reformat
-                         less-css-mode
                          magit
                          markdown-mode
                          multiple-cursors
                          paredit
                          pkg-info
-                         popup
                          rainbow-delimiters
                          rainbow-mode
-                         sass-mode
-                         scss-mode
-                         tangotango-theme
-                         web-mode
-                         wrap-region
                          yaml-mode)
   "Default packages.")
 
@@ -114,9 +98,6 @@
     ;; Set up gutter decorations:
     (global-git-gutter-mode +1)
     (setq-default indicate-buffer-boundaries 'left)
-
-    ;; Theme
-    (load-theme 'tangotango)
 
     ;; Number ALL the lines!
     (global-linum-mode)

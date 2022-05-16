@@ -35,25 +35,5 @@
         `(->> (->> ,e ,(car es)) ,@(cdr es))
       e)))
 
-;; From Joost Diepenmaat, via
-;; https://zeekat.nl/articles/making-emacs-work-for-me.html
-(defun my/->string (str)
-  "Coerce a string from STR, whether passed a string or a symbol."
-  (cond
-   ((stringp str) str)
-   ((symbolp str) (symbol-name str))))
-
-(defun my/->mode-hook (name)
-  "Turn mode name NAME into hook symbol."
-  (intern (replace-regexp-in-string "\\(-mode\\)?\\(-hook\\)?$"
-                                    "-mode-hook"
-                                    (my/->string name))))
-
-(defun my/->mode (name)
-  "Turn mode name NAME into mode symbol."
-  (intern (replace-regexp-in-string "\\(-mode\\)?$"
-                                    "-mode"
-                                    (my/->string name))))
-
 (provide 'utils)
 ;;; utils.el ends here

@@ -82,68 +82,6 @@
   (cond ((region-active-p) (fill-region (region-beginning) (region-end)))
         (t (fill-paragraph nil))))
 
-;; Borrowed from hm--html-mode. These aren't currently bound in nXML or
-;; anything, but I'm keeping them for now.
-(defvar xml--just-insert-less-than nil
-  "Internal variable.")
-
-(defun xml--html-less-than ()
-  "Insert the entity '&gt;'."
-  (interactive)
-  (insert "&lt;"))
-
-(defun xml--html-smart-less-than ()
-  "Insert a '<' or the entity '&lt;' if you execute this command twice."
-  (interactive)
-  (if (and (eq last-command 'xml--html-smart-less-than)
-           xml--just-insert-less-than)
-      (progn
-        (delete-char -1)
-        (xml--html-less-than)
-        (setq xml--just-insert-less-than nil))
-    (insert ?<)
-    (setq xml--just-insert-less-than t)))
-
-(defvar xml--just-insert-greater-than nil
-  "Internal variable.")
-
-(defun xml--html-greater-than ()
-  "Insert the entity '&gt;'."
-  (interactive)
-  (insert "&gt;"))
-
-(defun xml--html-smart-greater-than ()
-  "Insert a '>' or the entity '&gt;' if you execute this command twice."
-  (interactive)
-  (if (and (eq last-command 'xml--html-smart-greater-than)
-           xml--just-insert-greater-than)
-      (progn
-        (delete-char -1)
-        (xml--html-greater-than)
-        (setq xml--just-insert-greater-than nil))
-    (insert ?>)
-    (setq xml--just-insert-greater-than t)))
-
-(defvar xml--just-insert-ampersand nil
-  "Internal variable.")
-
-(defun xml--html-ampersand ()
-  "Insert the entity '&amp;'."
-  (interactive)
-  (insert "&amp;"))
-
-(defun xml--html-smart-ampersand ()
-  "Insert a '&' or the entity '&amp;' if you execute this command twice."
-  (interactive)
-  (if (and (eq last-command 'xml--html-smart-ampersand)
-           xml--just-insert-ampersand)
-      (progn
-        (delete-char -1)
-        (xml--html-ampersand)
-        (setq xml--just-insert-ampersand nil))
-    (insert ?&)
-    (setq xml--just-insert-ampersand t)))
-
 ;; For tweaking around with lisp:
 (defun eval-and-replace ()
   "Replace the preceding sexp with its value."
@@ -154,18 +92,6 @@
              (current-buffer))
     (error (message "Invalid expression")
            (insert (current-kill 0)))))
-
-;; From http://www.emacswiki.org/emacs/UnfillParagraph
-(defun unfill-paragraph ()
-  "Take a multi-line paragraph and make it into a single line of text."
-  (interactive)
-  (let ((fill-column (point-max)))
-    (fill-paragraph nil)))
-
-(defun insert-utf-char ()
-  "Insert a Unicode character selected by name via minibuf."
-  (interactive)
-  (call-interactively 'insert-char))
 
 (provide 'key-functions)
 ;;; key-functions.el ends here

@@ -29,27 +29,10 @@
             (dolist (mode '(global-whitespace
                             wrap-region
                             paredit
-                            company
                             git-gutter
                             subword
                             eldoc))
               (diminish (my/->mode mode) ""))))
-
-(add-hook 'c-mode-hook
-          (lambda ()
-            (setq c-default-style "bsd")
-            (setq c-basic-offset 4)
-            (c-set-offset 'case-label '*)
-            (c-set-offset 'statement-case-intro '*)
-            (c-set-offset 'statement-case-open '*)))
-
-(add-hook 'c++-mode-hook 'subword-mode)
-(add-hook 'c++-mode-hook
-          (lambda ()
-            (setq c-default-style "bsd")
-            (setq c-basic-offset 4)
-            (c-set-offset 'case-label '*)
-            (c-set-offset 'statement-case-intro '*)))
 
 (add-hook 'clojure-mode-hook 'cider-mode)
 (add-hook 'clojure-mode-hook 'aggressive-indent-mode)
@@ -59,7 +42,6 @@
 (add-hook 'cperl-mode-hook
           (lambda ()
             (define-key cperl-mode-map (kbd "RET") 'newline-and-indent)
-            (local-set-key "%" 'self-insert-command)
             (c-set-offset 'inline-open 0)
             (setq cperl-indent-parens-as-block t)
             (setq cperl-close-paren-offset -4)
@@ -70,8 +52,6 @@
             (setq cperl-brace-imaginary-offset 0)
             (setq cperl-label-offset -2)))
 
-(add-hook 'css-mode-hook 'rainbow-mode)
-
 (add-hook 'emacs-lisp-mode-hook 'aggressive-indent-mode)
 (add-hook 'emacs-lisp-mode-hook 'paredit-mode)
 
@@ -81,13 +61,6 @@
 
 (add-hook 'lisp-mode-hook 'aggressive-indent-mode)
 (add-hook 'lisp-mode-hook 'paredit-mode)
-
-(add-hook 'mediawiki-mode-hook
-          (lambda ()
-            (auto-fill-mode -1)
-            (define-key mediawiki-mode-map "<" 'xml--html-smart-less-than)
-            (define-key mediawiki-mode-map ">" 'xml--html-smart-greater-than)
-            (define-key mediawiki-mode-map "&" 'xml--html-smart-ampersand)))
 
 (add-hook 'mouse-track-click-hook 'id-select-double-click-hook)
 
@@ -109,16 +82,6 @@
             (let ((server-buf (current-buffer)))
               (bury-buffer)
               (switch-to-buffer-other-frame server-buf))))
-
-;(add-hook 'text-mode-hook
-;          (lambda ()
-;            (turn-on-auto-fill)))
-
-;; This is the only way to get the "<" mapping out of html-mode. It has to be
-;; removed globally, just removing from html-mode doesn't do it.
-(add-hook 'wrap-region-hook
-          (lambda ()
-            (wrap-region-remove-wrapper "<")))
 
 (provide 'hooks)
 ;;; hooks.el ends here
