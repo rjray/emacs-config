@@ -21,13 +21,11 @@
 (add-hook 'after-init-hook 'global-company-mode)
 (add-hook 'after-init-hook 'global-flycheck-mode)
 (add-hook 'after-init-hook 'global-whitespace-mode)
-(add-hook 'after-init-hook 'wrap-region-global-mode)
 (add-hook 'after-init-hook 'save-place-mode)
 (add-hook 'after-init-hook 'recentf-mode)
 (add-hook 'after-init-hook
           (lambda ()
             (dolist (mode '(global-whitespace
-                            wrap-region
                             paredit
                             git-gutter
                             subword
