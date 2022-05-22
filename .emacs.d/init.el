@@ -82,8 +82,8 @@
 ;; Load my personal code
 (load "key-bindings")
 (load "key-functions")
-(load "hooks")
 (load "utils")
+(load "hooks")
 (load "misc")
 
 ;; Things to do when running in a windowing system (X, MacOS, etc.)
