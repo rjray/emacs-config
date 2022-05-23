@@ -78,6 +78,7 @@
 (require 'setup-cider)
 (require 'setup-dired)
 (require 'setup-magit)
+(require 'setup-org)
 
 ;; Load my personal code
 (load "key-bindings")

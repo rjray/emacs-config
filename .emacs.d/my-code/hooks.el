@@ -18,7 +18,6 @@
 
 (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
 
-(add-hook 'after-init-hook 'global-company-mode)
 (add-hook 'after-init-hook 'global-flycheck-mode)
 (add-hook 'after-init-hook 'global-whitespace-mode)
 (add-hook 'after-init-hook 'save-place-mode)
@@ -61,6 +60,8 @@
 (add-hook 'lisp-mode-hook 'paredit-mode)
 
 (add-hook 'mouse-track-click-hook 'id-select-double-click-hook)
+
+(add-hook 'org-mode-hook 'auto-revert-mode)
 
 (add-hook 'recentf-mode-hook
           (lambda ()
