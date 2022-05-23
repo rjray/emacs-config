@@ -1,4 +1,4 @@
-;;; setup-cider --- Loading and configuration of CIDER
+;;; setup-org --- Loading and configuration of org-mode
 
 ;;; Commentary:
 
