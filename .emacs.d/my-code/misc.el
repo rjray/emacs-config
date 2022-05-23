@@ -67,6 +67,12 @@
                                         register-alist)))
 (desktop-save-mode 1)
 
+;; ido-mode
+(require 'ido)
+(setq ido-enable-flex-matching t)
+(setq ido-everywhere t)
+(ido-mode 1)
+
 ;; Whitespace
 (require 'whitespace)
 (setq whitespace-style '(face tabs lines-tail))
