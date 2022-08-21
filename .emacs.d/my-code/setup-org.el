@@ -5,9 +5,11 @@
 ;;; Code:
 
 (require 'org)
+(require 'org-journal)
 
 (setq
  org-default-notes-file "~/Dropbox/org/organizer.org"
+ org-journal-dir "~/Dropbox/org/journal"
  org-refile-targets '((org-agenda-files . (:maxlevel . 6))))
 
 (global-set-key (kbd "C-c l") #'org-store-link)

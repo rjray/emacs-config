@@ -49,6 +49,7 @@
                          magit
                          markdown-mode
                          multiple-cursors
+                         org-journal
                          paredit
                          pkg-info
                          rainbow-delimiters
