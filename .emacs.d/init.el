@@ -150,5 +150,7 @@
     (dolist (host-el-file (directory-files hostdir t "\\.el$"))
       (load-file host-el-file))))
 
+(add-to-list 'magic-mode-alist '(org-journal-is-journal . org-journal-mode))
+
 (provide 'init)
 ;;; init.el ends here
