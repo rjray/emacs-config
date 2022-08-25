@@ -18,7 +18,7 @@
 (global-set-key (kbd "C-c o")
                 (lambda () (interactive)
                   (find-file "~/Dropbox/org/organizer.org")))
-(global-set-key (kbd "C-c O")
+(global-set-key (kbd "C-c C-o")
                 (lambda () (interactive)
                   (find-file "~/Dropbox/org")))
 
