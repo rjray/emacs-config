@@ -35,6 +35,7 @@
                          clojure-mode
                          cuda-mode
                          diminish
+                         dumb-jump
                          exec-path-from-shell
                          expand-region
                          flycheck
@@ -80,6 +81,7 @@
 (require 'setup-dired)
 (require 'setup-magit)
 (require 'setup-org)
+(require 'setup-dumb-jump)
 
 ;; Load my personal code
 (load "key-bindings")
