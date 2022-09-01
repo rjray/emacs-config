@@ -61,8 +61,6 @@
 
 (add-hook 'mouse-track-click-hook 'id-select-double-click-hook)
 
-(add-hook 'org-mode-hook 'auto-revert-mode)
-
 (add-hook 'recentf-mode-hook
           (lambda ()
             (setq recentf-auto-cleanup 'never
