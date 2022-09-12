@@ -39,6 +39,7 @@
 (add-hook 'cperl-mode-hook
           (lambda ()
             (define-key cperl-mode-map (kbd "RET") 'newline-and-indent)
+            (local-unset-key (kbd "C-c C-j"))
             (c-set-offset 'inline-open 0)
             (setq cperl-indent-parens-as-block t)
             (setq cperl-close-paren-offset -4)

@@ -23,6 +23,11 @@
                   (find-file "~/Dropbox/org")))
 
 (add-hook 'org-mode-hook 'auto-revert-mode)
+(add-hook 'org-mode-hook
+          (lambda ()
+            (progn
+              (local-set-key (kbd "C-c C-j") 'org-journal-new-entry)
+              (local-set-key (kbd "C-c j") 'org-goto))))
 
 ;; Set up org-journal:
 (setq org-journal-dir "~/Dropbox/org/journal")
