@@ -84,13 +84,31 @@
   :if window-system
   :ensure t
   :config
+  ;; Clear out anything from custom
+  (mapc #'disable-theme custom-enabled-themes)
   ;; Enable the theme
   (load-theme 'ef-elea-dark t))
+
+(use-package git-gutter
+  ;; Git-related decorations in the gutter
+  :if window-system
+  :ensure t
+  :diminish
+  :config
+  (global-git-gutter-mode +1))
+
+(use-package ido
+  ;; IDO mode
+  :ensure t
+  :config
+  (setq ido-enable-flex-matching t
+        ido-everywhere t)
+  (ido-mode 1))
 
 (use-package paredit
   ;; Parens-editing supercharging
   :ensure t
-  :diminish paredit-mode
+  :diminish ""
   :hook ((clojure-mode . paredit-mode)
          (emacs-lisp-mode . paredit-mode)
          (lisp-mode . paredit-mode)))
@@ -105,13 +123,20 @@
         recentf-max-saved-items 100
         recentf-exclude '("\\.ido\\.last" "/recentf$" ".emacs.d/elpa/")))
 
+(use-package whitespace
+  ;; Excess whitespace display
+  :ensure t
+  :init
+  (add-hook 'after-init-hook #'global-whitespace-mode)
+  :config
+  (setq whitespace-style '(face tabs lines-tail)))
+
 ;; Set some defaults
 (setq-default
  default-case-fold-search nil
  x-select-enable-clipboard 1
  tramp-default-method "ssh"
  fill-column 79
- show-trailing-whitespace t
  transient-mark-mode t
 
  ;; Startup stuff supression
@@ -162,6 +187,22 @@
 
 ;;enable narrowing
 (put 'narrow-to-region 'disabled nil)
+
+;; Visual Bell (flash the mode-line instead of an audio bell)
+;; Cribbed from Jason Filsinger, https://github.com/filsinger/emacs-config
+(setq visible-bell nil
+      ring-bell-function `(lambda ()
+                            (let ((mode-line-bell-orig-bg
+                                   (face-background 'mode-line))
+                                  (mode-line-bell-orig-fg
+                                   (face-foreground 'mode-line)))
+                              (set-face-background 'mode-line "#ED3B3B")
+                              (set-face-foreground 'mode-line "#7F2020")
+                              (sit-for 0.1)
+                              (set-face-background 'mode-line
+                                                   mode-line-bell-orig-bg)
+                              (set-face-foreground 'mode-line
+                                                   mode-line-bell-orig-fg))))
 
 ;; default to better frame titles
 (setq frame-title-format
