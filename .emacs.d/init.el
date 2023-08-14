@@ -4,8 +4,6 @@
 
 ;;; Code:
 
-(eval-when-compile (require 'cl))
-
 ;; The "base" part of system-name, without the domain.
 (defconst *system-name*
   (if (string-match "^\\([a-zA-Z0-9_-]+\\)\\." (system-name))
@@ -16,133 +14,159 @@
 ;; True if this system is MacOS. Used in a few places for paths, etc.
 (defconst *is-mac* (eq system-type 'darwin) "Is this a Mac system?")
 
-;; Turn the two emacs-*-version values into a single comparable int
-(defconst *emacs-version*
-  (+ (* emacs-major-version 1000) emacs-minor-version)
-  "Emacs version as a comparable integer.")
-
-;; Additions to the load-path:
-(add-to-list 'load-path (concat user-emacs-directory "my-code"))
-(add-to-list 'load-path (concat user-emacs-directory "other-peoples-code"))
-
 (require 'package)
+(setq package-enable-at-startup nil)
 (add-to-list 'package-archives
              '("melpa" . "https://melpa.org/packages/") t)
 (package-initialize)
 
-(defvar rjray/packages '(aggressive-indent
-                         cider
-                         clojure-mode
-                         cuda-mode
-                         diminish
-                         dumb-jump
-                         exec-path-from-shell
-                         expand-region
-                         flycheck
-                         flycheck-clojure
-                         fringe-helper
-                         git
-                         git-gutter
-                         git-gutter-fringe
-                         github-modern-theme
-                         highlight-parentheses
-                         highlight-symbol
-                         magit
-                         markdown-mode
-                         multiple-cursors
-                         org-journal
-                         paredit
-                         pkg-info
-                         rainbow-delimiters
-                         rainbow-mode
-                         yaml-mode)
-  "Default packages.")
-
-(defun rjray/packages-installed-p ()
-  "Check that all my desired packages are installed."
-  (loop for pkg in rjray/packages
-        when (not (package-installed-p pkg)) do (return nil)
-        finally (return t)))
-
-(unless (rjray/packages-installed-p)
-  (message "%s" "Refreshing package database...")
+(unless (package-installed-p 'use-package)
   (package-refresh-contents)
-  (dolist (pkg rjray/packages)
-    (when (not (package-installed-p pkg))
-      (package-install pkg))))
+  (package-install 'use-package))
 
-;; Libs I want visible at all levels:
-(require 'linum)
-(require 'uniquify)
-(require 'git-gutter)
-(require 'git-gutter-fringe)
-;; These have their own set-up code, but should also be pre-loaded:
-(require 'setup-cider)
-(require 'setup-dired)
-(require 'setup-magit)
-(require 'setup-org)
-(require 'setup-dumb-jump)
+;; Packages
+(use-package aggressive-indent
+  ;; Aggressive indenting for some modes
+  :ensure t
+  :hook ((clojure-mode . aggressive-indent-mode)
+         (emacs-lisp-mode . aggressive-indent-mode)
+         (lisp-mode . aggressive-indent-mode)))
 
-;; Load my personal code
-(load "key-bindings")
-(load "key-functions")
-(load "utils")
-(load "hooks")
-(load "misc")
+(use-package cider
+  ;; CIDER for Clojure editing
+  :ensure t
+  :hook (clojure-mode . cider-mode)
+  :config
+  (setq
+   nrepl-hide-special-buffers t
+   cider-auto-select-error-buffer t
+   nrepl-buffer-name-show-port t
+   cider-repl-display-in-current-window t
+   cider-repl-history-size 1000))
 
-;; Things to do when running in a windowing system (X, MacOS, etc.)
-(when (display-graphic-p)
+(use-package clojure-mode
+  ;; Clojure
+  :ensure t
+  :mode "\\.clj")
+
+(use-package desktop
+  ;; General desktop stuff (history, etc.)
+  :ensure t
+  :config
+  (setq desktop-save t
+        desktop-restore-eager 5
+        desktop-globals-to-save (append '((extended-command-history . 30)
+                                          (file-name-history        . 100)
+                                          (grep-history             . 30)
+                                          (compile-history          . 30)
+                                          (minibuffer-history       . 50)
+                                          (query-replace-history    . 60)
+                                          (read-expression-history  . 60)
+                                          (regexp-history           . 60)
+                                          (regexp-search-ring       . 20)
+                                          (search-ring              . 20)
+                                          (shell-command-history    . 50)
+                                          tags-file-name
+                                          register-alist)))
+  (desktop-save-mode 1))
+
+(use-package display-line-numbers
+  ;; Number ALL the lines
+  :if window-system
+  :ensure t
+  :config
+  ;; No, seriously... all the lines.
+  (global-display-line-numbers-mode t)
+  (setq display-line-numbers-grow-only t))
+
+(use-package ef-themes
+  ;; Theming
+  :if window-system
+  :ensure t
+  :config
+  ;; Enable the theme
+  (load-theme 'ef-elea-dark t))
+
+(use-package paredit
+  ;; Parens-editing supercharging
+  :ensure t
+  :diminish paredit-mode
+  :hook ((clojure-mode . paredit-mode)
+         (emacs-lisp-mode . paredit-mode)
+         (lisp-mode . paredit-mode)))
+
+(use-package recentf
+  ;; Recent-file tracking and opening
+  :ensure t
+  :init
+  (add-hook 'after-init-hook #'recentf-mode)
+  (setq recentf-auto-cleanup 'never
+        recentf-max-menu-items 40
+        recentf-max-saved-items 100
+        recentf-exclude '("\\.ido\\.last" "/recentf$" ".emacs.d/elpa/")))
+
+;; Set some defaults
+(setq-default
+ default-case-fold-search nil
+ x-select-enable-clipboard 1
+ tramp-default-method "ssh"
+ fill-column 79
+ show-trailing-whitespace t
+ transient-mark-mode t
+
+ ;; Startup stuff supression
+ inhibit-splash-screen t
+ inhibit-startup-echo-area-message t
+ inhibit-startup-screen t
+
+ ;; Backup stuff
+ backup-inhibited t
+ make-backup-files nil
+ auto-save-default nil
+ auto-save-list-file-name nil
+ delete-auto-save-files t
+
+ ;; Inhibit "magic" mode selection
+ magic-mode-alist nil
+
+ uniquify-buffer-name-style 'forward
+
+ ;; No double-spaces when I fill a paragraph
+ sentence-end-double-space nil
+
+ ;; Always number lines and columns in the status line
+ line-number-mode t
+ column-number-mode t
+
+ ;; Show indication of the buffer size (right before the line/col)
+ size-indication-mode t
+
+ ;; Tabs and lines
+ tab-width 2
+ indent-tabs-mode nil
+
+ ;; Dialogs
+ use-dialog-box nil
+ use-file-dialog nil)
+
+;; Some window-system-necessary settings
+(when (window-system)
   (progn
-    (require 'server)
+    (blink-cursor-mode -1)
+    (menu-bar-mode 1)
+    (tool-bar-mode -1)
+    (scroll-bar-mode -1)))
 
-    ;; Start a server if one isn't already running:
-    (unless (server-running-p)
-      (server-start))
-
-    ;; Set up gutter decorations:
-    (global-git-gutter-mode +1)
-    (setq-default indicate-buffer-boundaries 'left)
-
-    ;; Number ALL the lines!
-    (global-linum-mode)
-
-    ;; UI tweaks:
-    (if (fboundp 'blink-cursor-mode) (blink-cursor-mode -1))
-    (if (fboundp 'menu-bar-mode) (menu-bar-mode 1))
-    (if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
-    (if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))))
-
-;; Turn on show-paren if available
-(when (fboundp 'show-paren-mode)
-  (show-paren-mode t))
-
-;; Turn on font-lock if available
-(when (fboundp 'global-font-lock-mode)
-  (global-font-lock-mode t))
-
-;; Turn OFF CUA mode. Dunno who's brilliant idea enabling that by default was.
-(when (fboundp 'cua-mode)
-  (cua-mode -1))
-
-;; default to better frame titles
-(setq frame-title-format
-      (concat "%b - emacs@" *system-name*))
-
-;; Alias some stuff to get preferred behavior
-;; cperl-mode is preferred to perl-mode
-(defalias 'perl-mode 'cperl-mode)
 ;; Don't care for typing out "yes" and "no" all the time...
 (defalias 'yes-or-no-p 'y-or-n-p)
 
 ;;enable narrowing
 (put 'narrow-to-region 'disabled nil)
 
-;; Set the location for customization settings saves, and load it (before
-;; any per-host or Mac-specific settings).
-(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
-(load custom-file)
+;; default to better frame titles
+(setq frame-title-format
+      (concat "%b - emacs@" *system-name*))
 
-;; If this is a Mac, load some Mac-specific code
 (when *is-mac* (require 'mac))
 
 ;; If there is a directory under ~/.emacs.d named for this host, load all *.el
@@ -151,8 +175,6 @@
   (when (file-directory-p hostdir)
     (dolist (host-el-file (directory-files hostdir t "\\.el$"))
       (load-file host-el-file))))
-
-(add-to-list 'magic-mode-alist '(org-journal-is-journal . org-journal-mode))
 
 (provide 'init)
 ;;; init.el ends here
