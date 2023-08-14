@@ -1,4 +1,4 @@
-;;; init.el --- Master Emacs configuration file.
+;;; init.el --- Master Emacs configuration file.  -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 
@@ -19,10 +19,6 @@
 (add-to-list 'package-archives
              '("melpa" . "https://melpa.org/packages/") t)
 (package-initialize)
-
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package))
 
 ;; Packages
 (use-package aggressive-indent
@@ -79,6 +75,13 @@
   (global-display-line-numbers-mode t)
   (setq display-line-numbers-grow-only t))
 
+(use-package dumb-jump
+  ;; A go-to-def package that uses ripgrep
+  :ensure t
+  :config
+  (setq dumb-jump-prefer-searcher 'rg)
+  (add-hook 'xref-backend-functions 'dumb-jump-xref-activate))
+
 (use-package ef-themes
   ;; Theming
   :if window-system
@@ -88,6 +91,23 @@
   (mapc #'disable-theme custom-enabled-themes)
   ;; Enable the theme
   (load-theme 'ef-elea-dark t))
+
+(use-package exec-path-from-shell
+  ;; Set up the exec-path by reading $PATH from a shell
+  :ensure t
+  :config
+  (exec-path-from-shell-initialize))
+
+(use-package flycheck
+  ;; Flycheck
+  :ensure t
+  :init
+  (add-hook 'after-init-hook 'global-flycheck-mode))
+
+(use-package flycheck-clojure
+  ;; Clojure support for Flycheck
+  :ensure t
+  :mode "\\.clj")
 
 (use-package git-gutter
   ;; Git-related decorations in the gutter
@@ -117,7 +137,7 @@
   ;; Recent-file tracking and opening
   :ensure t
   :init
-  (add-hook 'after-init-hook #'recentf-mode)
+  (add-hook 'after-init-hook 'recentf-mode)
   (setq recentf-auto-cleanup 'never
         recentf-max-menu-items 40
         recentf-max-saved-items 100
@@ -127,7 +147,7 @@
   ;; Excess whitespace display
   :ensure t
   :init
-  (add-hook 'after-init-hook #'global-whitespace-mode)
+  (add-hook 'after-init-hook 'global-whitespace-mode)
   :config
   (setq whitespace-style '(face tabs lines-tail)))
 
