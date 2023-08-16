@@ -20,10 +20,14 @@
              '("melpa" . "https://melpa.org/packages/") t)
 (package-initialize)
 
+;; This directory holds files that are taken whole from other sources
+(add-to-list 'load-path (concat user-emacs-directory "external"))
+
 ;; Packages
 (use-package aggressive-indent
   ;; Aggressive indenting for some modes
   :ensure t
+  :delight
   :hook ((clojure-mode . aggressive-indent-mode)
          (emacs-lisp-mode . aggressive-indent-mode)
          (lisp-mode . aggressive-indent-mode)))
@@ -45,6 +49,10 @@
   :ensure t
   :mode "\\.clj")
 
+(use-package delight
+  ;; Minor-mode visibility control
+  :ensure t)
+
 (use-package desktop
   ;; General desktop stuff (history, etc.)
   :ensure t
@@ -65,6 +73,23 @@
                                           tags-file-name
                                           register-alist)))
   (desktop-save-mode 1))
+
+(use-package dired+
+  ;; An improved Dired mode
+  :defer 1
+  :init
+  (setq diredp-hide-details-initially-flag nil)
+  (setq diredp-hide-details-propagate-flag nil)
+
+  :config
+  (diredp-toggle-find-file-reuse-dir 1)
+  (defadvice dired-create-directory (after revert-buffer-after-create activate)
+    "Revert the buffer after a new directory is created."
+    (revert-buffer))
+  (defadvice wdired-abort-changes (after revert-buffer-after-abort activate)
+    "Revert the buffer after aborting wdired change."
+    (revert-buffer))
+  )
 
 (use-package display-line-numbers
   ;; Number ALL the lines
@@ -102,6 +127,7 @@
   ;; Flycheck
   :ensure t
   :init
+  (setq flycheck-emacs-lisp-load-path 'inherit)
   (add-hook 'after-init-hook 'global-flycheck-mode))
 
 (use-package flycheck-clojure
@@ -113,9 +139,17 @@
   ;; Git-related decorations in the gutter
   :if window-system
   :ensure t
-  :diminish
+  :delight
   :config
   (global-git-gutter-mode +1))
+
+(use-package highlight-parentheses
+  ;; Parens highlighting
+  :ensure t
+  :delight
+  :hook ((clojure-mode . highlight-parentheses-mode)
+         (emacs-lisp-mode . highlight-parentheses-mode)
+         (lisp-mode . highlight-parentheses-mode)))
 
 (use-package ido
   ;; IDO mode
@@ -128,7 +162,7 @@
 (use-package paredit
   ;; Parens-editing supercharging
   :ensure t
-  :diminish ""
+  :delight
   :hook ((clojure-mode . paredit-mode)
          (emacs-lisp-mode . paredit-mode)
          (lisp-mode . paredit-mode)))
@@ -143,9 +177,21 @@
         recentf-max-saved-items 100
         recentf-exclude '("\\.ido\\.last" "/recentf$" ".emacs.d/elpa/")))
 
+(use-package wdired
+  ;; Writable-dired package
+  :defer 1
+  :ensure t
+  :config
+  (define-key wdired-mode-map (kbd "C-a") 'dired-back-to-start-of-files)
+  (define-key wdired-mode-map (vector 'remap 'beginning-of-buffer)
+              'dired-back-to-top)
+  (define-key wdired-mode-map (vector 'remap 'end-of-buffer)
+              'dired-jump-to-bottom))
+
 (use-package whitespace
   ;; Excess whitespace display
   :ensure t
+  :delight global-whitespace-mode
   :init
   (add-hook 'after-init-hook 'global-whitespace-mode)
   :config
