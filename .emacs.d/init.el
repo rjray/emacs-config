@@ -49,6 +49,22 @@
   :ensure t
   :mode "\\.clj")
 
+(use-package cperl-mode
+  ;; Preferred Perl mode
+  :ensure t
+  :defer t
+  :custom
+  (setq cperl-indent-parens-as-block t)
+  (setq cperl-close-paren-offset -4)
+  (setq cperl-indent-level 4)
+  (setq cperl-continued-statement-offset 4)
+  (setq cperl-continued-brace-offset 0)
+  (setq cperl-brace-offset -4)
+  (setq cperl-brace-imaginary-offset 0)
+  (setq cperl-label-offset -2)
+  :config
+  (c-set-offset 'inline-open 0))
+
 (use-package delight
   ;; Minor-mode visibility control
   :ensure t)
@@ -56,22 +72,23 @@
 (use-package desktop
   ;; General desktop stuff (history, etc.)
   :ensure t
+  :custom
+  (desktop-save t)
+  (desktop-restore-eager 5)
+  (desktop-globals-to-save (append '((extended-command-history . 30)
+                                     (file-name-history        . 100)
+                                     (grep-history             . 30)
+                                     (compile-history          . 30)
+                                     (minibuffer-history       . 50)
+                                     (query-replace-history    . 60)
+                                     (read-expression-history  . 60)
+                                     (regexp-history           . 60)
+                                     (regexp-search-ring       . 20)
+                                     (search-ring              . 20)
+                                     (shell-command-history    . 50)
+                                     tags-file-name
+                                     register-alist)))
   :config
-  (setq desktop-save t
-        desktop-restore-eager 5
-        desktop-globals-to-save (append '((extended-command-history . 30)
-                                          (file-name-history        . 100)
-                                          (grep-history             . 30)
-                                          (compile-history          . 30)
-                                          (minibuffer-history       . 50)
-                                          (query-replace-history    . 60)
-                                          (read-expression-history  . 60)
-                                          (regexp-history           . 60)
-                                          (regexp-search-ring       . 20)
-                                          (search-ring              . 20)
-                                          (shell-command-history    . 50)
-                                          tags-file-name
-                                          register-alist)))
   (desktop-save-mode 1))
 
 (use-package dired
@@ -150,18 +167,19 @@
 (use-package ido
   ;; IDO mode
   :ensure t
+  :custom
+  (ido-enable-flex-matching t)
+  (ido-everywhere t)
   :config
-  (setq ido-enable-flex-matching t
-        ido-everywhere t)
   (ido-mode 1))
 
 (use-package magit
   ;; Supercharged git interface
   :ensure t
+  :custom
+  (magit-diff-highlight-trailing t)
+  (magit-diff-paint-whitespace t)
   :config
-  (setq
-   magit-diff-highlight-trailing t
-   magit-diff-paint-whitespace t)
   (global-set-key (kbd "C-c m") 'magit-status)
   (define-key magit-status-mode-map (kbd "W")
               (lambda ()
@@ -169,6 +187,36 @@
                 (if magit-diff-paint-whitespace
                     (setq magit-diff-paint-whitespace nil)
                   (setq magit-diff-paint-whitespace t)))))
+
+(use-package org
+  ;; Org Mode
+  :ensure t
+  :hook ((org-mode . auto-revert-mode)
+         (org-mode . (lambda ()
+                       (progn
+                         (local-set-key (kbd "C-c C-j") 'org-journal-new-entry)
+                         (local-set-key (kbd "C-c j") 'org-goto)))))
+  :custom
+  (org-default-notes-file "~/Dropbox/org/organizer.org")
+  (org-refile-targets '((org-agenda-files . (:maxlevel . 6))))
+  :config
+  (global-set-key (kbd "C-c l") #'org-store-link)
+  (global-set-key (kbd "C-c a") #'org-agenda)
+  (global-set-key (kbd "C-c c") #'org-capture)
+  (global-set-key (kbd "C-c o")
+                  (lambda () (interactive)
+                    (find-file "~/Dropbox/org/organizer.org")))
+  (global-set-key (kbd "C-c C-o")
+                  (lambda () (interactive)
+                    (find-file "~/Dropbox/org"))))
+
+(use-package org-journal
+  ;; Org journaling mode
+  :ensure t
+  :bind (("C-c C-j" . org-journal-new-entry))
+  :hook ((org-journal-mode . auto-fill-mode))
+  :custom
+  (org-journal-dir "~/Dropbox/org/journal"))
 
 (use-package paredit
   ;; Parens-editing supercharging
@@ -187,6 +235,18 @@
         recentf-max-menu-items 40
         recentf-max-saved-items 100
         recentf-exclude '("\\.ido\\.last" "/recentf$" ".emacs.d/elpa/")))
+
+(use-package server
+  ;; Emacs in server mode
+  :commands (server-running-p)
+  :init
+  (add-hook 'server-done-hook 'delete-frame)
+  (add-hook 'server-done-hook
+            (lambda ()
+              (kill-buffer nil)))
+  :config
+  (unless (server-running-p)
+    (server-start)))
 
 (use-package wdired
   ;; Writable-dired package
@@ -259,6 +319,8 @@
     (tool-bar-mode -1)
     (scroll-bar-mode -1)))
 
+;; cperl-mode is preferred to perl-mode
+(defalias 'perl-mode 'cperl-mode)
 ;; Don't care for typing out "yes" and "no" all the time...
 (defalias 'yes-or-no-p 'y-or-n-p)
 
