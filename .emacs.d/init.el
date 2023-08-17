@@ -74,22 +74,16 @@
                                           register-alist)))
   (desktop-save-mode 1))
 
-(use-package dired+
-  ;; An improved Dired mode
+(use-package dired
+  ;; Dired mode
   :defer 1
-  :init
-  (setq diredp-hide-details-initially-flag nil)
-  (setq diredp-hide-details-propagate-flag nil)
-
   :config
-  (diredp-toggle-find-file-reuse-dir 1)
   (defadvice dired-create-directory (after revert-buffer-after-create activate)
     "Revert the buffer after a new directory is created."
     (revert-buffer))
   (defadvice wdired-abort-changes (after revert-buffer-after-abort activate)
     "Revert the buffer after aborting wdired change."
-    (revert-buffer))
-  )
+    (revert-buffer)))
 
 (use-package display-line-numbers
   ;; Number ALL the lines
@@ -120,6 +114,7 @@
 (use-package exec-path-from-shell
   ;; Set up the exec-path by reading $PATH from a shell
   :ensure t
+  :commands (exec-path-from-shell-initialize)
   :config
   (exec-path-from-shell-initialize))
 
@@ -139,6 +134,7 @@
   ;; Git-related decorations in the gutter
   :if window-system
   :ensure t
+  :commands (global-git-gutter-mode)
   :delight
   :config
   (global-git-gutter-mode +1))
@@ -158,6 +154,21 @@
   (setq ido-enable-flex-matching t
         ido-everywhere t)
   (ido-mode 1))
+
+(use-package magit
+  ;; Supercharged git interface
+  :ensure t
+  :config
+  (setq
+   magit-diff-highlight-trailing t
+   magit-diff-paint-whitespace t)
+  (global-set-key (kbd "C-c m") 'magit-status)
+  (define-key magit-status-mode-map (kbd "W")
+              (lambda ()
+                (interactive)
+                (if magit-diff-paint-whitespace
+                    (setq magit-diff-paint-whitespace nil)
+                  (setq magit-diff-paint-whitespace t)))))
 
 (use-package paredit
   ;; Parens-editing supercharging
