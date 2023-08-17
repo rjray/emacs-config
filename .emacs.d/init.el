@@ -188,6 +188,13 @@
                     (setq magit-diff-paint-whitespace nil)
                   (setq magit-diff-paint-whitespace t)))))
 
+(use-package markdown-mode
+  ;; Markdown editing
+  :ensure t
+  :mode ("README\\.md\\'" . gfm-mode)
+  :custom
+  (markdown-command "multimarkdown"))
+
 (use-package org
   ;; Org Mode
   :ensure t
@@ -310,6 +317,111 @@
  ;; Dialogs
  use-dialog-box nil
  use-file-dialog nil)
+
+;; Some code for custom key commands:
+;; Taken from crisp.el, written by Gary D. Foster
+(defvar last-last-command nil
+  "Internal variable.")
+
+(defun home ()
+  "Home - begin of line, once more - screen, once more - buffer."
+  (interactive nil)
+  (cond
+   ((and (eq last-command 'home) (eq last-last-command 'home))
+    (goto-char (point-min)))
+   ((eq last-command 'home)
+    (move-to-window-line 0))
+   (t (beginning-of-line)))
+  (setq last-last-command last-command))
+
+(defun end ()
+  "End - end of line, once more - screen, once more - buffer."
+  (interactive nil)
+  (cond
+   ((and (eq last-command 'end) (eq last-last-command 'end))
+    (goto-char (point-max)))
+   ((eq last-command 'end)
+    (move-to-window-line -1)
+    (end-of-line))
+   (t (end-of-line)))
+  (setq last-last-command last-command))
+
+;; I forget where I got this... this is a modified version, anyway.
+(defun count-region ()
+  "Count lines, words and characters in region."
+  (interactive)
+  (let* ((start (if (region-active-p) (region-beginning) (point-min)))
+         (end (if (region-active-p) (region-end) (point-max)))
+         (l (count-lines start end))
+         (w (count-words start end))
+         (c (- end start)))
+    (message "%s has %d line%s, %d word%s and %d character%s."
+             (if (region-active-p) "Region" "Buffer")
+             l (if (= 1 l) "" "s")
+             w (if (= 1 w) "" "s")
+             c (if (= 1 c) "" "s"))))
+
+;; From https://www.emacswiki.org/emacs/RecentFiles
+(defun recentf-open-files-compl ()
+  "Open a file from the recent-files list, with completion."
+  (interactive)
+  (let* ((tocpl (mapcar (lambda (x) (cons (file-name-nondirectory x) x))
+                        recentf-list))
+         (fname (completing-read "File name: " tocpl nil nil)))
+    (when fname
+      (find-file (cdr (assoc-string fname tocpl))))))
+
+(defun fill-paragraph-or-region ()
+  "If the region is active, call `fill-region'. Otherwise, `fill-paragraph'."
+  (interactive)
+  (cond ((region-active-p) (fill-region (region-beginning) (region-end)))
+        (t (fill-paragraph nil))))
+
+;; Bind some keys:
+
+;; Browse the kill-ring with C-c k:
+(global-set-key (kbd "C-c k") 'browse-kill-ring)
+
+;; Bind count-region to C-c =:
+(global-set-key (kbd "C-c =") 'count-region)
+
+;; Find files based on the recent-files list:
+(global-set-key (kbd "C-x C-r") 'recentf-open-files-compl)
+
+;; Use this instead of hitting M-x all the time:
+(global-set-key "\C-x\C-m" 'execute-extended-command)
+(global-set-key "\C-c\C-m" 'execute-extended-command)
+
+;; This one is neat-- make C-w kill a region when the region is active, or
+;; otherwise do a backward-kill-word like C-w behaves in things like bash.
+(global-set-key "\C-w"
+                (lambda (arg)
+                  (interactive "p")
+                  (cond ((region-active-p)
+                         (kill-region (region-beginning) (region-end)))
+                        (t (backward-kill-word arg)))))
+
+
+;; Function-key bindings. Don't go above f8, though, because MacOS grabs f9
+;; through f12. And f1-f4 are already in use.
+(global-set-key [(f5)]         'call-last-kbd-macro)
+(global-set-key [(control f5)] 'edit-last-kbd-macro)
+
+(global-set-key [(f6)]         'search-forward-regexp)
+(global-set-key [(control f6)] 'search-backward-regexp)
+
+(global-set-key [(f7)]         'fill-paragraph-or-region)
+
+(global-set-key [(f8)]         'cider-jack-in)
+
+;; Meta-key combinations
+(global-set-key [(meta g)] 'goto-line)
+(global-set-key [(meta q)] 'quote)
+
+;; I miss these keys on my Macbook... but at least I have them on full
+;; keyboards...
+(global-set-key [(home)] 'home)
+(global-set-key [(end)] 'end)
 
 ;; Some window-system-necessary settings
 (when (window-system)
