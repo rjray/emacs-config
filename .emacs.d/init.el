@@ -22,8 +22,55 @@
 
 ;; This directory holds files that are taken whole from other sources
 (add-to-list 'load-path (concat user-emacs-directory "external"))
+(add-to-list 'default-frame-alist
+             '(font . "Cascadia Code-10"))
 
 ;; Packages
+
+(use-package emacs
+  ;; Set emacs customizations that aren't related to packages below.
+  :custom
+  (default-case-fold-search nil)
+  (x-select-enable-clipboard 1)
+  (tramp-default-method "ssh")
+  (fill-column 79)
+  (transient-mark-mode t)
+
+  ;; Startup stuff supression
+  (inhibit-splash-screen t)
+  (inhibit-startup-echo-area-message t)
+  (inhibit-startup-screen t)
+
+  ;; Backup stuff
+  (backup-inhibited t)
+  (make-backup-files nil)
+  (auto-save-default nil)
+  (auto-save-list-file-name nil)
+  (delete-auto-save-files t)
+
+  ;; Inhibit "magic" mode selection
+  (magic-mode-alist nil)
+
+  (uniquify-buffer-name-style 'forward)
+
+  ;; No double-spaces when I fill a paragraph
+  (sentence-end-double-space nil)
+
+  ;; Always number lines and columns in the status line
+  (line-number-mode t)
+  (column-number-mode t)
+
+  ;; Show indication of the buffer size (right before the line/col)
+  (size-indication-mode t)
+
+  ;; Tabs and lines
+  (tab-width 2)
+  (indent-tabs-mode nil)
+
+  ;; Dialogs
+  (use-dialog-box nil)
+  (use-file-dialog nil))
+
 (use-package aggressive-indent
   ;; Aggressive indenting for some modes
   :ensure t
@@ -275,49 +322,6 @@
   :config
   (setq whitespace-style '(face tabs lines-tail)))
 
-;; Set some defaults
-(setq-default
- default-case-fold-search nil
- x-select-enable-clipboard 1
- tramp-default-method "ssh"
- fill-column 79
- transient-mark-mode t
-
- ;; Startup stuff supression
- inhibit-splash-screen t
- inhibit-startup-echo-area-message t
- inhibit-startup-screen t
-
- ;; Backup stuff
- backup-inhibited t
- make-backup-files nil
- auto-save-default nil
- auto-save-list-file-name nil
- delete-auto-save-files t
-
- ;; Inhibit "magic" mode selection
- magic-mode-alist nil
-
- uniquify-buffer-name-style 'forward
-
- ;; No double-spaces when I fill a paragraph
- sentence-end-double-space nil
-
- ;; Always number lines and columns in the status line
- line-number-mode t
- column-number-mode t
-
- ;; Show indication of the buffer size (right before the line/col)
- size-indication-mode t
-
- ;; Tabs and lines
- tab-width 2
- indent-tabs-mode nil
-
- ;; Dialogs
- use-dialog-box nil
- use-file-dialog nil)
-
 ;; Some code for custom key commands:
 ;; Taken from crisp.el, written by Gary D. Foster
 (defvar last-last-command nil
@@ -415,7 +419,6 @@
 (global-set-key [(f8)]         'cider-jack-in)
 
 ;; Meta-key combinations
-(global-set-key [(meta g)] 'goto-line)
 (global-set-key [(meta q)] 'quote)
 
 ;; I miss these keys on my Macbook... but at least I have them on full
