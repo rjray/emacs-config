@@ -30,6 +30,8 @@
   :bind (("C-+" . text-scale-increase)
 	       ("C--" . text-scale-decrease)
 	       ("C-=" . (lambda () (interactive) (text-scale-set 0))))
+  :hook ((text-mode . display-fill-column-indicator-mode)
+         (prog-mode . display-fill-column-indicator-mode))
   :custom
   (default-case-fold-search nil)
   (x-select-enable-clipboard 1)
@@ -79,7 +81,6 @@
   (use-dialog-box nil)
   (use-file-dialog nil)
   :config
-  (display-fill-column-indicator-mode)
   (subword-mode)
   (pixel-scroll-precision-mode)
   (prefer-coding-system 'utf-8)
@@ -108,40 +109,38 @@
 
 (use-package clojure-mode
   ;; Clojure
-  :ensure t
-  :mode "\\.clj")
+  :ensure t)
 
 (use-package counsel
   ;; Provide versions of common commands customized to use Ivy
   :ensure t
-  :config
-  ;; Use this instead of hitting M-x all the time:
-  (global-set-key "\C-x\C-m" 'counsel-M-x)
-  (global-set-key "\C-c\C-m" 'counsel-M-x)
-  ;; Rest taken from https://oremacs.com/swiper/#global-key-bindings
-  (global-set-key (kbd "C-x C-f") 'counsel-find-file)
-  (global-set-key (kbd "M-y") 'counsel-yank-pop)
-  (global-set-key (kbd "<f1> f") 'counsel-describe-function)
-  (global-set-key (kbd "<f1> v") 'counsel-describe-variable)
-  (global-set-key (kbd "<f1> l") 'counsel-find-library)
-  (global-set-key (kbd "<f2> i") 'counsel-info-lookup-symbol)
-  (global-set-key (kbd "<f2> u") 'counsel-unicode-char)
-  (global-set-key (kbd "<f2> j") 'counsel-set-variable)
-  (global-set-key (kbd "C-c c") 'counsel-compile)
-  (global-set-key (kbd "C-c g") 'counsel-git)
-  (global-set-key (kbd "C-c j") 'counsel-git-grep)
-  (global-set-key (kbd "C-c L") 'counsel-git-log)
-  (global-set-key (kbd "C-c k") 'counsel-rg)
-  (global-set-key (kbd "C-c m") 'counsel-linux-app)
-  (global-set-key (kbd "C-c n") 'counsel-fzf)
-  (global-set-key (kbd "C-x l") 'counsel-locate)
-  (global-set-key (kbd "C-c J") 'counsel-file-jump)
-  (global-set-key (kbd "C-c w") 'counsel-wmctrl)
-  (global-set-key (kbd "C-c b") 'counsel-bookmark)
-  (global-set-key (kbd "C-c d") 'counsel-descbinds)
-  (global-set-key (kbd "C-c o") 'counsel-outline)
-  (global-set-key (kbd "C-c t") 'counsel-load-theme)
-  (global-set-key (kbd "C-c F") 'counsel-org-file))
+  :bind
+  (;; Use this instead of hitting M-x all the time:
+   ("\C-x\C-m" . counsel-M-x)
+   ("\C-c\C-m" . counsel-M-x)
+   ;; Rest taken from https://oremacs.com/swiper/#global-key-bindings
+   ("C-x C-f" . counsel-find-file)
+   ("M-y" . counsel-yank-pop)
+   ("<f1> f" . ounsel-describe-function)
+   ("<f1> v" . ounsel-describe-variable)
+   ("<f1> l" . ounsel-find-library)
+   ("<f2> i" . ounsel-info-lookup-symbol)
+   ("<f2> u" . ounsel-unicode-char)
+   ("<f2> j" . ounsel-set-variable)
+   ("C-c c" . ounsel-compile)
+   ("C-c g" . ounsel-git)
+   ("C-c j" . ounsel-git-grep)
+   ("C-c L" . ounsel-git-log)
+   ("C-c k" . ounsel-rg)
+   ("C-c m" . ounsel-linux-app)
+   ("C-c n" . ounsel-fzf)
+   ("C-x l" . ounsel-locate)
+   ("C-c J" . ounsel-file-jump)
+   ("C-c w" . ounsel-wmctrl)
+   ("C-c b" . ounsel-bookmark)
+   ("C-c d" . ounsel-descbinds)
+   ("C-c t" . ounsel-load-theme)
+   ("C-c F" . ounsel-org-file)))
 
 (use-package cperl-mode
   ;; Preferred Perl mode
@@ -237,8 +236,7 @@
 
 (use-package flycheck-clojure
   ;; Clojure support for Flycheck
-  :ensure t
-  :mode "\\.clj")
+  :ensure t)
 
 (use-package git-gutter
   ;; Git-related decorations in the gutter
@@ -262,24 +260,26 @@
   :ensure t
   :delight
   :commands (ivy-mode)
+  :bind
+  (("C-x b" . ivy-switch-buffer)
+   ("C-c v" . ivy-push-view)
+   ("C-c V" . ivy-pop-view)
+   ("C-c C-r" . ivy-resume))
+  :custom
+  (ivy-use-virtual-buffers t)
+  (ivy-count-format "(%d/%d) ")
   :config
-  (ivy-mode 1)
-  (setq ivy-use-virtual-buffers t)
-  (setq ivy-count-format "(%d/%d) ")
-  (global-set-key (kbd "C-x b") 'ivy-switch-buffer)
-  (global-set-key (kbd "C-c v") 'ivy-push-view)
-  (global-set-key (kbd "C-c V") 'ivy-pop-view)
-  (global-set-key (kbd "C-c C-r") 'ivy-resume))
+  (ivy-mode 1))
 
 (use-package magit
   ;; Supercharged git interface
   :ensure t
+  :bind (("C-c m" . magit-status))
   :custom
   (magit-diff-highlight-trailing t)
   (magit-diff-paint-whitespace t)
   :config
   (setq magit-completing-read-function 'ivy-completing-read)
-  (global-set-key (kbd "C-c m") 'magit-status)
   (define-key magit-status-mode-map (kbd "W")
               (lambda ()
                 (interactive)
@@ -297,6 +297,11 @@
 (use-package org
   ;; Org Mode
   :ensure t
+  :bind (("C-c l" . #'org-store-link)
+         ("C-c o" . (lambda () (interactive)
+                      (find-file "~/Dropbox/org/organizer.org")))
+         ("C-c C-o" . (lambda () (interactive)
+                        (find-file "~/Dropbox/org"))))
   :hook ((org-mode . auto-revert-mode)
          (org-mode . (lambda ()
                        (progn
@@ -304,17 +309,7 @@
                          (local-set-key (kbd "C-c j") 'org-goto)))))
   :custom
   (org-default-notes-file "~/Dropbox/org/organizer.org")
-  (org-refile-targets '((org-agenda-files . (:maxlevel . 6))))
-  :config
-  (global-set-key (kbd "C-c l") #'org-store-link)
-  (global-set-key (kbd "C-c a") #'org-agenda)
-  (global-set-key (kbd "C-c c") #'org-capture)
-  (global-set-key (kbd "C-c o")
-                  (lambda () (interactive)
-                    (find-file "~/Dropbox/org/organizer.org")))
-  (global-set-key (kbd "C-c C-o")
-                  (lambda () (interactive)
-                    (find-file "~/Dropbox/org"))))
+  (org-refile-targets '((org-agenda-files . (:maxlevel . 6)))))
 
 (use-package org-journal
   ;; Org journaling mode
@@ -335,15 +330,13 @@
 (use-package recentf
   ;; Recent-file tracking and opening
   :ensure t
+  :bind (("C-x C-r" . recentf-open-files-compl))
   :init
   (add-hook 'after-init-hook 'recentf-mode)
   (setq recentf-auto-cleanup 'never
         recentf-max-menu-items 40
         recentf-max-saved-items 100
-        recentf-exclude '("\\.ido\\.last" "/recentf$" ".emacs.d/elpa/"))
-  :config
-  ;; Find files based on the recent-files list:
-  (global-set-key (kbd "C-x C-r") 'recentf-open-files-compl))
+        recentf-exclude '("\\.ido\\.last" "/recentf$" ".emacs.d/elpa/")))
 
 (use-package server
   ;; Emacs in server mode
@@ -360,8 +353,7 @@
 (use-package swiper
   ;; Isearch alternative that uses Ivy
   :ensure t
-  :config
-  (global-set-key (kbd "C-s") 'swiper-isearch))
+  :bind (("C-s" . swiper-isearch)))
 
 (use-package wdired
   ;; Writable-dired package
