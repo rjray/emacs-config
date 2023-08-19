@@ -10,5 +10,8 @@
         (width . 85)
         (height . 70)))
 
+(add-to-list 'default-frame-alist
+             '(font . "Cascadia Code-11"))
+
 (provide 'placement)
 ;;; placement.el ends here

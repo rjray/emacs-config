@@ -22,8 +22,6 @@
 
 ;; This directory holds files that are taken whole from other sources
 (add-to-list 'load-path (concat user-emacs-directory "external"))
-(add-to-list 'default-frame-alist
-             '(font . "Cascadia Code-10"))
 
 ;; Packages
 
