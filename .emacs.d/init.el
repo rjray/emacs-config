@@ -87,7 +87,7 @@
   (setq
    nrepl-hide-special-buffers t
    cider-auto-select-error-buffer t
-   nrepl-buffer-name-show-port t
+   cider-prompt-for-symbol t
    cider-repl-display-in-current-window t
    cider-repl-history-size 1000))
 
@@ -95,6 +95,39 @@
   ;; Clojure
   :ensure t
   :mode "\\.clj")
+
+(use-package counsel
+  ;; Provide versions of common commands customized to use Ivy
+  :ensure t
+  :config
+  ;; Use this instead of hitting M-x all the time:
+  (global-set-key "\C-x\C-m" 'counsel-M-x)
+  (global-set-key "\C-c\C-m" 'counsel-M-x)
+  ;; Rest taken from https://oremacs.com/swiper/#global-key-bindings
+  (global-set-key (kbd "C-x C-f") 'counsel-find-file)
+  (global-set-key (kbd "M-y") 'counsel-yank-pop)
+  (global-set-key (kbd "<f1> f") 'counsel-describe-function)
+  (global-set-key (kbd "<f1> v") 'counsel-describe-variable)
+  (global-set-key (kbd "<f1> l") 'counsel-find-library)
+  (global-set-key (kbd "<f2> i") 'counsel-info-lookup-symbol)
+  (global-set-key (kbd "<f2> u") 'counsel-unicode-char)
+  (global-set-key (kbd "<f2> j") 'counsel-set-variable)
+  (global-set-key (kbd "C-c c") 'counsel-compile)
+  (global-set-key (kbd "C-c g") 'counsel-git)
+  (global-set-key (kbd "C-c j") 'counsel-git-grep)
+  (global-set-key (kbd "C-c L") 'counsel-git-log)
+  (global-set-key (kbd "C-c k") 'counsel-rg)
+  (global-set-key (kbd "C-c m") 'counsel-linux-app)
+  (global-set-key (kbd "C-c n") 'counsel-fzf)
+  (global-set-key (kbd "C-x l") 'counsel-locate)
+  (global-set-key (kbd "C-c J") 'counsel-file-jump)
+  (global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
+  (global-set-key (kbd "C-c w") 'counsel-wmctrl)
+  (global-set-key (kbd "C-c b") 'counsel-bookmark)
+  (global-set-key (kbd "C-c d") 'counsel-descbinds)
+  (global-set-key (kbd "C-c o") 'counsel-outline)
+  (global-set-key (kbd "C-c t") 'counsel-load-theme)
+  (global-set-key (kbd "C-c F") 'counsel-org-file))
 
 (use-package cperl-mode
   ;; Preferred Perl mode
@@ -211,14 +244,19 @@
          (emacs-lisp-mode . highlight-parentheses-mode)
          (lisp-mode . highlight-parentheses-mode)))
 
-(use-package ido
-  ;; IDO mode
+(use-package ivy
+  ;; Ivy interactive interface completion
   :ensure t
-  :custom
-  (ido-enable-flex-matching t)
-  (ido-everywhere t)
+  :delight
+  :commands (ivy-mode)
   :config
-  (ido-mode 1))
+  (ivy-mode 1)
+  (setq ivy-use-virtual-buffers t)
+  (setq ivy-count-format "(%d/%d) ")
+  (global-set-key (kbd "C-x b") 'ivy-switch-buffer)
+  (global-set-key (kbd "C-c v") 'ivy-push-view)
+  (global-set-key (kbd "C-c V") 'ivy-pop-view)
+  (global-set-key (kbd "C-c C-r") 'ivy-resume))
 
 (use-package magit
   ;; Supercharged git interface
@@ -227,6 +265,7 @@
   (magit-diff-highlight-trailing t)
   (magit-diff-paint-whitespace t)
   :config
+  (setq magit-completing-read-function 'ivy-completing-read)
   (global-set-key (kbd "C-c m") 'magit-status)
   (define-key magit-status-mode-map (kbd "W")
               (lambda ()
@@ -288,7 +327,10 @@
   (setq recentf-auto-cleanup 'never
         recentf-max-menu-items 40
         recentf-max-saved-items 100
-        recentf-exclude '("\\.ido\\.last" "/recentf$" ".emacs.d/elpa/")))
+        recentf-exclude '("\\.ido\\.last" "/recentf$" ".emacs.d/elpa/"))
+  :config
+  ;; Find files based on the recent-files list:
+  (global-set-key (kbd "C-x C-r") 'recentf-open-files-compl))
 
 (use-package server
   ;; Emacs in server mode
@@ -301,6 +343,12 @@
   :config
   (unless (server-running-p)
     (server-start)))
+
+(use-package swiper
+  ;; Isearch alternative that uses Ivy
+  :ensure t
+  :config
+  (global-set-key (kbd "C-s") 'swiper-isearch))
 
 (use-package wdired
   ;; Writable-dired package
@@ -388,13 +436,6 @@
 
 ;; Bind count-region to C-c =:
 (global-set-key (kbd "C-c =") 'count-region)
-
-;; Find files based on the recent-files list:
-(global-set-key (kbd "C-x C-r") 'recentf-open-files-compl)
-
-;; Use this instead of hitting M-x all the time:
-(global-set-key "\C-x\C-m" 'execute-extended-command)
-(global-set-key "\C-c\C-m" 'execute-extended-command)
 
 ;; This one is neat-- make C-w kill a region when the region is active, or
 ;; otherwise do a backward-kill-word like C-w behaves in things like bash.
