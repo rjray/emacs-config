@@ -29,12 +29,18 @@
 
 (use-package emacs
   ;; Set emacs customizations that aren't related to packages below.
+  :bind (("C-+" . text-scale-increase)
+	       ("C--" . text-scale-decrease)
+	       ("C-=" . (lambda () (interactive) (text-scale-set 0))))
   :custom
   (default-case-fold-search nil)
   (x-select-enable-clipboard 1)
   (tramp-default-method "ssh")
   (fill-column 79)
   (transient-mark-mode t)
+  (byte-compile-warnings '(not obsolete))
+  (warning-suppress-log-types '((comp) (bytecomp)))
+  (warning-minimum-level :error)
 
   ;; Startup stuff supression
   (inhibit-splash-screen t)
@@ -67,9 +73,20 @@
   (tab-width 2)
   (indent-tabs-mode nil)
 
+  ;; Fill column indicators
+  (display-fill-column-indicator-character 124)
+  (display-fill-column-indicator-column 80)
+
   ;; Dialogs
   (use-dialog-box nil)
-  (use-file-dialog nil))
+  (use-file-dialog nil)
+  :config
+  (display-fill-column-indicator-mode)
+  (subword-mode)
+  (pixel-scroll-precision-mode)
+  (prefer-coding-system 'utf-8)
+  (set-language-environment "UTF-8")
+  (add-to-list 'completion-ignored-extensions ".#"))
 
 (use-package aggressive-indent
   ;; Aggressive indenting for some modes
@@ -121,7 +138,6 @@
   (global-set-key (kbd "C-c n") 'counsel-fzf)
   (global-set-key (kbd "C-x l") 'counsel-locate)
   (global-set-key (kbd "C-c J") 'counsel-file-jump)
-  (global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
   (global-set-key (kbd "C-c w") 'counsel-wmctrl)
   (global-set-key (kbd "C-c b") 'counsel-bookmark)
   (global-set-key (kbd "C-c d") 'counsel-descbinds)
@@ -200,7 +216,6 @@
 
 (use-package ef-themes
   ;; Theming
-  :if window-system
   :ensure t
   :config
   ;; Clear out anything from custom
@@ -503,7 +518,19 @@
 (setq frame-title-format
       (concat "%b - emacs@" *system-name*))
 
-(when *is-mac* (require 'mac))
+(when *is-mac*
+  (progn
+    (setq mac-option-modifier '(:function alt :mouse alt)
+          mac-right-command-modifier 'super
+          mac-right-option-modifier 'hyper
+          ns-alternate-modifier 'super
+          ns-command-modifier 'meta
+          ns-pop-up-frames nil)
+    ;; Do something with command+arrow keys
+    (global-set-key [(super up)] 'home)
+    (global-set-key [(super down)] 'end)
+    (global-set-key [(super left)] 'previous-buffer)
+    (global-set-key [(super right)] 'next-buffer)))
 
 ;; If there is a directory under ~/.emacs.d named for this host, load all *.el
 ;; files within it:
