@@ -33,6 +33,7 @@
   :hook ((text-mode . display-fill-column-indicator-mode)
          (prog-mode . display-fill-column-indicator-mode))
   :custom
+  (locale-coding-system 'utf-8)
   (default-case-fold-search nil)
   (x-select-enable-clipboard 1)
   (tramp-default-method "ssh")
@@ -84,7 +85,11 @@
   (subword-mode)
   (pixel-scroll-precision-mode)
   (prefer-coding-system 'utf-8)
-  (set-language-environment "UTF-8")
+  (set-language-environment 'utf-8)
+  (set-terminal-coding-system 'utf-8)
+  (set-keyboard-coding-system 'utf-8)
+  (set-selection-coding-system 'utf-8)
+  (prefer-coding-system 'utf-8)
   (add-to-list 'completion-ignored-extensions ".#"))
 
 (use-package aggressive-indent
@@ -330,7 +335,17 @@
 (use-package recentf
   ;; Recent-file tracking and opening
   :ensure t
-  :bind (("C-x C-r" . recentf-open-files-compl))
+  :bind
+  (("C-x C-r" .
+    ;; From https://www.emacswiki.org/emacs/RecentFiles
+    (lambda ()
+      "Open a file from the recent-files list, with completion."
+      (interactive)
+      (let* ((tocpl (mapcar (lambda (x) (cons (file-name-nondirectory x) x))
+                            recentf-list))
+             (fname (completing-read "File name: " tocpl nil nil)))
+        (when fname
+          (find-file (cdr (assoc-string fname tocpl))))))))
   :init
   (add-hook 'after-init-hook 'recentf-mode)
   (setq recentf-auto-cleanup 'never
@@ -417,16 +432,6 @@
              l (if (= 1 l) "" "s")
              w (if (= 1 w) "" "s")
              c (if (= 1 c) "" "s"))))
-
-;; From https://www.emacswiki.org/emacs/RecentFiles
-(defun recentf-open-files-compl ()
-  "Open a file from the recent-files list, with completion."
-  (interactive)
-  (let* ((tocpl (mapcar (lambda (x) (cons (file-name-nondirectory x) x))
-                        recentf-list))
-         (fname (completing-read "File name: " tocpl nil nil)))
-    (when fname
-      (find-file (cdr (assoc-string fname tocpl))))))
 
 (defun fill-paragraph-or-region ()
   "If the region is active, call `fill-region'. Otherwise, `fill-paragraph'."
