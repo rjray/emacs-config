@@ -273,6 +273,13 @@
   (setq dumb-jump-prefer-searcher 'rg)
   (add-hook 'xref-backend-functions 'dumb-jump-xref-activate))
 
+(use-package company
+  ;; Company mode for completion
+  :ensure t
+  :defer t
+  :config
+  (add-hook 'after-init-hook 'global-company-mode))
+
 ;;;===========================================================================
 ;;; Elisp, Lisp, and Clojure support.
 ;;;===========================================================================
@@ -389,6 +396,12 @@
   :custom
   (org-journal-dir "~/Dropbox/org/journal"))
 
+(use-package org-bullets
+  :ensure t
+  :defer t
+  :config
+  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+
 ;;;===========================================================================
 ;;; Magit and git-related code
 ;;;===========================================================================
@@ -489,6 +502,30 @@
   :ensure t
   :defer t
   :bind ("C-$" . vterm))
+
+;;;===========================================================================
+;;; Misc tools
+;;;===========================================================================
+
+(use-package deadgrep
+  ;; Ripgrep super-tool
+  :ensure t
+  :defer t
+  :bind ("C-/" . deadgrep))
+
+(use-package marginalia
+  :ensure t
+  :custom (marginalia-annotators '(marginalia-annotators-light))
+  :init
+  (marginalia-mode))
+
+(use-package windmove
+  :ensure nil
+  :defer t
+  :bind (("C-c <up>" . windmove-up)
+         ("C-c <right>" . windmove-right)
+         ("C-c <down>" . windmove-down)
+         ("C-c <left>" . windmove-left)))
 
 ;;;===========================================================================
 ;;; End of `use-package' parts.
