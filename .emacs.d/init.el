@@ -361,9 +361,18 @@
 (use-package markdown-mode
   ;; Markdown editing
   :ensure t
-  :mode ("README\\.md\\'" . gfm-mode)
+  :mode (("README\\.md\\'" . gfm-mode)
+         ("\\.md\\'" . markdown-mode))
   :custom
-  (markdown-command "multimarkdown"))
+  (markdown-command "multimarkdown")
+  (markdown-fontify-code-blocks-natively t)
+  :defines markdown-mode-map
+  ;; These bindings are used for window movement
+  :bind (:map markdown-mode-map
+	            ("C-c <left>" . nil)
+	            ("C-c <right>" . nil)
+	            ("C-c <up>" . nil)
+	            ("C-c <down>" . nil)))
 
 ;;;===========================================================================
 ;;; Org Mode and related
