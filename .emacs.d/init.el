@@ -398,8 +398,7 @@
   :bind
   (("C-c t" . treemacs))
   :config
-  (setq treemacs-width 30)
-  (setq-local mode-line-format nil))
+  (setq treemacs-width 30))
 
 (use-package treemacs-magit
   :after (treemacs magit)
