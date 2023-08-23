@@ -16,8 +16,9 @@
 
 (require 'package)
 (setq package-enable-at-startup nil)
-(add-to-list 'package-archives
-             '("melpa" . "https://melpa.org/packages/") t)
+(setq package-archives
+      '(("melpa" . "https://melpa.org/packages/")
+	      ("elpa" . "https://elpa.gnu.org/packages/")))
 (package-initialize)
 
 ;; This directory holds files that are taken whole from other sources
@@ -25,8 +26,9 @@
 
 ;; Packages
 
+;; Set emacs customizations that aren't related to packages below. This should
+;; be mostly global keybindings and top-level setq's.
 (use-package emacs
-  ;; Set emacs customizations that aren't related to packages below.
   :bind (("C-+" . text-scale-increase)
 	       ("C--" . text-scale-decrease)
 	       ("C-=" . (lambda () (interactive) (text-scale-set 0))))
@@ -83,13 +85,13 @@
   (use-file-dialog nil)
   :config
   (subword-mode)
-  (pixel-scroll-precision-mode)
+  (pixel-scroll-precision-mode 1)
   (prefer-coding-system 'utf-8)
   (set-language-environment 'utf-8)
   (set-terminal-coding-system 'utf-8)
   (set-keyboard-coding-system 'utf-8)
   (set-selection-coding-system 'utf-8)
-  (prefer-coding-system 'utf-8)
+  (global-hl-line-mode 1)
   (add-to-list 'completion-ignored-extensions ".#"))
 
 (use-package aggressive-indent
@@ -225,12 +227,18 @@
   ;; Enable the theme
   (load-theme 'ef-elea-dark t))
 
+(use-package eldoc
+  ;; ElDoc
+  :delight eldoc-mode)
+
+(use-package elisp-mode
+  ;; Just to diminish the minor-mode marker
+  :delight "EL")
+
 (use-package exec-path-from-shell
   ;; Set up the exec-path by reading $PATH from a shell
   :ensure t
-  :commands (exec-path-from-shell-initialize)
-  :config
-  (exec-path-from-shell-initialize))
+  :hook (after-init-hook . exec-path-from-shell-initialize))
 
 (use-package flycheck
   ;; Flycheck
@@ -332,6 +340,19 @@
          (emacs-lisp-mode . paredit-mode)
          (lisp-mode . paredit-mode)))
 
+(use-package projectile
+  ;; Projectile for project-level management
+  :ensure t
+  :delight
+  :commands (projectile-mode)
+  ;; Enable Projectile globally
+  :init (projectile-mode +1)
+  :config
+  ;; Recommended keymap prefix on macOS
+  (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
+  ;; Recommended keymap prefix on Windows/Linux
+  (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map))
+
 (use-package recentf
   ;; Recent-file tracking and opening
   :ensure t
@@ -369,6 +390,24 @@
   ;; Isearch alternative that uses Ivy
   :ensure t
   :bind (("C-s" . swiper-isearch)))
+
+(use-package treemacs
+  ;; File-explorer tree
+  :ensure t
+  :defer t
+  :bind
+  (("C-c t" . treemacs))
+  :config
+  (setq treemacs-width 30)
+  (setq-local mode-line-format nil))
+
+(use-package treemacs-magit
+  :after (treemacs magit)
+  :ensure t)
+
+(use-package treemacs-projectile
+  :after (treemacs projectile)
+  :ensure t)
 
 (use-package wdired
   ;; Writable-dired package
