@@ -1,6 +1,12 @@
 ;;; init.el --- Master Emacs configuration file.  -*- lexical-binding: t; -*-
 
+;; Package-Requires: ((emacs "29.1"))
+
 ;;; Commentary:
+;; Latest iteration of my Emacs configuration. This is a complete rewrite done
+;; in light of the 29.1 release. All the code that was kept in separate files
+;; has been rolled in to this one, with the exception of host-specific code
+;; kept in the sub-directories named for each host.
 
 ;;; Code:
 
@@ -18,7 +24,7 @@
 (setq package-enable-at-startup nil)
 (setq package-archives
       '(("melpa" . "https://melpa.org/packages/")
-	      ("elpa" . "https://elpa.gnu.org/packages/")))
+        ("elpa" . "https://elpa.gnu.org/packages/")))
 (package-initialize)
 
 ;; This directory holds files that are taken whole from other sources
@@ -27,11 +33,12 @@
 ;; Packages
 
 ;; Set emacs customizations that aren't related to packages below. This should
-;; be mostly global keybindings and top-level setq's.
+;; be mostly global keybindings and top-level setq's. This appears before all
+;; other `use-package' invocations.
 (use-package emacs
   :bind (("C-+" . text-scale-increase)
-	       ("C--" . text-scale-decrease)
-	       ("C-=" . (lambda () (interactive) (text-scale-set 0))))
+         ("C--" . text-scale-decrease)
+         ("C-=" . (lambda () (interactive) (text-scale-set 0))))
   :hook ((text-mode . display-fill-column-indicator-mode)
          (prog-mode . display-fill-column-indicator-mode))
   :custom
@@ -94,79 +101,13 @@
   (global-hl-line-mode 1)
   (add-to-list 'completion-ignored-extensions ".#"))
 
-(use-package aggressive-indent
-  ;; Aggressive indenting for some modes
-  :ensure t
-  :delight
-  :hook ((clojure-mode . aggressive-indent-mode)
-         (emacs-lisp-mode . aggressive-indent-mode)
-         (lisp-mode . aggressive-indent-mode)))
-
-(use-package cider
-  ;; CIDER for Clojure editing
-  :ensure t
-  :hook (clojure-mode . cider-mode)
-  :config
-  (setq
-   nrepl-hide-special-buffers t
-   cider-auto-select-error-buffer t
-   cider-prompt-for-symbol t
-   cider-repl-display-in-current-window t
-   cider-repl-history-size 1000))
-
-(use-package clojure-mode
-  ;; Clojure
-  :ensure t)
-
-(use-package counsel
-  ;; Provide versions of common commands customized to use Ivy
-  :ensure t
-  :bind
-  (;; Use this instead of hitting M-x all the time:
-   ("\C-x\C-m" . counsel-M-x)
-   ("\C-c\C-m" . counsel-M-x)
-   ;; Rest taken from https://oremacs.com/swiper/#global-key-bindings
-   ("C-x C-f" . counsel-find-file)
-   ("M-y" . counsel-yank-pop)
-   ("<f1> f" . counsel-describe-function)
-   ("<f1> v" . counsel-describe-variable)
-   ("<f1> l" . counsel-find-library)
-   ("<f2> i" . counsel-info-lookup-symbol)
-   ("<f2> u" . counsel-unicode-char)
-   ("<f2> j" . counsel-set-variable)
-   ("C-c c" . counsel-compile)
-   ("C-c g" . counsel-git)
-   ("C-c j" . counsel-git-grep)
-   ("C-c L" . counsel-git-log)
-   ("C-c k" . counsel-rg)
-   ("C-c m" . counsel-linux-app)
-   ("C-c n" . counsel-fzf)
-   ("C-x l" . counsel-locate)
-   ("C-c J" . counsel-file-jump)
-   ("C-c w" . counsel-wmctrl)
-   ("C-c b" . counsel-bookmark)
-   ("C-c d" . counsel-descbinds)
-   ("C-c t" . counsel-load-theme)
-   ("C-c F" . counsel-org-file)))
-
-(use-package cperl-mode
-  ;; Preferred Perl mode
-  :ensure t
-  :defer t
-  :custom
-  (cperl-indent-parens-as-block t)
-  (cperl-close-paren-offset -4)
-  (cperl-indent-level 4)
-  (cperl-continued-statement-offset 4)
-  (cperl-continued-brace-offset 0)
-  (cperl-brace-offset -4)
-  (cperl-brace-imaginary-offset 0)
-  (cperl-label-offset -2)
-  :config
-  (c-set-offset 'inline-open 0))
+;;;===========================================================================
+;;; Start-up and general interface packages.
+;;;===========================================================================
 
 (use-package delight
-  ;; Minor-mode visibility control
+  ;; Minor-mode visibility control. Load this early so that later use-package
+  ;; invocations can use it.
   :ensure t)
 
 (use-package desktop
@@ -191,17 +132,6 @@
   :config
   (desktop-save-mode 1))
 
-(use-package dired
-  ;; Dired mode
-  :defer 1
-  :config
-  (defadvice dired-create-directory (after revert-buffer-after-create activate)
-    "Revert the buffer after a new directory is created."
-    (revert-buffer))
-  (defadvice wdired-abort-changes (after revert-buffer-after-abort activate)
-    "Revert the buffer after aborting wdired change."
-    (revert-buffer)))
-
 (use-package display-line-numbers
   ;; Number ALL the lines
   :if window-system
@@ -210,13 +140,6 @@
   ;; No, seriously... all the lines.
   (global-display-line-numbers-mode t)
   (setq display-line-numbers-grow-only t))
-
-(use-package dumb-jump
-  ;; A go-to-def package that uses ripgrep
-  :ensure t
-  :config
-  (setq dumb-jump-prefer-searcher 'rg)
-  (add-hook 'xref-backend-functions 'dumb-jump-xref-activate))
 
 (use-package ef-themes
   ;; Theming
@@ -227,131 +150,10 @@
   ;; Enable the theme
   (load-theme 'ef-elea-dark t))
 
-(use-package eldoc
-  ;; ElDoc
-  :delight eldoc-mode)
-
-(use-package elisp-mode
-  ;; Just to diminish the minor-mode marker
-  :delight "EL")
-
 (use-package exec-path-from-shell
   ;; Set up the exec-path by reading $PATH from a shell
   :ensure t
   :hook (after-init-hook . exec-path-from-shell-initialize))
-
-(use-package flycheck
-  ;; Flycheck
-  :ensure t
-  :init
-  (setq flycheck-emacs-lisp-load-path 'inherit)
-  (add-hook 'after-init-hook 'global-flycheck-mode))
-
-(use-package flycheck-clojure
-  ;; Clojure support for Flycheck
-  :ensure t)
-
-(use-package git-gutter
-  ;; Git-related decorations in the gutter
-  :if window-system
-  :ensure t
-  :commands (global-git-gutter-mode)
-  :delight
-  :config
-  (global-git-gutter-mode +1))
-
-(use-package highlight-parentheses
-  ;; Parens highlighting
-  :ensure t
-  :delight
-  :hook ((clojure-mode . highlight-parentheses-mode)
-         (emacs-lisp-mode . highlight-parentheses-mode)
-         (lisp-mode . highlight-parentheses-mode)))
-
-(use-package ivy
-  ;; Ivy interactive interface completion
-  :ensure t
-  :delight
-  :commands (ivy-mode)
-  :bind
-  (("C-x b" . ivy-switch-buffer)
-   ("C-c v" . ivy-push-view)
-   ("C-c V" . ivy-pop-view)
-   ("C-c C-r" . ivy-resume))
-  :custom
-  (ivy-use-virtual-buffers t)
-  (ivy-count-format "(%d/%d) ")
-  :config
-  (ivy-mode 1))
-
-(use-package magit
-  ;; Supercharged git interface
-  :ensure t
-  :bind (("C-c m" . magit-status))
-  :custom
-  (magit-diff-highlight-trailing t)
-  (magit-diff-paint-whitespace t)
-  :config
-  (setq magit-completing-read-function 'ivy-completing-read)
-  (define-key magit-status-mode-map (kbd "W")
-              (lambda ()
-                (interactive)
-                (if magit-diff-paint-whitespace
-                    (setq magit-diff-paint-whitespace nil)
-                  (setq magit-diff-paint-whitespace t)))))
-
-(use-package markdown-mode
-  ;; Markdown editing
-  :ensure t
-  :mode ("README\\.md\\'" . gfm-mode)
-  :custom
-  (markdown-command "multimarkdown"))
-
-(use-package org
-  ;; Org Mode
-  :ensure t
-  :bind (("C-c l" . #'org-store-link)
-         ("C-c o" . (lambda () (interactive)
-                      (find-file "~/Dropbox/org/organizer.org")))
-         ("C-c C-o" . (lambda () (interactive)
-                        (find-file "~/Dropbox/org"))))
-  :hook ((org-mode . auto-revert-mode)
-         (org-mode . (lambda ()
-                       (progn
-                         (local-set-key (kbd "C-c C-j") 'org-journal-new-entry)
-                         (local-set-key (kbd "C-c j") 'org-goto)))))
-  :custom
-  (org-default-notes-file "~/Dropbox/org/organizer.org")
-  (org-refile-targets '((org-agenda-files . (:maxlevel . 6)))))
-
-(use-package org-journal
-  ;; Org journaling mode
-  :ensure t
-  :bind (("C-c C-j" . org-journal-new-entry))
-  :hook ((org-journal-mode . auto-fill-mode))
-  :custom
-  (org-journal-dir "~/Dropbox/org/journal"))
-
-(use-package paredit
-  ;; Parens-editing supercharging
-  :ensure t
-  :delight
-  :hook ((clojure-mode . paredit-mode)
-         (emacs-lisp-mode . paredit-mode)
-         (lisp-mode . paredit-mode)))
-
-(use-package projectile
-  ;; Projectile for project-level management
-  :ensure t
-  :delight
-  :commands (projectile-mode)
-  ;; Enable Projectile globally
-  :init (projectile-mode +1)
-  :config
-  ;; Recommended keymap prefix on macOS
-  (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
-  ;; Recommended keymap prefix on Windows/Linux
-  (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map))
 
 (use-package recentf
   ;; Recent-file tracking and opening
@@ -386,10 +188,239 @@
   (unless (server-running-p)
     (server-start)))
 
+(use-package whitespace
+  ;; Excess whitespace display
+  :ensure t
+  :delight global-whitespace-mode
+  :init
+  (add-hook 'after-init-hook 'global-whitespace-mode)
+  :config
+  (setq whitespace-style '(face tabs lines-tail)))
+
+;;;===========================================================================
+;;; Packages related to command-selection, completion, etc.
+;;;===========================================================================
+
+(use-package counsel
+  ;; Provide versions of common commands customized to use Ivy
+  :ensure t
+  :bind
+  (;; Use this instead of hitting M-x all the time:
+   ("\C-x\C-m" . counsel-M-x)
+   ("\C-c\C-m" . counsel-M-x)
+   ;; Rest taken from https://oremacs.com/swiper/#global-key-bindings
+   ("C-x C-f" . counsel-find-file)
+   ("M-y" . counsel-yank-pop)
+   ("<f1> f" . counsel-describe-function)
+   ("<f1> v" . counsel-describe-variable)
+   ("<f1> l" . counsel-find-library)
+   ("<f2> i" . counsel-info-lookup-symbol)
+   ("<f2> u" . counsel-unicode-char)
+   ("<f2> j" . counsel-set-variable)
+   ("C-c c" . counsel-compile)
+   ("C-c g" . counsel-git)
+   ("C-c j" . counsel-git-grep)
+   ("C-c L" . counsel-git-log)
+   ("C-c k" . counsel-rg)
+   ("C-c m" . counsel-linux-app)
+   ("C-c n" . counsel-fzf)
+   ("C-x l" . counsel-locate)
+   ("C-c J" . counsel-file-jump)
+   ("C-c w" . counsel-wmctrl)
+   ("C-c b" . counsel-bookmark)
+   ("C-c d" . counsel-descbinds)
+   ("C-c t" . counsel-load-theme)
+   ("C-c F" . counsel-org-file)))
+
+(use-package ivy
+  ;; Ivy interactive interface completion
+  :ensure t
+  :delight
+  :commands (ivy-mode)
+  :bind
+  (("C-x b" . ivy-switch-buffer)
+   ("C-c v" . ivy-push-view)
+   ("C-c V" . ivy-pop-view)
+   ("C-c C-r" . ivy-resume))
+  :custom
+  (ivy-use-virtual-buffers t)
+  (ivy-count-format "(%d/%d) ")
+  :config
+  (ivy-mode 1))
+
 (use-package swiper
   ;; Isearch alternative that uses Ivy
   :ensure t
   :bind (("C-s" . swiper-isearch)))
+
+(use-package projectile
+  ;; Projectile for project-level management
+  :ensure t
+  :delight
+  :commands (projectile-mode)
+  ;; Enable Projectile globally
+  :init (projectile-mode +1)
+  :config
+  ;; Recommended keymap prefix on macOS
+  (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
+  ;; Recommended keymap prefix on Windows/Linux
+  (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map))
+
+(use-package dumb-jump
+  ;; A go-to-def package that uses ripgrep
+  :ensure t
+  :config
+  (setq dumb-jump-prefer-searcher 'rg)
+  (add-hook 'xref-backend-functions 'dumb-jump-xref-activate))
+
+;;;===========================================================================
+;;; Elisp, Lisp, and Clojure support.
+;;;===========================================================================
+
+(use-package aggressive-indent
+  ;; Aggressive indenting for some modes
+  :ensure t
+  :delight
+  :hook ((clojure-mode . aggressive-indent-mode)
+         (emacs-lisp-mode . aggressive-indent-mode)
+         (lisp-mode . aggressive-indent-mode)))
+
+(use-package highlight-parentheses
+  ;; Parens highlighting
+  :ensure t
+  :delight
+  :hook ((clojure-mode . highlight-parentheses-mode)
+         (emacs-lisp-mode . highlight-parentheses-mode)
+         (lisp-mode . highlight-parentheses-mode)))
+
+(use-package cider
+  ;; CIDER for Clojure editing
+  :ensure t
+  :defer t
+  :hook (clojure-mode . cider-mode)
+  :config
+  (setq
+   nrepl-hide-special-buffers t
+   cider-auto-select-error-buffer t
+   cider-prompt-for-symbol t
+   cider-repl-display-in-current-window t
+   cider-repl-history-size 1000))
+
+(use-package clojure-mode
+  ;; Clojure
+  :ensure t
+  :defer t)
+
+(use-package eldoc
+  ;; ElDoc
+  :delight eldoc-mode)
+
+(use-package elisp-mode
+  ;; Just to diminish the minor-mode marker
+  :delight "EL")
+
+(use-package paredit
+  ;; Parens-editing supercharging
+  :ensure t
+  :delight
+  :hook ((clojure-mode . paredit-mode)
+         (emacs-lisp-mode . paredit-mode)
+         (lisp-mode . paredit-mode)))
+
+;;;===========================================================================
+;;; Perl development
+;;;===========================================================================
+
+(use-package cperl-mode
+  ;; Preferred Perl mode
+  :ensure t
+  :defer t
+  :custom
+  (cperl-indent-parens-as-block t)
+  (cperl-close-paren-offset -4)
+  (cperl-indent-level 4)
+  (cperl-continued-statement-offset 4)
+  (cperl-continued-brace-offset 0)
+  (cperl-brace-offset -4)
+  (cperl-brace-imaginary-offset 0)
+  (cperl-label-offset -2)
+  :config
+  (c-set-offset 'inline-open 0))
+
+;;;===========================================================================
+;;; Markdown
+;;;===========================================================================
+
+(use-package markdown-mode
+  ;; Markdown editing
+  :ensure t
+  :mode ("README\\.md\\'" . gfm-mode)
+  :custom
+  (markdown-command "multimarkdown"))
+
+;;;===========================================================================
+;;; Org Mode and related
+;;;===========================================================================
+
+(use-package org
+  ;; Org Mode
+  :ensure t
+  :defer t
+  :bind (("C-c l" . #'org-store-link)
+         ("C-c o" . (lambda () (interactive)
+                      (find-file "~/Dropbox/org/organizer.org")))
+         ("C-c C-o" . (lambda () (interactive)
+                        (find-file "~/Dropbox/org"))))
+  :hook ((org-mode . auto-revert-mode)
+         (org-mode . (lambda ()
+                       (progn
+                         (local-set-key (kbd "C-c C-j") 'org-journal-new-entry)
+                         (local-set-key (kbd "C-c j") 'org-goto)))))
+  :custom
+  (org-default-notes-file "~/Dropbox/org/organizer.org")
+  (org-refile-targets '((org-agenda-files . (:maxlevel . 6)))))
+
+(use-package org-journal
+  ;; Org journaling mode
+  :ensure t
+  :defer t
+  :bind (("C-c C-j" . org-journal-new-entry))
+  :hook ((org-journal-mode . auto-fill-mode))
+  :custom
+  (org-journal-dir "~/Dropbox/org/journal"))
+
+;;;===========================================================================
+;;; Magit and git-related code
+;;;===========================================================================
+
+(use-package git-gutter
+  ;; Git-related decorations in the gutter
+  :if window-system
+  :ensure t
+  :commands (global-git-gutter-mode)
+  :delight
+  :config
+  (global-git-gutter-mode +1))
+
+(use-package magit
+  ;; Supercharged git interface
+  :ensure t
+  :bind (("C-c m" . magit-status))
+  :custom
+  (magit-diff-highlight-trailing t)
+  (magit-diff-paint-whitespace t)
+  :config
+  (setq magit-completing-read-function 'ivy-completing-read)
+  (define-key magit-status-mode-map (kbd "W")
+              (lambda ()
+                (interactive)
+                (if magit-diff-paint-whitespace
+                    (setq magit-diff-paint-whitespace nil)
+                  (setq magit-diff-paint-whitespace t)))))
+
+;;;===========================================================================
+;;; Treemacs for navigation
+;;;===========================================================================
 
 (use-package treemacs
   ;; File-explorer tree
@@ -408,6 +439,21 @@
   :after (treemacs projectile)
   :ensure t)
 
+;;;===========================================================================
+;;; Dired-related bits
+;;;===========================================================================
+
+(use-package dired
+  ;; Dired mode
+  :defer 1
+  :config
+  (defadvice dired-create-directory (after revert-buffer-after-create activate)
+    "Revert the buffer after a new directory is created."
+    (revert-buffer))
+  (defadvice wdired-abort-changes (after revert-buffer-after-abort activate)
+    "Revert the buffer after aborting wdired change."
+    (revert-buffer)))
+
 (use-package wdired
   ;; Writable-dired package
   :defer 1
@@ -419,14 +465,25 @@
   (define-key wdired-mode-map (vector 'remap 'end-of-buffer)
               'dired-jump-to-bottom))
 
-(use-package whitespace
-  ;; Excess whitespace display
+;;;===========================================================================
+;;; Flycheck bits
+;;;===========================================================================
+
+(use-package flycheck
+  ;; Flycheck
   :ensure t
-  :delight global-whitespace-mode
   :init
-  (add-hook 'after-init-hook 'global-whitespace-mode)
-  :config
-  (setq whitespace-style '(face tabs lines-tail)))
+  (setq flycheck-emacs-lisp-load-path 'inherit)
+  (add-hook 'after-init-hook 'global-flycheck-mode))
+
+(use-package flycheck-clojure
+  ;; Clojure support for Flycheck
+  :after (clojure-mode)
+  :ensure t)
+
+;;;===========================================================================
+;;; End of `use-package' parts.
+;;;===========================================================================
 
 ;; Some code for custom key commands:
 ;; Taken from crisp.el, written by Gary D. Foster
