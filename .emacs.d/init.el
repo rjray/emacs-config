@@ -41,6 +41,7 @@
          ("C-=" . (lambda () (interactive) (text-scale-set 0))))
   :hook ((text-mode . display-fill-column-indicator-mode)
          (prog-mode . display-fill-column-indicator-mode))
+
   :custom
   (locale-coding-system 'utf-8)
   (default-case-fold-search nil)
@@ -90,6 +91,7 @@
   ;; Dialogs
   (use-dialog-box nil)
   (use-file-dialog nil)
+
   :config
   (subword-mode)
   (pixel-scroll-precision-mode 1)
@@ -281,6 +283,93 @@
   (add-hook 'after-init-hook 'global-company-mode))
 
 ;;;===========================================================================
+;;; Language parsing and tree-sitter
+;;;===========================================================================
+
+(use-package tree-sitter
+  :ensure t
+  :defer t
+  :delight " tree")
+
+(use-package tree-sitter-langs
+  :ensure t
+  :defer t)
+
+(use-package treesit
+  :preface
+  (setq treesit-language-source-alist
+        '((bash . ("https://github.com/tree-sitter/tree-sitter-bash"))
+          (c . ("https://github.com/tree-sitter/tree-sitter-c"))
+          (cpp . ("https://github.com/tree-sitter/tree-sitter-cpp"))
+          (clojure . ("https://github.com/sogaiu/tree-sitter-clojure"))
+          (css . ("https://github.com/tree-sitter/tree-sitter-css"))
+          (cmake . ("https://github.com/uyha/tree-sitter-cmake"))
+          (dockerfile .
+                      ("https://github.com/camdencheek/tree-sitter-dockerfile"))
+          (elisp "https://github.com/Wilfred/tree-sitter-elisp")
+          (go . ("https://github.com/tree-sitter/tree-sitter-go"))
+          (html . ("https://github.com/tree-sitter/tree-sitter-html"))
+          (javascript .
+                      ("https://github.com/tree-sitter/tree-sitter-javascript"))
+          (json . ("https://github.com/tree-sitter/tree-sitter-json"))
+          (make . ("https://github.com/alemuller/tree-sitter-make"))
+          (markdown "https://github.com/ikatyang/tree-sitter-markdown")
+          (python . ("https://github.com/tree-sitter/tree-sitter-python"))
+          (typescript .
+                      ("https://github.com/tree-sitter/tree-sitter-typescript"
+                       "master" "typescript/src"))
+          (tsx .
+               ("https://github.com/tree-sitter/tree-sitter-typescript"
+                "master" "tsx/src"))
+          (rust . ("https://github.com/tree-sitter/tree-sitter-rust"))
+          (sql . ("https://github.com/m-novikov/tree-sitter-sql"))
+          (toml . ("https://github.com/tree-sitter/tree-sitter-toml"))
+          (yaml "https://github.com/ikatyang/tree-sitter-yaml")))
+  (defun my/treesit-install-all-languages ()
+    "Install all languages specified by `treesit-language-source-alist'."
+    (interactive)
+    (dolist (grammar treesit-language-source-alist)
+      (add-to-list 'treesit-language-source-alist grammar)
+      ;; Only install `grammar' if we don't already have it
+      ;; installed. However, if you want to *update* a grammar then
+      ;; this obviously prevents that from happening.
+      (unless (treesit-language-available-p (car grammar))
+        (treesit-install-language-grammar (car grammar)))))
+  (dolist (mapping '((c-mode . c-ts-mode)
+                     (c++-mode . c++-ts-mode)
+                     (css-mode . css-ts-mode)
+                     (java-mode . java-ts-mode)
+                     (bash-mode . bash-ts-mode)
+                     (js2-mode . js-ts-mode)
+                     (typescript-mode . typescript-ts-mode)
+                     (json-mode . json-ts-mode)
+                     (python-mode . python-ts-mode)))
+    (add-to-list 'major-mode-remap-alist mapping))
+  :config
+  (my/treesit-install-all-languages))
+
+;; Also keep an eye on https://github.com/zkry/yaml-pro
+(use-package yaml-ts-mode
+  :ensure t
+  :defer t
+  :mode (("\\.yml\\'" . yaml-ts-mode)
+         ("\\.yaml\\'" . yaml-ts-mode)))
+
+;; Wait until this is in MELPA or ELPA before trying to use it. Keep an eye on
+;; https://github.com/mickeynp/combobulate for updates.
+
+;; (use-package combobulate
+;;   :ensure t
+;;   :defer t
+;;   :hook ((python-ts-mode-hook . combobulate-mode)
+;;          (js-ts-mode-hook . combobulate-mode)
+;;          (json-ts-mode . combobulate-mode)
+;;          (css-ts-mode-hook . combobulate-mode)
+;;          (yaml-ts-mode-hook . combobulate-mode)
+;;          (typescript-ts-mode-hook . combobulate-mode)
+;;          (tsx-ts-mode-hook . combobulate-mode)))
+
+;;;===========================================================================
 ;;; Elisp, Lisp, and Clojure support.
 ;;;===========================================================================
 
@@ -369,10 +458,10 @@
   :defines markdown-mode-map
   ;; These bindings are used for window movement
   :bind (:map markdown-mode-map
-	            ("C-c <left>" . nil)
-	            ("C-c <right>" . nil)
-	            ("C-c <up>" . nil)
-	            ("C-c <down>" . nil)))
+              ("C-c <left>" . nil)
+              ("C-c <right>" . nil)
+              ("C-c <up>" . nil)
+              ("C-c <down>" . nil)))
 
 ;;;===========================================================================
 ;;; Org Mode and related
@@ -408,6 +497,7 @@
 (use-package org-bullets
   :ensure t
   :defer t
+  :commands (org-bullets-mode)
   :config
   (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
 
@@ -524,6 +614,7 @@
 
 (use-package marginalia
   :ensure t
+  :commands (marginalia-mode)
   :custom (marginalia-annotators '(marginalia-annotators-light))
   :init
   (marginalia-mode))
