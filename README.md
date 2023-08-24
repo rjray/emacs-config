@@ -11,7 +11,7 @@ have emacs.
 
 I have recently switch from managing my external dependencies via
 [package.el](http://wikemacs.org/wiki/Package.el), to
-[use-package](https://github.com/jwiegley/use-package#modes-and-interpreters).
+[use-package](https://github.com/jwiegley/use-package).
 Those parts of the config are still somewhat volatile, as I keep finding bits
 I did either inefficiently or outright incorrectly.
 
