@@ -38,7 +38,10 @@
 (use-package emacs
   :bind (("C-+" . text-scale-increase)
          ("C--" . text-scale-decrease)
-         ("C-=" . (lambda () (interactive) (text-scale-set 0))))
+         ("C-=" . (lambda () (interactive) (text-scale-set 0)))
+         ("C-z" . undo)
+         ("C-x C-z" . nil)
+         ("C-h h" . nil))
   :hook ((text-mode . display-fill-column-indicator-mode)
          (prog-mode . display-fill-column-indicator-mode))
 
@@ -626,6 +629,18 @@
          ("C-c <right>" . windmove-right)
          ("C-c <down>" . windmove-down)
          ("C-c <left>" . windmove-left)))
+
+(use-package elec-pair
+  :ensure nil
+  :defer t
+  :config
+  (defun my/electric-pair-local-text-mode ()
+    "Advise and wrap electric pairs in text mode."
+    (add-function :before-until electric-pair-inhibit-predicate
+                  (lambda (c) (eq c ?<)))
+    (electric-pair-local-mode))
+  :hook ((prog-mode-hook . electric-pair-local-mode)
+         (text-mode-hook . my/electric-pair-local-text-mode)))
 
 ;;;===========================================================================
 ;;; End of `use-package' parts.
