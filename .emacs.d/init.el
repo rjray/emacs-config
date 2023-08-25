@@ -373,6 +373,38 @@
 ;;          (tsx-ts-mode-hook . combobulate-mode)))
 
 ;;;===========================================================================
+;;; Eglot setup
+;;;===========================================================================
+
+(use-package eglot
+  :ensure t
+  :defer t
+  :custom
+  (read-process-output-max (* 1024 1024))
+  (eldoc-echo-area-use-multiline-p)
+  (eglot-autoshutdown t)
+  :hook ((bash-ts-mode . eglot-ensure)
+         (c-ts-mode-hook . eglot-ensure)
+         (c++-ts-mode-hook . eglot-ensure)
+         (clojure-mode . eglot-ensure)
+         (css-ts-mode-hook . eglot-ensure)
+         (dockerfile-ts-mode . eglot-ensure)
+         (html-mode-hook . eglot-ensure)
+         (java-ts-mode . eglot-ensure)
+         (js-ts-mode-hook . eglot-ensure)
+         (tsx-ts-mode-hook . eglot-ensure)
+         (json-ts-mode . eglot-ensure)
+         (latex-mode-hook . eglot-ensure)
+         (markdown-mode . eglot-ensure)
+         (cperl-mode . eglot-ensure)
+         (rust-ts-mode-hook . eglot-ensure)
+         (yaml-ts-mode . eglot-ensure))
+  :bind (("C-c l b" . eglot-format-buffer)
+         ("C-c l a" . eglot-code-actions)
+         ("C-c l e" . eglot-reconnect)
+         ("C-c l r" . eglot-rename)))
+
+;;;===========================================================================
 ;;; Elisp, Lisp, and Clojure support.
 ;;;===========================================================================
 
