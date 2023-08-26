@@ -286,6 +286,47 @@
   :config
   (add-hook 'after-init-hook 'global-company-mode))
 
+(use-package which-key
+  :ensure t
+  :delight which-key-mode
+  :commands (which-key-mode which-key-setup-minibuffer)
+  :custom
+  (which-key-idle-delay 0.3)
+  (which-key-prefix-prefix "◉ ")
+  (which-key-sort-order 'which-key-key-order-alpha)
+  (which-key-min-display-lines 3)
+  (which-key-max-display-columns nil)
+  :config
+  (which-key-mode)
+  (which-key-setup-minibuffer))
+
+(use-package prescient
+  :ensure t
+  :commands (prescient-persist-mode)
+  :config
+  (setq-default history-length 1000)
+  (setq-default prescient-history-length 1000) ;; More prescient history
+  (prescient-persist-mode +1))
+
+;; Use `prescient' for Ivy menus.
+(use-package ivy-prescient
+  :ensure t
+  :after ivy
+  :commands (ivy-prescient-mode)
+  :config
+  ;; don't prescient sort these commands
+  (dolist (command '(org-ql-view counsel-find-file))
+    (setq ivy-prescient-sort-commands (append ivy-prescient-sort-commands
+                                              (list command))))
+  (ivy-prescient-mode +1))
+
+(use-package company-prescient
+  :ensure t
+  :after company
+  :commands (company-prescient-mode)
+  :config
+  (company-prescient-mode +1))
+
 ;;;===========================================================================
 ;;; Language parsing and tree-sitter
 ;;;===========================================================================
