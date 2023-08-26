@@ -751,6 +751,12 @@
   (cond ((region-active-p) (fill-region (region-beginning) (region-end)))
         (t (fill-paragraph nil))))
 
+(defun untabify-buffer-or-region ()
+  "Untabify the entire buffer. If region is active, only untabify the region."
+  (interactive)
+  (cond ((region-active-p) (untabify (region-beginning) (region-end)))
+        (t (untabify (point-min) (point-max)))))
+
 ;; Bind some keys:
 
 ;; Browse the kill-ring with C-c k:
@@ -778,6 +784,7 @@
 (global-set-key [(control f6)] 'search-backward-regexp)
 
 (global-set-key [(f7)]         'fill-paragraph-or-region)
+(global-set-key [(control f7)] 'untabify-buffer-or-region)
 
 (global-set-key [(f8)]         'cider-jack-in)
 
