@@ -44,5 +44,16 @@ this configuration to work.
     * LaTeX: [texlab](https://github.com/latex-lsp/texlab)
     * Markdown: [marksman](https://github.com/artempyanykh/marksman)
     * Perl: [Perl::LanguageServer](https://github.com/richterger/Perl-LanguageServer)
+    * Python: Requires the following module installations:
+        * `pip install "python-lsp-server[all]"`
+        * `pip install pylsp-mypy pylsp-rope python-lsp-ruff`
+        * `pip install python-lsp-black`
     * Rust: [rust-analyzer](https://github.com/rust-analyzer/rust-analyzer)
     * YAML: [yaml-language-server](https://github.com/redhat-developer/yaml-language-server)
+* Other External Programs:
+    * Ripgrep: [rg](https://github.com/BurntSushi/ripgrep)
+    * FD: [fd](https://github.com/sharkdp/fd)
+
+The script `setup_deps.sh` in this directory will check for and install these
+dependencies (except for Emacs itself). Emacs 29.1 with tree-sitter support can
+be installed via Homebrew.
