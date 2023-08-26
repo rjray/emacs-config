@@ -7,7 +7,7 @@
 (setq initial-frame-alist
       '((top . 22)
         (left - 0)
-        (width . 90)
+        (width . 180)
         (height . 70)))
 
 (add-to-list 'default-frame-alist
