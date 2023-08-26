@@ -43,7 +43,8 @@
          ("C-x C-z" . nil)
          ("C-h h" . nil))
   :hook ((text-mode . display-fill-column-indicator-mode)
-         (prog-mode . display-fill-column-indicator-mode))
+         (prog-mode . display-fill-column-indicator-mode)
+         (prog-mode . flyspell-prog-mode))
 
   :custom
   (locale-coding-system 'utf-8)
@@ -397,12 +398,36 @@
          (latex-mode-hook . eglot-ensure)
          (markdown-mode . eglot-ensure)
          (cperl-mode . eglot-ensure)
+         (python-ts-mode . eglot-ensure)
          (rust-ts-mode-hook . eglot-ensure)
          (yaml-ts-mode . eglot-ensure))
   :bind (("C-c l b" . eglot-format-buffer)
          ("C-c l a" . eglot-code-actions)
          ("C-c l e" . eglot-reconnect)
-         ("C-c l r" . eglot-rename)))
+         ("C-c l r" . eglot-rename)
+         ("C-c l C-d" . eldoc)
+         ("C-c l C-e" . eglot-rename)
+         ("C-c l C-o" . python-sort-imports))
+  :config
+  (setq-default eglot-workspace-configuration
+                '((:pylsp .
+                          (:configurationSources
+                           ["flake8"]
+                           :plugins (
+                                     :pycodestyle (:enabled :json-false)
+                                     :mccabe (:enabled :json-false)
+                                     :pyflakes (:enabled :json-false)
+                                     :flake8 (:enabled :json-false
+                                                       :maxLineLength 80)
+                                     :ruff (:enabled t
+                                                     :lineLength 80)
+                                     :pydocstyle (:enabled t
+                                                           :convention "numpy")
+                                     :yapf (:enabled :json-false)
+                                     :autopep8 (:enabled :json-false)
+                                     :black (:enabled t
+                                                      :line_length 80
+                                                      :cache_config t)))))))
 
 ;;;===========================================================================
 ;;; Elisp, Lisp, and Clojure support.
@@ -506,8 +531,7 @@
   ;; Org Mode
   :ensure t
   :defer t
-  :bind (("C-c l" . #'org-store-link)
-         ("C-c o" . (lambda () (interactive)
+  :bind (("C-c o" . (lambda () (interactive)
                       (find-file "~/Dropbox/org/organizer.org")))
          ("C-c C-o" . (lambda () (interactive)
                         (find-file "~/Dropbox/org"))))
@@ -824,3 +848,5 @@
 
 (provide 'init)
 ;;; init.el ends here
+
+; LocalWords:  init
