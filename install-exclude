@@ -4,4 +4,5 @@
 .gitmodules
 install
 install-exclude
+setup_deps.sh
 README*
