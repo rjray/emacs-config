@@ -39,7 +39,6 @@
   :bind (("C-+" . text-scale-increase)
          ("C--" . text-scale-decrease)
          ("C-=" . (lambda () (interactive) (text-scale-set 0)))
-         ("C-z" . undo)
          ("C-x C-z" . nil)
          ("C-h h" . nil))
   :hook ((text-mode . display-fill-column-indicator-mode)
