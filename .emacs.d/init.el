@@ -39,7 +39,7 @@
   :bind (("C-+" . text-scale-increase)
          ("C--" . text-scale-decrease)
          ("C-=" . (lambda () (interactive) (text-scale-set 0)))
-         ("C-x C-z" . nil)
+         ("C-z" . undo)
          ("C-h h" . nil))
   :hook ((text-mode . display-fill-column-indicator-mode)
          (prog-mode . display-fill-column-indicator-mode)
@@ -743,7 +743,7 @@
               (t (vterm buffer-name)
                  (rename-buffer buffer-name))))))
 
-  :bind (("C-z" . toggle-vterm)
+  :bind (("C-x C-z" . toggle-vterm)
          ("M-1" . (lambda () (interactive) (switch-vterm 1)))
          ("M-2" . (lambda () (interactive) (switch-vterm 2)))
          ("M-3" . (lambda () (interactive) (switch-vterm 3)))
@@ -831,7 +831,10 @@
          ("C-h k" . helpful-key)
          ("C-h x" . helpful-command)
          ("C-h d" . helpful-at-point)
-         ("C-h F" . helpful-function)))
+         ("C-h F" . helpful-function))
+  :custom
+  (counsel-describe-function-function #'helpful-callable)
+  (counsel-describe-variable-function #'helpful-variable))
 
 ;;;===========================================================================
 ;;; End of `use-package' parts.
