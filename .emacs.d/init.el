@@ -96,6 +96,10 @@
   (use-dialog-box nil)
   (use-file-dialog nil)
 
+  ;; Using ripgrep in place of grep
+  (grep-command "rg -nS --no-heading ")
+  (grep-use-null-device nil)
+
   :config
   (subword-mode)
   (pixel-scroll-precision-mode 1)
@@ -262,7 +266,7 @@
 (use-package projectile
   ;; Projectile for project-level management
   :ensure t
-  :delight
+  :delight '(:eval (concat " " (projectile-project-name)))
   :commands (projectile-mode)
   ;; Enable Projectile globally
   :init (projectile-mode +1)
@@ -283,6 +287,7 @@
   ;; Company mode for completion
   :ensure t
   :defer t
+  :delight
   :config
   (add-hook 'after-init-hook 'global-company-mode))
 
@@ -328,8 +333,12 @@
   (company-prescient-mode +1))
 
 ;;;===========================================================================
-;;; Language parsing and tree-sitter
+;;; Language parsing, tree-sitter, non-language-specific bits
 ;;;===========================================================================
+
+(use-package evil-nerd-commenter
+  :ensure t
+  :bind (("C-'" . evilnc-comment-or-uncomment-lines)))
 
 (use-package tree-sitter
   :ensure t
@@ -514,7 +523,7 @@
 
 (use-package elisp-mode
   ;; Just to diminish the minor-mode marker
-  :delight "EL")
+  :delight (emacs-lisp-mode "EL"))
 
 (use-package paredit
   ;; Parens-editing supercharging
@@ -605,6 +614,12 @@
 ;;; Magit and git-related code
 ;;;===========================================================================
 
+(use-package diff-hl
+  :ensure t
+  :commands (global-diff-hl-mode)
+  :config
+  (global-diff-hl-mode))
+
 (use-package git-gutter
   ;; Git-related decorations in the gutter
   :if window-system
@@ -622,6 +637,8 @@
   (magit-diff-highlight-trailing t)
   (magit-diff-paint-whitespace t)
   :config
+  (add-hook 'magit-pre-refresh-hook 'diff-hl-magit-pre-refresh)
+  (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)
   (setq magit-completing-read-function 'ivy-completing-read)
   (define-key magit-status-mode-map (kbd "W")
               (lambda ()
@@ -738,6 +755,15 @@
     (electric-pair-local-mode))
   :hook ((prog-mode-hook . electric-pair-local-mode)
          (text-mode-hook . my/electric-pair-local-text-mode)))
+
+(use-package helpful
+  :ensure t
+  :bind (("C-h f" . helpful-callable)
+         ("C-h v" . helpful-variable)
+         ("C-h k" . helpful-key)
+         ("C-h x" . helpful-command)
+         ("C-h d" . helpful-at-point)
+         ("C-h F" . helpful-function)))
 
 ;;;===========================================================================
 ;;; End of `use-package' parts.
