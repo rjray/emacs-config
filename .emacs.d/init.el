@@ -777,7 +777,6 @@
 ;;;===========================================================================
 
 (use-package pdf-tools
-  :disabled
   :ensure t
   :defer t
   :commands (pdf-loader-install)
