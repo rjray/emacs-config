@@ -615,6 +615,7 @@
 
 (use-package diff-hl
   :ensure t
+  :defer nil
   :commands (global-diff-hl-mode)
   :config
   (global-diff-hl-mode))
