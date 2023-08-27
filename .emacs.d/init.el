@@ -773,10 +773,11 @@
   (LaTeX-mode . turn-on-flyspell))
 
 ;;;===========================================================================
-;;; PDF stuff
+;;; PDF stuff - disabled until epdfserver can be built/installed
 ;;;===========================================================================
 
 (use-package pdf-tools
+  :disabled
   :ensure t
   :defer t
   :commands (pdf-loader-install)
