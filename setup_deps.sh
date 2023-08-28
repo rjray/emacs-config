@@ -24,9 +24,8 @@ fi
 echo -n "Checking for Homebrew... "
 if which brew > /dev/null; then
     echo "found."
-    for pkg in fd rg clojure-lsp/brew/clojure-lsp-native jdtls marksman \
-                                                   texlab yaml-language-server \
-                                                   go gopls llvm; do
+    for pkg in fd rg clojure-lsp/brew/clojure-lsp-native openjdk jdtls \
+                  marksman texlab yaml-language-server go gopls llvm; do
         echo -n "  Checking for $pkg... "
         if brew list $pkg > /dev/null; then
             echo "found."
