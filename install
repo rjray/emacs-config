@@ -1,2 +1,8 @@
-#!/bin/sh
-rsync -auv $* --exclude-from=install-exclude ./ ~
+#!/bin/bash
+
+if [ ! -d $HOME/.emacs.d ]; then
+    echo "Creating directory $HOME/.emacs.d..."
+    mkdir $HOME/.emacs.d
+fi
+
+rsync -auv emacs.d/ $HOME/.emacs.d
