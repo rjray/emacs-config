@@ -285,7 +285,6 @@
 (use-package company
   ;; Company mode for completion
   :ensure t
-  :defer t
   :delight
   :config
   (add-hook 'after-init-hook 'global-company-mode))
@@ -520,9 +519,11 @@
   ;; ElDoc
   :delight eldoc-mode)
 
-(use-package elisp-mode
-  ;; Just to diminish the minor-mode marker
-  :delight (emacs-lisp-mode "EL"))
+;; Couldn't quite get this to work with use-package and :delight.
+(require 'delight)
+(delight 'emacs-lisp-mode
+         '("EL/" (lexical-binding "l" "d"))
+         :major)
 
 (use-package paredit
   ;; Parens-editing supercharging
@@ -712,6 +713,7 @@
 
 (use-package flycheck-posframe
   :ensure t
+  :commands (flycheck-posframe-mode)
   :after flycheck
   :config (add-hook 'flycheck-mode-hook #'flycheck-posframe-mode))
 
@@ -798,8 +800,9 @@
 
 (use-package selected
   :ensure t
-  :commands selected-global-mode
+  :commands (selected-global-mode)
   :init
+  (defvar selected-org-mode-map)
   (setq selected-org-mode-map (make-sparse-keymap))
   :bind (:map selected-keymap
               ("q" . selected-off)
@@ -808,10 +811,11 @@
               ("w" . count-words-region)
               ("m" . apply-macro-to-region-lines)
               ("<tab>" . indent-region)
+              ("#" . comment-or-uncomment-region)
               :map selected-org-mode-map
               ("t" . org-table-convert-region))
   :config
-  (selected-global-mode +1))
+  (selected-global-mode))
 
 (use-package expand-region
   :ensure t
@@ -836,7 +840,6 @@
 
 (use-package windmove
   :ensure nil
-  :defer t
   :bind (("C-c <up>" . windmove-up)
          ("C-c <right>" . windmove-right)
          ("C-c <down>" . windmove-down)
@@ -844,7 +847,6 @@
 
 (use-package elec-pair
   :ensure nil
-  :defer t
   :config
   (defun my/electric-pair-local-text-mode ()
     "Advise and wrap electric pairs in text mode."
