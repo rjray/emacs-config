@@ -38,7 +38,7 @@
 (use-package emacs
   :bind (("C-+" . text-scale-increase)
          ("C--" . text-scale-decrease)
-         ("C-=" . (lambda () (interactive) (text-scale-set 0)))
+         ("C-_" . (lambda () (interactive) (text-scale-set 0)))
          ("C-z" . undo)
          ("C-h h" . nil))
   :hook ((text-mode . display-fill-column-indicator-mode)
@@ -786,6 +786,31 @@
               ("k" . pdf-view-previous-line-or-previous-page))
   :init (pdf-loader-install)
   :config (add-to-list 'revert-without-query ".pdf"))
+
+;;;===========================================================================
+;;; Region/selection-related
+;;;===========================================================================
+
+(use-package selected
+  :ensure t
+  :commands selected-global-mode
+  :init
+  (setq selected-org-mode-map (make-sparse-keymap))
+  :bind (:map selected-keymap
+              ("q" . selected-off)
+              ("u" . upcase-region)
+              ("d" . downcase-region)
+              ("w" . count-words-region)
+              ("m" . apply-macro-to-region-lines)
+              ("<tab>" . indent-region)
+              :map selected-org-mode-map
+              ("t" . org-table-convert-region))
+  :config
+  (selected-global-mode +1))
+
+(use-package expand-region
+  :ensure t
+  :bind ("C-=" . er/expand-region))
 
 ;;;===========================================================================
 ;;; Misc tools
