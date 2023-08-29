@@ -710,6 +710,11 @@
   :after (clojure-mode)
   :ensure t)
 
+(use-package flycheck-posframe
+  :ensure t
+  :after flycheck
+  :config (add-hook 'flycheck-mode-hook #'flycheck-posframe-mode))
+
 ;;;===========================================================================
 ;;; Shell/terminal
 ;;;===========================================================================
