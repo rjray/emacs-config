@@ -41,6 +41,7 @@
   ;; Taken from crisp.el, written by Gary D. Foster
   (defvar last-last-command nil
     "Internal variable.")
+
   (defun my/home ()
     "Home - begin of line, once more - screen, once more - buffer."
     (interactive nil)
@@ -51,6 +52,7 @@
       (move-to-window-line 0))
      (t (beginning-of-line)))
     (setq last-last-command last-command))
+
   (defun my/end ()
     "End - end of line, once more - screen, once more - buffer."
     (interactive nil)
@@ -443,8 +445,9 @@
 ;;;===========================================================================
 
 (use-package evil-nerd-commenter
+  ;; Just using this for the ease of commenting lines language-independent.
   :ensure t
-  :bind (("C-'" . evilnc-comment-or-uncomment-lines)))
+  :bind (("C-/" . evilnc-comment-or-uncomment-lines)))
 
 (use-package tree-sitter
   :ensure t
@@ -882,6 +885,7 @@
 ;;;===========================================================================
 
 (use-package auctex
+  ;; TeX/LaTeX editing mode
   :defer t
   :hook
   (LaTeX-mode . turn-on-prettify-symbols-mode)
@@ -892,6 +896,7 @@
 ;;;===========================================================================
 
 (use-package pdf-tools
+  ;; Handle viewing/annotating/etc. PDF files
   :ensure t
   :defer t
   :commands (pdf-loader-install)
@@ -907,7 +912,9 @@
 ;;;===========================================================================
 
 (use-package selected
+  ;; Set up keys/actions to only be available when there's an active selection
   :ensure t
+  :delight (selected-minor-mode)
   :commands (selected-global-mode)
   :init
   (defvar selected-org-mode-map)
@@ -926,6 +933,7 @@
   (selected-global-mode))
 
 (use-package expand-region
+  ;; Region expansion with a simple key
   :ensure t
   :bind ("C-=" . er/expand-region))
 
@@ -937,9 +945,10 @@
   ;; Ripgrep super-tool
   :ensure t
   :defer t
-  :bind ("C-/" . deadgrep))
+  :bind ("M-/" . deadgrep))
 
 (use-package marginalia
+  ;; Provides context to items in minibuffer completions, etc.
   :ensure t
   :commands (marginalia-mode)
   :custom (marginalia-annotators '(marginalia-annotators-light))
@@ -968,24 +977,15 @@
                  (window-parameters (mode-line-format . none)))))
 
 (use-package windmove
+  ;; (Slightly) Easier movement between windows.
   :ensure nil
   :bind (("C-c <up>" . windmove-up)
          ("C-c <right>" . windmove-right)
          ("C-c <down>" . windmove-down)
          ("C-c <left>" . windmove-left)))
 
-(use-package elec-pair
-  :ensure nil
-  :config
-  (defun my/electric-pair-local-text-mode ()
-    "Advise and wrap electric pairs in text mode."
-    (add-function :before-until electric-pair-inhibit-predicate
-                  (lambda (c) (eq c ?<)))
-    (electric-pair-local-mode))
-  :hook ((prog-mode-hook . electric-pair-local-mode)
-         (text-mode-hook . my/electric-pair-local-text-mode)))
-
 (use-package helpful
+  ;; Buffed-up Help mode and buffers.
   :ensure t
   :bind (("C-h f" . helpful-callable)
          ("C-h v" . helpful-variable)
@@ -1025,4 +1025,4 @@
 (provide 'init)
 ;;; init.el ends here
 
-;; LocalWords:  init
+;; LocalWords:  init Theming deadgrep minibuffer
