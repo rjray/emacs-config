@@ -998,22 +998,20 @@
   (counsel-describe-variable-function #'helpful-variable))
 
 ;;;===========================================================================
-;;; End of `use-package' parts.
+;;; Anything that is specific to an OS/platform.
 ;;;===========================================================================
 
-(when *is-mac*
-  (progn
-    (setq mac-option-modifier '(:function alt :mouse alt)
-          mac-right-command-modifier 'super
-          mac-right-option-modifier 'hyper
-          ns-alternate-modifier 'super
-          ns-command-modifier 'meta
-          ns-pop-up-frames nil)
-    ;; Do something with command+arrow keys
-    (global-set-key [(super up)] 'home)
-    (global-set-key [(super down)] 'end)
-    (global-set-key [(super left)] 'previous-buffer)
-    (global-set-key [(super right)] 'next-buffer)))
+(use-package mac
+  :if *is-mac*
+  :bind (:map global-map
+              ("s-<up>" . my/home)
+              ("s-<down>" . my/down)
+              ("s-<left>" . previous-buffer)
+              ("s-<right>" . next-buffer)))
+
+;;;===========================================================================
+;;; End of `use-package' parts.
+;;;===========================================================================
 
 ;; If there is a directory under ~/.emacs.d named for this host, load all *.el
 ;; files within it:
