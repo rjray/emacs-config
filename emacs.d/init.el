@@ -36,11 +36,93 @@
 ;; be mostly global keybindings and top-level setq's. This appears before all
 ;; other `use-package' invocations.
 (use-package emacs
-  :bind (("C-+" . text-scale-increase)
-         ("C--" . text-scale-decrease)
-         ("C-_" . (lambda () (interactive) (text-scale-set 0)))
-         ("C-z" . undo)
-         ("C-h h" . nil))
+  :init
+  ;; Some code for custom key commands:
+  ;; Taken from crisp.el, written by Gary D. Foster
+  (defvar last-last-command nil
+    "Internal variable.")
+  (defun my/home ()
+    "Home - begin of line, once more - screen, once more - buffer."
+    (interactive nil)
+    (cond
+     ((and (eq last-command 'my/home) (eq last-last-command 'my/home))
+      (goto-char (point-min)))
+     ((eq last-command 'my/home)
+      (move-to-window-line 0))
+     (t (beginning-of-line)))
+    (setq last-last-command last-command))
+  (defun my/end ()
+    "End - end of line, once more - screen, once more - buffer."
+    (interactive nil)
+    (cond
+     ((and (eq last-command 'my/end) (eq last-last-command 'my/end))
+      (goto-char (point-max)))
+     ((eq last-command 'my/end)
+      (move-to-window-line -1)
+      (end-of-line))
+     (t (end-of-line)))
+    (setq last-last-command last-command))
+
+  ;; I forget where I got this... this is a modified version, anyway.
+  (defun count-region ()
+    "Count lines, words and characters in region."
+    (interactive)
+    (let* ((start (if (region-active-p) (region-beginning) (point-min)))
+           (end (if (region-active-p) (region-end) (point-max)))
+           (l (count-lines start end))
+           (w (count-words start end))
+           (c (- end start)))
+      (message "%s has %d line%s, %d word%s and %d character%s."
+               (if (region-active-p) "Region" "Buffer")
+               l (if (= 1 l) "" "s")
+               w (if (= 1 w) "" "s")
+               c (if (= 1 c) "" "s"))))
+
+  (defun fill-paragraph-or-region ()
+    "If the region is active, call `fill-region'. Otherwise, `fill-paragraph'."
+    (interactive)
+    (cond ((region-active-p) (fill-region (region-beginning) (region-end)))
+          (t (fill-paragraph nil))))
+
+  (defun untabify-buffer-or-region ()
+    "Untabify the entire buffer. If region is active, only untabify the region."
+    (interactive)
+    (cond ((region-active-p) (untabify (region-beginning) (region-end)))
+          (t (untabify (point-min) (point-max)))))
+
+  (defun my/text-scale-reset ()
+    (interactive)
+    (text-scale-set 0))
+
+  ;; This one is neat-- make C-w kill a region when the region is active, or
+  ;; otherwise do a backward-kill-word like C-w behaves in things like bash.
+  (defun my/kill-region-or-word (arg)
+    (interactive "p")
+    (cond ((region-active-p)
+           (kill-region (region-beginning) (region-end)))
+          (t (backward-kill-word arg))))
+
+  :bind (:map global-map
+              ("C-h h" . nil)
+              ("C-w" . my/kill-region-or-word)
+              ("C-z" . undo)
+              ;; Function-key bindings. Don't go above f8, though, because MacOS
+              ;; grabs f9 through f12. And f1-f4 are already in use.
+              ("<f5>" . call-last-kbd-macro)
+              ("C-<f5>" . edit-last-kbd-macro)
+              ("<f6>" . search-forward-regexp)
+              ("C-<f6>" . search-backward-regexp)
+              ("<f7>" . fill-paragraph-or-region)
+              ("C-<f7>" . untabify-buffer-or-region)
+              ("<f8>" . cider-jack-in)
+              ("C-!" . count-region)
+              ("C-+" . text-scale-increase)
+              ("C--" . text-scale-decrease)
+              ("C-_" . my/text-scale-reset)
+              ("M-q" . quote)
+              ("<home>" . my/home)
+              ("<end>" . my/end))
+
   :hook ((text-mode . display-fill-column-indicator-mode)
          (prog-mode . display-fill-column-indicator-mode)
          (prog-mode . flyspell-prog-mode))
@@ -56,7 +138,10 @@
   (warning-suppress-log-types '((comp) (bytecomp)))
   (warning-minimum-level :error)
 
-  ;; Startup stuff supression
+  ;; default to better frame titles
+  (frame-title-format (concat "%b - emacs@" *system-name*))
+
+  ;; Startup stuff suppression
   (inhibit-splash-screen t)
   (inhibit-startup-echo-area-message t)
   (inhibit-startup-screen t)
@@ -100,6 +185,34 @@
   (grep-use-null-device nil)
 
   :config
+  ;; Visual Bell (flash the mode-line instead of an audio bell)
+  ;; Cribbed from Jason Filsinger, https://github.com/filsinger/emacs-config
+  (setq visible-bell nil
+        ring-bell-function `(lambda ()
+                              (let ((mode-line-bell-orig-bg
+                                     (face-background 'mode-line))
+                                    (mode-line-bell-orig-fg
+                                     (face-foreground 'mode-line)))
+                                (set-face-background 'mode-line "#ED3B3B")
+                                (set-face-foreground 'mode-line "#7F2020")
+                                (sit-for 0.1)
+                                (set-face-background 'mode-line
+                                                     mode-line-bell-orig-bg)
+                                (set-face-foreground 'mode-line
+                                                     mode-line-bell-orig-fg))))
+  ;; Some window-system-necessary settings
+  (when (window-system)
+    (progn
+      (blink-cursor-mode -1)
+      (menu-bar-mode 1)
+      (tool-bar-mode -1)
+      (scroll-bar-mode -1)))
+  ;; cperl-mode is preferred to perl-mode
+  (defalias 'perl-mode 'cperl-mode)
+  ;; Don't care for typing out "yes" and "no" all the time...
+  (defalias 'yes-or-no-p 'y-or-n-p)
+  ;;enable narrowing
+  (put 'narrow-to-region 'disabled nil)
   (subword-mode)
   (pixel-scroll-precision-mode 1)
   (prefer-coding-system 'utf-8)
@@ -226,20 +339,19 @@
    ("<f2> i" . counsel-info-lookup-symbol)
    ("<f2> u" . counsel-unicode-char)
    ("<f2> j" . counsel-set-variable)
+   ("C-c b" . counsel-bookmark)
    ("C-c c" . counsel-compile)
+   ("C-c d" . counsel-descbinds)
+   ("C-c F" . counsel-org-file)
    ("C-c g" . counsel-git)
    ("C-c j" . counsel-git-grep)
-   ("C-c L" . counsel-git-log)
+   ("C-c J" . counsel-file-jump)
    ("C-c k" . counsel-rg)
+   ("C-x l" . counsel-locate)
+   ("C-c L" . counsel-git-log)
    ("C-c m" . counsel-linux-app)
    ("C-c n" . counsel-fzf)
-   ("C-x l" . counsel-locate)
-   ("C-c J" . counsel-file-jump)
-   ("C-c w" . counsel-wmctrl)
-   ("C-c b" . counsel-bookmark)
-   ("C-c d" . counsel-descbinds)
-   ("C-c t" . counsel-load-theme)
-   ("C-c F" . counsel-org-file)))
+   ("C-c t" . counsel-load-theme)))
 
 (use-package ivy
   ;; Ivy interactive interface completion
@@ -280,6 +392,7 @@
   :ensure t
   :config
   (setq dumb-jump-prefer-searcher 'rg)
+  (setq dumb-jump-rg-search-args "--hidden --pcre2")
   (add-hook 'xref-backend-functions 'dumb-jump-xref-activate))
 
 (use-package company
@@ -892,136 +1005,6 @@
 ;;;===========================================================================
 ;;; End of `use-package' parts.
 ;;;===========================================================================
-
-;; Some code for custom key commands:
-;; Taken from crisp.el, written by Gary D. Foster
-(defvar last-last-command nil
-  "Internal variable.")
-
-(defun home ()
-  "Home - begin of line, once more - screen, once more - buffer."
-  (interactive nil)
-  (cond
-   ((and (eq last-command 'home) (eq last-last-command 'home))
-    (goto-char (point-min)))
-   ((eq last-command 'home)
-    (move-to-window-line 0))
-   (t (beginning-of-line)))
-  (setq last-last-command last-command))
-
-(defun end ()
-  "End - end of line, once more - screen, once more - buffer."
-  (interactive nil)
-  (cond
-   ((and (eq last-command 'end) (eq last-last-command 'end))
-    (goto-char (point-max)))
-   ((eq last-command 'end)
-    (move-to-window-line -1)
-    (end-of-line))
-   (t (end-of-line)))
-  (setq last-last-command last-command))
-
-;; I forget where I got this... this is a modified version, anyway.
-(defun count-region ()
-  "Count lines, words and characters in region."
-  (interactive)
-  (let* ((start (if (region-active-p) (region-beginning) (point-min)))
-         (end (if (region-active-p) (region-end) (point-max)))
-         (l (count-lines start end))
-         (w (count-words start end))
-         (c (- end start)))
-    (message "%s has %d line%s, %d word%s and %d character%s."
-             (if (region-active-p) "Region" "Buffer")
-             l (if (= 1 l) "" "s")
-             w (if (= 1 w) "" "s")
-             c (if (= 1 c) "" "s"))))
-
-(defun fill-paragraph-or-region ()
-  "If the region is active, call `fill-region'. Otherwise, `fill-paragraph'."
-  (interactive)
-  (cond ((region-active-p) (fill-region (region-beginning) (region-end)))
-        (t (fill-paragraph nil))))
-
-(defun untabify-buffer-or-region ()
-  "Untabify the entire buffer. If region is active, only untabify the region."
-  (interactive)
-  (cond ((region-active-p) (untabify (region-beginning) (region-end)))
-        (t (untabify (point-min) (point-max)))))
-
-;; Bind some keys:
-
-;; Browse the kill-ring with C-c k:
-(global-set-key (kbd "C-c k") 'browse-kill-ring)
-
-;; Bind count-region to C-c =:
-(global-set-key (kbd "C-c =") 'count-region)
-
-;; This one is neat-- make C-w kill a region when the region is active, or
-;; otherwise do a backward-kill-word like C-w behaves in things like bash.
-(global-set-key "\C-w"
-                (lambda (arg)
-                  (interactive "p")
-                  (cond ((region-active-p)
-                         (kill-region (region-beginning) (region-end)))
-                        (t (backward-kill-word arg)))))
-
-
-;; Function-key bindings. Don't go above f8, though, because MacOS grabs f9
-;; through f12. And f1-f4 are already in use.
-(global-set-key [(f5)]         'call-last-kbd-macro)
-(global-set-key [(control f5)] 'edit-last-kbd-macro)
-
-(global-set-key [(f6)]         'search-forward-regexp)
-(global-set-key [(control f6)] 'search-backward-regexp)
-
-(global-set-key [(f7)]         'fill-paragraph-or-region)
-(global-set-key [(control f7)] 'untabify-buffer-or-region)
-
-(global-set-key [(f8)]         'cider-jack-in)
-
-;; Meta-key combinations
-(global-set-key [(meta q)] 'quote)
-
-;; I miss these keys on my Macbook... but at least I have them on full
-;; keyboards...
-(global-set-key [(home)] 'home)
-(global-set-key [(end)] 'end)
-
-;; Some window-system-necessary settings
-(when (window-system)
-  (progn
-    (blink-cursor-mode -1)
-    (menu-bar-mode 1)
-    (tool-bar-mode -1)
-    (scroll-bar-mode -1)))
-
-;; cperl-mode is preferred to perl-mode
-(defalias 'perl-mode 'cperl-mode)
-;; Don't care for typing out "yes" and "no" all the time...
-(defalias 'yes-or-no-p 'y-or-n-p)
-
-;;enable narrowing
-(put 'narrow-to-region 'disabled nil)
-
-;; Visual Bell (flash the mode-line instead of an audio bell)
-;; Cribbed from Jason Filsinger, https://github.com/filsinger/emacs-config
-(setq visible-bell nil
-      ring-bell-function `(lambda ()
-                            (let ((mode-line-bell-orig-bg
-                                   (face-background 'mode-line))
-                                  (mode-line-bell-orig-fg
-                                   (face-foreground 'mode-line)))
-                              (set-face-background 'mode-line "#ED3B3B")
-                              (set-face-foreground 'mode-line "#7F2020")
-                              (sit-for 0.1)
-                              (set-face-background 'mode-line
-                                                   mode-line-bell-orig-bg)
-                              (set-face-foreground 'mode-line
-                                                   mode-line-bell-orig-fg))))
-
-;; default to better frame titles
-(setq frame-title-format
-      (concat "%b - emacs@" *system-name*))
 
 (when *is-mac*
   (progn
