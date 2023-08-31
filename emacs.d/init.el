@@ -893,7 +893,7 @@
   (LaTeX-mode . turn-on-flyspell))
 
 ;;;===========================================================================
-;;; PDF stuff - disabled until epdfserver can be built/installed
+;;; PDF stuff
 ;;;===========================================================================
 
 (use-package pdf-tools
@@ -1030,4 +1030,4 @@
 (provide 'init)
 ;;; init.el ends here
 
-; LocalWords:  init
+;; LocalWords:  init
