@@ -301,11 +301,6 @@
 (use-package server
   ;; Emacs in server mode
   :commands (server-running-p)
-  :init
-  (add-hook 'server-done-hook 'delete-frame)
-  (add-hook 'server-done-hook
-            (lambda ()
-              (kill-buffer nil)))
   :config
   (unless (server-running-p)
     (server-start)))
