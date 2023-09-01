@@ -5,4 +5,4 @@ if [ ! -d $HOME/.emacs.d ]; then
     mkdir $HOME/.emacs.d
 fi
 
-rsync -auv emacs.d/ $HOME/.emacs.d
+rsync -auv --exclude-from=install-exclude emacs.d/ $HOME/.emacs.d
