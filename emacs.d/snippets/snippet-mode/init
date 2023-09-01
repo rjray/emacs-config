@@ -1,0 +1,13 @@
+# -*- mode: snippet -*-
+# -*- coding: utf-8 -*-
+# name: Snippet starter
+# contributor: rjray@blackperl.com
+# key: init
+# --
+# -*- mode: snippet -*-
+# -*- coding: utf-8 -*-
+# name: $1
+# contributor: rjray@blackperl.com
+# key: $2
+# --
+$0

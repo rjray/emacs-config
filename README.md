@@ -74,6 +74,17 @@ preferred TeX system.
 Emacs 29.1 with tree-sitter support can be installed via Homebrew if the
 distribution doesn't offer it.
 
+## YASnippet and Snippets
+
+The directory `emacs.d/snippets` contains the hierarchy of YASnippet code I
+use. The structure and relationships (via `.yas-parents` files) is inspired by
+the [yasnippet-snippets](http://github.com/AndreaCrotti/yasnippet-snippets)
+layout. However, as the code therein is licensed under GPL-3.0, I haven't made
+direct use of any of their snippets other than as inspiration. I don't know
+enough about the restrictiveness of GPL-3.0 to know whether using one of their
+snippets would require a similar license for the resulting personal code, so I
+am opting to be safe.
+
 ## Build/Installation Notes
 
 Notes on any issues found with getting the above to work.
@@ -90,4 +101,5 @@ for the details.
 
 ## License
 
-This is licensed under the MIT License. See the file `LICENSE` for details.
+This repository is licensed under the MIT License. See the file `LICENSE` for
+details.

@@ -530,6 +530,17 @@
 ;;          (typescript-ts-mode-hook . combobulate-mode)
 ;;          (tsx-ts-mode-hook . combobulate-mode)))
 
+(use-package yasnippet
+  ;; Text snippets/templates expansion
+  :ensure t
+  :commands (yas-global-mode)
+  :defer t
+  :config
+  (setq yas-snippet-dirs '("~/.emacs.d/snippets/"))
+  (require 'warnings)
+  (add-to-list 'warning-suppress-types '(yasnippet backquote-change))
+  (yas-global-mode 1))
+
 ;;;===========================================================================
 ;;; Eglot setup
 ;;;===========================================================================

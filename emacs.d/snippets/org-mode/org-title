@@ -1,0 +1,14 @@
+# -*- mode: snippet -*-
+# -*- coding: utf-8 -*-
+# name: org-title
+# contributor: Sophie Bosio (https://github.com/SophieBosio/.emacs.d)
+# key: <t
+# --
+#+TITLE: ${1:title}
+#+AUTHOR: Randy J. Ray
+#+DATE: `(format-time-string "%b %d %Y")`
+:PROPERTIES:
+#+OPTIONS:
+:END:
+
+$0

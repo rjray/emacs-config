@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# -*- coding: utf-8 -*-
+# name: Date and time stamp
+# contributor: rjray@blackperl.com
+# key: datetime
+# --
+`(format-time-string "%Y-%m-%dT%H:%M:%S%:z")`
