@@ -1,4 +1,2 @@
-.#*
-.dir-locals.el
 # Something causes this to get created and left around sometimes:
 flycheck_init.el
