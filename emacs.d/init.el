@@ -121,7 +121,6 @@
               ("C-+" . text-scale-increase)
               ("C--" . text-scale-decrease)
               ("C-_" . my/text-scale-reset)
-              ("M-q" . quote)
               ("<home>" . my/home)
               ("<end>" . my/end))
 
@@ -236,7 +235,6 @@
 
 (use-package desktop
   ;; General desktop stuff (history, etc.)
-  :ensure t
   :custom
   (desktop-save t)
   (desktop-restore-eager 5)
@@ -259,15 +257,18 @@
 (use-package display-line-numbers
   ;; Number ALL the lines
   :if window-system
-  :ensure t
   :config
   ;; No, seriously... all the lines.
   (global-display-line-numbers-mode t)
   (setq display-line-numbers-grow-only t))
 
 (use-package ef-themes
-  ;; Theming
+  ;; Theming: https://protesilaos.com/emacs/ef-themes
   :ensure t
+  :bind (:map global-map
+              ("M-t" . ef-themes-toggle))
+  :custom
+  (ef-themes-to-toggle '(ef-elea-dark ef-elea-light))
   :config
   ;; Clear out anything from custom
   (mapc #'disable-theme custom-enabled-themes)
@@ -276,12 +277,10 @@
 
 (use-package exec-path-from-shell
   ;; Set up the exec-path by reading $PATH from a shell
-  :ensure t
   :hook (after-init-hook . exec-path-from-shell-initialize))
 
 (use-package recentf
   ;; Recent-file tracking and opening
-  :ensure t
   :bind
   (("C-x C-r" .
     ;; From https://www.emacswiki.org/emacs/RecentFiles
@@ -309,7 +308,6 @@
 
 (use-package whitespace
   ;; Excess whitespace display
-  :ensure t
   :delight global-whitespace-mode
   :init
   (add-hook 'after-init-hook 'global-whitespace-mode)
@@ -537,7 +535,6 @@
 ;;;===========================================================================
 
 (use-package eglot
-  :ensure t
   :defer t
   :custom
   (read-process-output-max (* 1024 1024))
@@ -650,7 +647,6 @@
 
 (use-package cperl-mode
   ;; Preferred Perl mode
-  :ensure t
   :defer t
   :custom
   (cperl-indent-parens-as-block t)
@@ -690,7 +686,6 @@
 
 (use-package org
   ;; Org Mode
-  :ensure t
   :defer t
   :bind (("C-c o" . (lambda () (interactive)
                       (find-file "~/Dropbox/org/organizer.org")))
@@ -786,7 +781,7 @@
 
 (use-package dired
   ;; Dired mode
-  :defer 1
+  :defer t
   :config
   (defadvice dired-create-directory (after revert-buffer-after-create activate)
     "Revert the buffer after a new directory is created."
@@ -797,8 +792,7 @@
 
 (use-package wdired
   ;; Writable-dired package
-  :defer 1
-  :ensure t
+  :defer t
   :config
   (define-key wdired-mode-map (kbd "C-a") 'dired-back-to-start-of-files)
   (define-key wdired-mode-map (vector 'remap 'beginning-of-buffer)
@@ -886,7 +880,7 @@
 
 (use-package auctex
   ;; TeX/LaTeX editing mode
-  :defer t
+  :defer nil
   :hook
   (LaTeX-mode . turn-on-prettify-symbols-mode)
   (LaTeX-mode . turn-on-flyspell))
@@ -978,7 +972,6 @@
 
 (use-package windmove
   ;; (Slightly) Easier movement between windows.
-  :ensure nil
   :bind (("C-c <up>" . windmove-up)
          ("C-c <right>" . windmove-right)
          ("C-c <down>" . windmove-down)
