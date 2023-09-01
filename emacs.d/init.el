@@ -323,8 +323,8 @@
   :ensure t
   :bind
   (;; Use this instead of hitting M-x all the time:
-   ("\C-x\C-m" . counsel-M-x)
-   ("\C-c\C-m" . counsel-M-x)
+   ("C-x C-m" . counsel-M-x)
+   ("C-c C-m" . counsel-M-x)
    ;; Rest taken from https://oremacs.com/swiper/#global-key-bindings
    ("C-x C-f" . counsel-find-file)
    ("M-y" . counsel-yank-pop)
@@ -509,13 +509,6 @@
   :config
   (my/treesit-install-all-languages))
 
-;; Also keep an eye on https://github.com/zkry/yaml-pro
-(use-package yaml-ts-mode
-  :ensure t
-  :defer t
-  :mode (("\\.yml\\'" . yaml-ts-mode)
-         ("\\.yaml\\'" . yaml-ts-mode)))
-
 ;; Wait until this is in MELPA or ELPA before trying to use it. Keep an eye on
 ;; https://github.com/mickeynp/combobulate for updates.
 
@@ -690,6 +683,17 @@
               ("C-c <right>" . nil)
               ("C-c <up>" . nil)
               ("C-c <down>" . nil)))
+
+;;;===========================================================================
+;;; YAML
+;;;===========================================================================
+
+;; Also keep an eye on https://github.com/zkry/yaml-pro
+(use-package yaml-ts-mode
+  :ensure t
+  :defer t
+  :mode (("\\.yml\\'" . yaml-ts-mode)
+         ("\\.yaml\\'" . yaml-ts-mode)))
 
 ;;;===========================================================================
 ;;; Org Mode and related
