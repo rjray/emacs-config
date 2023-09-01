@@ -265,11 +265,11 @@
 (use-package ef-themes
   ;; Theming: https://protesilaos.com/emacs/ef-themes
   :ensure t
-  :bind (:map global-map
-              ("M-t" . ef-themes-toggle))
   :custom
   (ef-themes-to-toggle '(ef-elea-dark ef-elea-light))
   :config
+  ;; For some reason, doing this in :bind broke things:
+  (keymap-global-set "M-t" 'ef-themes-toggle)
   ;; Clear out anything from custom
   (mapc #'disable-theme custom-enabled-themes)
   ;; Enable the theme
