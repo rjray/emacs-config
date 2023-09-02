@@ -1,0 +1,20 @@
+# -*- mode: snippet -*-
+# -*- coding: utf-8 -*-
+# name: Header Guard
+# contributor: rjray@blackperl.com
+# key: guard
+# --
+#ifndef ${1:`(concat "_"
+                     (upcase
+                       (file-name-nondirectory
+                         (file-name-sans-extension (buffer-file-name))))
+                     "_"
+                     (upcase
+                       (file-name-nondirectory
+                         (file-name-extension (buffer-file-name))))
+                     "_")`}
+#define $1
+
+$0
+
+#endif /* $1 */
