@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# -*- coding: utf-8 -*-
+# name: map declaration with lambda
+# contributor: rjray@blackperl.com
+# key: mapl
+# --
+(map #(${1:code}) $2)

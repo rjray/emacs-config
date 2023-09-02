@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# -*- coding: utf-8 -*-
+# name: require declaration
+# contributor: rjray@blackperl.com
+# key: require
+# expand-env: ((yas-triggers-in-field nil))
+# --
+(:require [$1]$0)$>

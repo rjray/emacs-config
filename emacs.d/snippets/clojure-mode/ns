@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# -*- coding: utf-8 -*-
+# name: ns declaration
+# contributor: rjray@blackperl.com
+# key: ns
+# --
+(ns $1)

@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# -*- coding: utf-8 -*-
+# name: reduce declaration
+# contributor: rjray@blackperl.com
+# key: reduce
+# --
+(reduce ${1:(fn [p n] $0)} $2)

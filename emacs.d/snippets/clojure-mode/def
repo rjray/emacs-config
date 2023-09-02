@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# -*- coding: utf-8 -*-
+# name: def declaration
+# contributor: rjray@blackperl.com
+# key: def
+# --
+(def ${1:name} $0)
