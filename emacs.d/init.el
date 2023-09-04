@@ -729,8 +729,7 @@
   :ensure t
   :defer t
   :commands (org-bullets-mode)
-  :config
-  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+  :hook ((org-mode . org-bullets-mode)))
 
 ;;;===========================================================================
 ;;; Magit and git-related code
