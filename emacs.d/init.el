@@ -569,25 +569,26 @@
          ("C-c l C-e" . eglot-rename)
          ("C-c l C-o" . python-sort-imports))
   :config
-  (setq-default eglot-workspace-configuration
-                '((:pylsp .
-                          (:configurationSources
-                           ["flake8"]
-                           :plugins (
-                                     :pycodestyle (:enabled :json-false)
-                                     :mccabe (:enabled :json-false)
-                                     :pyflakes (:enabled :json-false)
-                                     :flake8 (:enabled :json-false
-                                                       :maxLineLength 80)
-                                     :ruff (:enabled t
-                                                     :lineLength 80)
-                                     :pydocstyle (:enabled t
-                                                           :convention "numpy")
-                                     :yapf (:enabled :json-false)
-                                     :autopep8 (:enabled :json-false)
-                                     :black (:enabled t
-                                                      :line_length 80
-                                                      :cache_config t)))))))
+  (setq eglot-workspace-configuration
+        '((:pylsp .
+                  (:configurationSources
+                   ["flake8"]
+                   :plugins (:pycodestyle (:enabled :json-false)
+                                          :mccabe (:enabled :json-false)
+                                          :pyflakes (:enabled :json-false)
+                                          :flake8
+                                          (:enabled :json-false
+                                                    :maxLineLength 80)
+                                          :ruff
+                                          (:enabled t :lineLength 80)
+                                          :pydocstyle
+                                          (:enabled t :convention "numpy")
+                                          :yapf (:enabled :json-false)
+                                          :autopep8 (:enabled :json-false)
+                                          :black
+                                          (:enabled t
+                                                    :line_length 80
+                                                    :cache_config t)))))))
 
 ;;;===========================================================================
 ;;; Elisp, Lisp, and Clojure support.
@@ -768,6 +769,66 @@
                 (if magit-diff-paint-whitespace
                     (setq magit-diff-paint-whitespace nil)
                   (setq magit-diff-paint-whitespace t)))))
+
+;; Technically only git-related in the sense that it's a Github service...
+(use-package igist
+  :ensure t
+  :defer t
+  :bind (("M-o" . igist-dispatch)
+         (:map igist-list-mode-map
+               ("C-j" . igist-list-view-current)
+               ("RET" . igist-list-edit-gist-at-point)
+               ("+" . igist-list-add-file)
+               ("-" . igist-delete-current-filename)
+               ("D" . igist-delete-current-gist)
+               ("S" . igist-star-gist)
+               ("U" . igist-unstar-gist)
+               ("a" . igist-add-comment)
+               ("c" . igist-load-comments)
+               ("d" . igist-list-edit-description)
+               ("f" . igist-fork-gist)
+               ("g" . igist-list-refresh)
+               ("r" . igist-browse-gist)
+               ("s" . igist-tabulated-list-sort)
+               ("v" . igist-list-view-current)
+               ("w" . igist-copy-gist-url)
+               ("K" . igist-list-cancel-load)
+               ("{" . igist-tabulated-list-narrow-current-column)
+               ("}" . igist-tabulated-list-widen-current-column)
+               ("<tab>" . igist-toggle-row-children-at-point)
+               ("<backtab>" . igist-toggle-all-children)
+               ("C" . igist-table-menu))
+         (:map igist-edit-mode-map
+               ([remap save-buffer] . igist-save-current-gist)
+               ("M-o" . igist-dispatch)
+               ("C-c C-c" . igist-save-current-gist-and-exit)
+               ("C-c C-k" . kill-current-buffer)
+               ("C-c '" . igist-save-current-gist-and-exit))
+         (:map igist-comments-list-mode-map
+               ("+" . igist-add-comment)
+               ("-" . igist-delete-comment-at-point)
+               ("D" . igist-delete-comment-at-point)
+               ("e" . igist-add-or-edit-comment)
+               ("g" . igist-load-comments)
+               ("q" . kill-current-buffer))
+         (:map igist-comments-edit-mode-map
+               ("M-o" . igist-dispatch)
+               ("C-c C-c" . igist-post-comment)
+               ("C-c C-k" . kill-current-buffer)))
+  :config
+  (let ((default-directory user-emacs-directory))
+    (condition-case nil
+        (progn (setq igist-current-user-name
+                     (car-safe
+                      (process-lines "git"
+                                     "config"
+                                     "github.user")))
+               (setq igist-auth-marker
+                     (or (ignore-errors
+                           (car-safe (process-lines "git" "config"
+                                                    "github.igist")))
+                         igist-auth-marker)))
+      (error (message "Igist-current-user-name cannot be set")))))
 
 ;;;===========================================================================
 ;;; Treemacs for navigation
