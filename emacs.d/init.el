@@ -527,7 +527,6 @@
   ;; Text snippets/templates expansion
   :ensure t
   :commands (yas-global-mode)
-  :defer t
   :config
   (setq yas-snippet-dirs '("~/.emacs.d/snippets/"))
   (require 'warnings)
