@@ -82,5 +82,7 @@ else
     if which rustup > /dev/null; then
         echo "found. Installing."
         rustup component add rust-analyzer
+    else
+        echo "not found."
     fi
 fi
