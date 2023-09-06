@@ -26,6 +26,7 @@
       '(("melpa" . "https://melpa.org/packages/")
         ("elpa" . "https://elpa.gnu.org/packages/")))
 (package-initialize)
+(package-refresh-contents)
 
 ;; This directory holds files that are taken whole from other sources
 (add-to-list 'load-path (concat user-emacs-directory "external"))
@@ -527,10 +528,11 @@
   ;; Text snippets/templates expansion
   :ensure t
   :commands (yas-global-mode)
+  :bind (("C-c C-y" . yas-insert-snippet))
+  :custom
+  (yas-wrap-around-region t)
+  (yas-snippet-dirs '("~/.emacs.d/snippets/"))
   :config
-  (setq yas-snippet-dirs '("~/.emacs.d/snippets/"))
-  (require 'warnings)
-  (add-to-list 'warning-suppress-types '(yasnippet backquote-change))
   (yas-global-mode 1))
 
 ;;;===========================================================================
@@ -1090,4 +1092,4 @@
 (provide 'init)
 ;;; init.el ends here
 
-;; LocalWords:  init Theming deadgrep minibuffer
+;; LocalWords:  init Theming deadgrep minibuffer Eglot
