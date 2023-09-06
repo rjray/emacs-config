@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# -*- coding: utf-8 -*-
+# name: :bind declaration for use-package
+# contributor: rjray@blackperl.com
+# key: upb
+# --
+:bind (("${1:binding}" . ${2:function}))$0$>

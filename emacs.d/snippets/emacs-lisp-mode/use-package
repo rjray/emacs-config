@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# -*- coding: utf-8 -*-
+# name: use-package declaration
+# contributor: rjray@blackperl.com
+# key: up
+# --
+(use-package ${1:package}$>
+  :ensure t$0)$>

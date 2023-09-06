@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# -*- coding: utf-8 -*-
+# name: defconst declaration
+# contributor: rjray@blackperl.com
+# key: const
+# --
+(defconst *${1:name}*
+  ${2:expr}$>
+  "${3:docstring}")$0$>

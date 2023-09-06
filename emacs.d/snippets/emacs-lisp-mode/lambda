@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# -*- coding: utf-8 -*-
+# name: lambda declaration
+# contributor: rjray@blackperl.com
+# key: lam
+# --
+(lambda (${1:arglist})$>
+  ${2:(interactive${3: "$4"})}$>
+  $0)$>

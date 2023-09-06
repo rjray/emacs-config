@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# -*- coding: utf-8 -*-
+# name: keymap-global-set
+# contributor: rjray@blackperl.com
+# key: keym
+# --
+(keymap-global-set "${1:keysym}" '${2:function})$>
