@@ -471,6 +471,7 @@
           (elisp "https://github.com/Wilfred/tree-sitter-elisp")
           (go . ("https://github.com/tree-sitter/tree-sitter-go"))
           (html . ("https://github.com/tree-sitter/tree-sitter-html"))
+          (java . ("https://github.com/tree-sitter/tree-sitter-java"))
           (javascript .
                       ("https://github.com/tree-sitter/tree-sitter-javascript"))
           (json . ("https://github.com/tree-sitter/tree-sitter-json"))
