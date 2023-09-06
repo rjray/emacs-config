@@ -1090,6 +1090,7 @@
       (load-file host-el-file))))
 
 (provide 'init)
+
 ;;; init.el ends here
 
-;; LocalWords:  init Theming deadgrep minibuffer Eglot
+;; LocalWords:  init Theming deadgrep minibuffer Eglot elpa
