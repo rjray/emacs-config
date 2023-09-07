@@ -126,7 +126,9 @@
               ("<end>" . my/end))
 
   :hook ((text-mode . display-fill-column-indicator-mode)
+         (text-mode . hl-line-mode)
          (prog-mode . display-fill-column-indicator-mode)
+         (prog-mode . hl-line-mode)
          (prog-mode . flyspell-prog-mode))
 
   :custom
@@ -223,7 +225,6 @@
   (set-terminal-coding-system 'utf-8)
   (set-keyboard-coding-system 'utf-8)
   (set-selection-coding-system 'utf-8)
-  (global-hl-line-mode 1)
   (add-to-list 'completion-ignored-extensions ".#"))
 
 ;;;===========================================================================
@@ -942,10 +943,11 @@
          ("M-6" . (lambda () (interactive) (switch-vterm 6)))
          ("M-7" . (lambda () (interactive) (switch-vterm 7)))
          ("M-8" . (lambda () (interactive) (switch-vterm 8)))
-         ("M-9" . (lambda () (interactive) (switch-vterm 9))))
-  (:map vterm-mode-map
-        ("C-<backspace>" . (lambda ()
-                             (interactive) (vterm-send-key (kbd "C-w")))))
+         ("M-9" . (lambda () (interactive) (switch-vterm 9)))
+         (:map vterm-mode-map
+               ("C-<backspace>" . (lambda ()
+                                    (interactive)
+                                    (vterm-send-key (kbd "C-w"))))))
 
   :config
   ;; Don't query about killing vterm buffers, just kill it
