@@ -203,12 +203,13 @@
                                 (set-face-foreground 'mode-line
                                                      mode-line-bell-orig-fg))))
   ;; Some window-system-necessary settings
-  (when (window-system)
-    (progn
-      (blink-cursor-mode -1)
-      (menu-bar-mode 1)
-      (tool-bar-mode -1)
-      (scroll-bar-mode -1)))
+  (if (window-system)
+      (progn
+        (blink-cursor-mode -1)
+        (menu-bar-mode 1)
+        (tool-bar-mode -1)
+        (scroll-bar-mode -1))
+    (menu-bar-mode -1))
   ;; cperl-mode is preferred to perl-mode
   (defalias 'perl-mode 'cperl-mode)
   ;; Don't care for typing out "yes" and "no" all the time...
