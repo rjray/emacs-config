@@ -934,6 +934,9 @@
                  (rename-buffer buffer-name))))))
 
   :bind (("C-x C-z" . toggle-vterm)
+         ;; These two are normally C-] and C-\, but terminals already use those
+         ("C-c C-]" . embark-act)
+         ("C-c C-\\" . embark-dwim)
          ("M-1" . (lambda () (interactive) (switch-vterm 1)))
          ("M-2" . (lambda () (interactive) (switch-vterm 2)))
          ("M-3" . (lambda () (interactive) (switch-vterm 3)))
