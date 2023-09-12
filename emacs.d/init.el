@@ -204,8 +204,8 @@
                                                      mode-line-bell-orig-bg)
                                 (set-face-foreground 'mode-line
                                                      mode-line-bell-orig-fg))))
-  ;; Some window-system-necessary settings
-  (if (window-system)
+  ;; Settings that are predicated on whether this is a graphical UI.
+  (if (display-graphic-p)
       (progn
         (blink-cursor-mode -1)
         (menu-bar-mode 1)
@@ -258,7 +258,7 @@
 
 (use-package display-line-numbers
   ;; Number ALL the lines
-  :if window-system
+  :if (display-graphic-p)
   :config
   ;; No, seriously... all the lines.
   (global-display-line-numbers-mode t)
@@ -747,7 +747,7 @@
 
 (use-package git-gutter
   ;; Git-related decorations in the gutter
-  :if window-system
+  :if (display-graphic-p)
   :ensure t
   :commands (global-git-gutter-mode)
   :delight
