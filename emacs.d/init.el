@@ -26,7 +26,6 @@
       '(("melpa" . "https://melpa.org/packages/")
         ("elpa" . "https://elpa.gnu.org/packages/")))
 (package-initialize)
-(package-refresh-contents)
 
 ;; This directory holds files that are taken whole from other sources
 (add-to-list 'load-path (concat user-emacs-directory "external"))
@@ -97,7 +96,7 @@
     (interactive)
     (text-scale-set 0))
 
-  ;; This one is neat-- make C-w kill a region when the region is active, or
+  ;; This one makes C-w kill a region when the region is active, or
   ;; otherwise do a backward-kill-word like C-w behaves in things like bash.
   (defun my/kill-region-or-word (arg)
     (interactive "p")
@@ -379,7 +378,7 @@
   ;; Enable Projectile globally
   :init (projectile-mode +1)
   :config
-  ;; Recommended keymap prefix on macOS
+  ;; Recommended keymap prefix on MacOS
   (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
   ;; Recommended keymap prefix on Windows/Linux
   (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map))
@@ -1099,4 +1098,5 @@
 
 ;;; init.el ends here
 
-;; LocalWords:  init Theming deadgrep minibuffer Eglot elpa
+;; LocalWords:  init Theming deadgrep minibuffer Eglot elpa Treemacs
+;; LocalWords:  RecentFiles
