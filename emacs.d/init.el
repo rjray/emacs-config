@@ -66,7 +66,7 @@
     (setq last-last-command last-command))
 
   ;; I forget where I got this... this is a modified version, anyway.
-  (defun count-region ()
+  (defun my/count-region ()
     "Count lines, words and characters in region."
     (interactive)
     (let* ((start (if (region-active-p) (region-beginning) (point-min)))
@@ -80,13 +80,13 @@
                w (if (= 1 w) "" "s")
                c (if (= 1 c) "" "s"))))
 
-  (defun fill-paragraph-or-region ()
+  (defun my/fill-paragraph-or-region ()
     "If the region is active, call `fill-region'. Otherwise, `fill-paragraph'."
     (interactive)
     (cond ((region-active-p) (fill-region (region-beginning) (region-end)))
           (t (fill-paragraph nil))))
 
-  (defun untabify-buffer-or-region ()
+  (defun my/untabify-buffer-or-region ()
     "Untabify the entire buffer. If region is active, only untabify the region."
     (interactive)
     (cond ((region-active-p) (untabify (region-beginning) (region-end)))
@@ -114,10 +114,10 @@
               ("C-<f5>" . edit-last-kbd-macro)
               ("<f6>" . search-forward-regexp)
               ("C-<f6>" . search-backward-regexp)
-              ("<f7>" . fill-paragraph-or-region)
-              ("C-<f7>" . untabify-buffer-or-region)
+              ("<f7>" . my/fill-paragraph-or-region)
+              ("C-<f7>" . my/untabify-buffer-or-region)
               ("<f8>" . cider-jack-in)
-              ("C-!" . count-region)
+              ("C-!" . my/count-region)
               ("C-+" . text-scale-increase)
               ("C--" . text-scale-decrease)
               ("C-_" . my/text-scale-reset)
@@ -143,11 +143,6 @@
 
   ;; default to better frame titles
   (frame-title-format (concat "%b - emacs@" *system-name*))
-
-  ;; Startup stuff suppression
-  (inhibit-splash-screen t)
-  (inhibit-startup-echo-area-message t)
-  (inhibit-startup-screen t)
 
   ;; Backup stuff
   (backup-inhibited t)
@@ -214,7 +209,7 @@
   ;; cperl-mode is preferred to perl-mode
   (defalias 'perl-mode 'cperl-mode)
   ;; Don't care for typing out "yes" and "no" all the time...
-  (defalias 'yes-or-no-p 'y-or-n-p)
+  (defvar use-short-answers t)
   ;;enable narrowing
   (put 'narrow-to-region 'disabled nil)
   (subword-mode)
@@ -1093,6 +1088,9 @@
   (when (file-directory-p hostdir)
     (dolist (host-el-file (directory-files hostdir t "\\.el$"))
       (load-file host-el-file))))
+
+;; Lower GC threshold back to something normal.
+(setq gc-cons-threshold (* 4 1024 1024))
 
 (provide 'init)
 
