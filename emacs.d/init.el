@@ -625,6 +625,24 @@
   :ensure t
   :defer t)
 
+(use-package clojars
+  ;; Clojars.org searching
+  :ensure t)
+
+(use-package clojure-essential-ref-nov
+  ;; Look-up in "Clojure: The Essential Reference" local Epub copy
+  :ensure t
+  :config
+  (setq clojure-essential-ref-nov-epub-path
+        "~/Dropbox/Books/Clojure-Lisp/Clojure_The_Essential_Reference.epub")
+  (setq clojure-essential-ref-default-browse-fn
+        #'clojure-essential-ref-nov-browse)
+  :bind (
+         :map cider-mode-map
+         ("C-c C-h" . clojure-essential-ref)
+         :map cider-repl-mode-map
+         ("C-c C-h" . clojure-essential-ref)))
+
 (use-package eldoc
   ;; ElDoc
   :delight eldoc-mode)
