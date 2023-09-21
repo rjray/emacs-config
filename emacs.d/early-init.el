@@ -15,7 +15,7 @@
    (concat (emacs-init-time) ", gc ran " (number-to-string gcs-done) " times")))
 
 ;; Allow high initial memory allocation.
-(setq gc-cons-threshold (* 128 1024 1024))
+(setq gc-cons-threshold (* 1024 1024 1024))
 
 ;; Startup stuff suppression
 (setq inhibit-splash-screen t
