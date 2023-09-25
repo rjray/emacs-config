@@ -107,7 +107,6 @@
   :bind (:map global-map
               ("C-h h" . nil)
               ("C-w" . my/kill-region-or-word)
-              ("C-z" . undo)
               ;; Function-key bindings. Don't go above f8, though, because MacOS
               ;; grabs f9 through f12. And f1-f4 are already in use.
               ("<f5>" . call-last-kbd-macro)
@@ -197,14 +196,14 @@
                                                      mode-line-bell-orig-bg)
                                 (set-face-foreground 'mode-line
                                                      mode-line-bell-orig-fg))))
+  ;; Disable menu bar regardless of graphical or text display
+  (menu-bar-mode -1)
   ;; Settings that are predicated on whether this is a graphical UI.
-  (if (display-graphic-p)
-      (progn
-        (blink-cursor-mode -1)
-        (menu-bar-mode 1)
-        (tool-bar-mode -1)
-        (scroll-bar-mode -1))
-    (menu-bar-mode -1))
+  (when (display-graphic-p)
+    (blink-cursor-mode -1)
+    (tool-bar-mode -1)
+    (scroll-bar-mode -1)
+    (global-set-key (kbd "C-z") 'undo))
   ;; cperl-mode is preferred to perl-mode
   (defalias 'perl-mode 'cperl-mode)
   ;; Don't care for typing out "yes" and "no" all the time...
