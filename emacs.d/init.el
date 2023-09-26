@@ -196,13 +196,8 @@
                                                      mode-line-bell-orig-bg)
                                 (set-face-foreground 'mode-line
                                                      mode-line-bell-orig-fg))))
-  ;; Disable menu bar regardless of graphical or text display
-  (menu-bar-mode -1)
   ;; Settings that are predicated on whether this is a graphical UI.
   (when (display-graphic-p)
-    (blink-cursor-mode -1)
-    (tool-bar-mode -1)
-    (scroll-bar-mode -1)
     (global-set-key (kbd "C-z") 'undo))
   ;; cperl-mode is preferred to perl-mode
   (defalias 'perl-mode 'cperl-mode)
