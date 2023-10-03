@@ -260,11 +260,6 @@
   ;; Enable the theme
   (load-theme 'ef-elea-dark t))
 
-(use-package theme-anchor
-  :ensure t
-  :config
-  (setq face-impute-alist '((mode-line-active . mode-line))))
-
 (use-package exec-path-from-shell
   ;; Set up the exec-path by reading $PATH from a shell
   :hook (after-init-hook . exec-path-from-shell-initialize))
@@ -750,7 +745,6 @@
   ;; Supercharged git interface
   :ensure t
   :bind (("C-c m" . magit-status))
-  :hook ((magit-mode . (lambda () (theme-anchor-buffer-local 'ef-frost))))
   :custom
   (magit-diff-highlight-trailing t)
   (magit-diff-paint-whitespace t)
