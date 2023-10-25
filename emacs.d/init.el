@@ -104,6 +104,9 @@
            (kill-region (region-beginning) (region-end)))
           (t (backward-kill-word arg))))
 
+  ;; Toggle two most recent buffers
+  (fset 'quick-switch-buffer [?\C-x ?b return])
+
   :bind (:map global-map
               ("C-h h" . nil)
               ("C-w" . my/kill-region-or-word)
@@ -121,7 +124,8 @@
               ("C--" . text-scale-decrease)
               ("C-_" . my/text-scale-reset)
               ("<home>" . my/home)
-              ("<end>" . my/end))
+              ("<end>" . my/end)
+              ("s-z" . quick-switch-buffer))
 
   :hook ((text-mode . display-fill-column-indicator-mode)
          (text-mode . hl-line-mode)
