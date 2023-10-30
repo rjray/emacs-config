@@ -185,21 +185,7 @@
   (grep-use-null-device nil)
 
   :config
-  ;; Visual Bell (flash the mode-line instead of an audio bell)
-  ;; Cribbed from Jason Filsinger, https://github.com/filsinger/emacs-config
-  (setq visible-bell nil
-        ring-bell-function `(lambda ()
-                              (let ((mode-line-bell-orig-bg
-                                     (face-background 'mode-line))
-                                    (mode-line-bell-orig-fg
-                                     (face-foreground 'mode-line)))
-                                (set-face-background 'mode-line "#ED3B3B")
-                                (set-face-foreground 'mode-line "#7F2020")
-                                (sit-for 0.1)
-                                (set-face-background 'mode-line
-                                                     mode-line-bell-orig-bg)
-                                (set-face-foreground 'mode-line
-                                                     mode-line-bell-orig-fg))))
+  (setq visible-bell t)
   ;; Settings that are predicated on whether this is a graphical UI.
   (when (display-graphic-p)
     (global-set-key (kbd "C-z") 'undo))
