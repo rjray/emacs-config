@@ -37,6 +37,8 @@
 ;; other `use-package' invocations.
 (use-package emacs
   :init
+  (require 'server)
+
   ;; Some code for custom key commands:
   ;; Taken from crisp.el, written by Gary D. Foster
   (defvar last-last-command nil
@@ -197,7 +199,9 @@
   (put 'narrow-to-region 'disabled nil)
   (subword-mode)
   (set-language-environment 'utf-8)
-  (add-to-list 'completion-ignored-extensions ".#"))
+  (add-to-list 'completion-ignored-extensions ".#")
+  (when (not (server-running-p))
+    (server-start)))
 
 ;;;===========================================================================
 ;;; Start-up and general interface packages.
