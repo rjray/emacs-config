@@ -598,9 +598,11 @@
   :config
   (setq
    nrepl-hide-special-buffers t
+   cider-connection-message-fn #'cider-random-tip
+   cider-repl-display-help-banner nil
    cider-auto-select-error-buffer t
    cider-prompt-for-symbol t
-   cider-repl-display-in-current-window t
+   cider-repl-display-in-current-window nil
    cider-repl-history-size 1000))
 
 (use-package clojure-mode
