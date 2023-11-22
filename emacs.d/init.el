@@ -658,8 +658,7 @@
 (use-package markdown-mode
   ;; Markdown editing
   :ensure t
-  :mode (("README\\.md\\'" . gfm-mode)
-         ("\\.md\\'" . markdown-mode))
+  :mode ("README\\.md\\'" . gfm-mode)
   :custom
   (markdown-command "multimarkdown")
   (markdown-fontify-code-blocks-natively t)
