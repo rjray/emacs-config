@@ -678,8 +678,7 @@
 (use-package yaml-ts-mode
   :ensure t
   :defer t
-  :mode (("\\.yml\\'" . yaml-ts-mode)
-         ("\\.yaml\\'" . yaml-ts-mode)))
+  :mode ("\\.ya\\?ml\\'" . yaml-ts-mode))
 
 ;;;===========================================================================
 ;;; Org Mode and related
