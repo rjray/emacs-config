@@ -885,58 +885,6 @@
 ;;; Shell/terminal
 ;;;===========================================================================
 
-(use-package vterm
-  :ensure t
-  :defer  t
-  :commands (vterm vterm-send-key)
-
-  :preface
-  (let ((last-vterm ""))
-    (defun toggle-vterm ()
-      (interactive)
-      (cond ((string-match-p "^\\vterm<[1-9][0-9]*>$" (buffer-name))
-             (goto-non-vterm-buffer))
-            ((get-buffer last-vterm) (switch-to-buffer last-vterm))
-            (t (vterm (setq last-vterm "vterm<1>")))))
-
-    (defun goto-non-vterm-buffer ()
-      (let* ((r "^\\vterm<[1-9][0-9]*>$")
-             (vterm-buffer-p (lambda (b) (string-match-p r (buffer-name b))))
-             (non-vterms (cl-remove-if vterm-buffer-p (buffer-list))))
-        (when non-vterms
-          (switch-to-buffer (car non-vterms)))))
-
-    (defun switch-vterm (n)
-      (let ((buffer-name (format "vterm<%d>" n)))
-        (setq last-vterm buffer-name)
-        (cond ((get-buffer buffer-name)
-               (switch-to-buffer buffer-name))
-              (t (vterm buffer-name)
-                 (rename-buffer buffer-name))))))
-
-  :bind (("C-x C-z" . toggle-vterm)
-         ;; These two are normally C-] and C-\, but terminals already use those
-         ("C-c C-]" . embark-act)
-         ("C-c C-\\" . embark-dwim)
-         ("M-1" . (lambda () (interactive) (switch-vterm 1)))
-         ("M-2" . (lambda () (interactive) (switch-vterm 2)))
-         ("M-3" . (lambda () (interactive) (switch-vterm 3)))
-         ("M-4" . (lambda () (interactive) (switch-vterm 4)))
-         ("M-5" . (lambda () (interactive) (switch-vterm 5)))
-         ("M-6" . (lambda () (interactive) (switch-vterm 6)))
-         ("M-7" . (lambda () (interactive) (switch-vterm 7)))
-         ("M-8" . (lambda () (interactive) (switch-vterm 8)))
-         ("M-9" . (lambda () (interactive) (switch-vterm 9)))
-         (:map vterm-mode-map
-               ("C-<backspace>" . (lambda ()
-                                    (interactive)
-                                    (vterm-send-key (kbd "C-w"))))))
-
-  :config
-  ;; Don't query about killing vterm buffers, just kill it
-  (defadvice vterm (after kill-with-no-query nil activate)
-    (set-process-query-on-exit-flag (get-buffer-process ad-return-value) nil)))
-
 ;;;===========================================================================
 ;;; TeX/LaTeX stuff
 ;;;===========================================================================
