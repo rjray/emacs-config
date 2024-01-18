@@ -687,6 +687,7 @@
 (use-package org
   ;; Org Mode
   :defer t
+  :commands (org-link-set-parameters)
   :bind (("C-c o" . (lambda () (interactive)
                       (find-file "~/Dropbox/org/organizer.org")))
          ("C-c C-o" . (lambda () (interactive)
@@ -698,7 +699,11 @@
                          (local-set-key (kbd "C-c j") 'org-goto)))))
   :custom
   (org-default-notes-file "~/Dropbox/org/organizer.org")
-  (org-refile-targets '((org-agenda-files . (:maxlevel . 6)))))
+  (org-refile-targets '((org-agenda-files . (:maxlevel . 6))))
+  :config
+  (org-link-set-parameters "copy"
+                           :follow (lambda (link) (kill-new link))
+                           :export (lambda (_ desc &rest _) desc)))
 
 (use-package org-journal
   ;; Org journaling mode
@@ -714,6 +719,28 @@
   :defer t
   :commands (org-bullets-mode)
   :hook ((org-mode . org-bullets-mode)))
+
+(use-package org-roam
+  :ensure t
+  :commands (org-roam-db-autosync-mode)
+  :custom
+  (org-roam-directory "~/Dropbox/org")
+  :bind (("C-c C-n l" . org-roam-buffer-toggle)
+         ("C-c C-n f" . org-roam-node-find)
+         ("C-c C-n g" . org-roam-graph)
+         ("C-c C-n i" . org-roam-node-insert)
+         ("C-c C-n c" . org-roam-capture)
+         ;; Dailies
+         ("C-c C-n j" . org-roam-dailies-capture-today))
+  :config
+  ;; If you're using a vertical completion framework, you might want a more
+  ;; informative completion interface
+  (setq org-roam-node-display-template (concat "${title:*} "
+                                               (propertize "${tags:10}"
+                                                           'face 'org-tag)))
+  (org-roam-db-autosync-mode)
+  ;; If using org-roam-protocol
+  (require 'org-roam-protocol))
 
 ;;;===========================================================================
 ;;; Magit and git-related code
