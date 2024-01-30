@@ -201,7 +201,10 @@
   (set-language-environment 'utf-8)
   (add-to-list 'completion-ignored-extensions ".#")
   (when (not (server-running-p))
-    (server-start)))
+    (server-start))
+  (global-set-key (kbd "C-c l") #'org-store-link)
+  (global-set-key (kbd "C-c a") #'org-agenda)
+  (global-set-key (kbd "C-c c") #'org-capture))
 
 ;;;===========================================================================
 ;;; Start-up and general interface packages.
@@ -541,13 +544,6 @@
          (python-ts-mode . eglot-ensure)
          (rust-ts-mode-hook . eglot-ensure)
          (yaml-ts-mode . eglot-ensure))
-  :bind (("C-c l b" . eglot-format-buffer)
-         ("C-c l a" . eglot-code-actions)
-         ("C-c l e" . eglot-reconnect)
-         ("C-c l r" . eglot-rename)
-         ("C-c l C-d" . eldoc)
-         ("C-c l C-e" . eglot-rename)
-         ("C-c l C-o" . python-sort-imports))
   :config
   (setq eglot-workspace-configuration
         '((:pylsp .
@@ -689,15 +685,15 @@
   :defer t
   :commands (org-link-set-parameters)
   :bind (("C-c o" . (lambda () (interactive)
-                      (find-file "~/Dropbox/org/organizer.org")))
-         ("C-c C-o" . (lambda () (interactive)
-                        (find-file "~/Dropbox/org"))))
+                      (find-file "~/Dropbox/org"))))
   :hook ((org-mode . auto-revert-mode)
          (org-mode . (lambda ()
                        (progn
-                         (local-set-key (kbd "C-c C-j") 'org-journal-new-entry)
-                         (local-set-key (kbd "C-c j") 'org-goto)))))
+                         (flycheck-mode -1)))))
   :custom
+  (org-insert-heading-respect-content t)
+  (org-outline-path-complete-in-steps nil)
+  (org-goto-interface 'outline-path-completion)
   (org-default-notes-file "~/Dropbox/org/organizer.org")
   (org-refile-targets '((org-agenda-files . (:maxlevel . 6))))
   :config
@@ -709,16 +705,15 @@
   ;; Org journaling mode
   :ensure t
   :defer t
-  :bind (("C-c C-j" . org-journal-new-entry))
   :hook ((org-journal-mode . auto-fill-mode))
   :custom
   (org-journal-dir "~/Dropbox/org/journal"))
 
-(use-package org-bullets
-  :ensure t
-  :defer t
-  :commands (org-bullets-mode)
-  :hook ((org-mode . org-bullets-mode)))
+;; (use-package org-bullets
+;;   :ensure t
+;;   :defer t
+;;   :commands (org-bullets-mode)
+;;   :hook ((org-mode . org-bullets-mode)))
 
 (use-package org-roam
   :ensure t
