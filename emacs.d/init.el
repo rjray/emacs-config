@@ -594,7 +594,7 @@
   :config
   (setq
    nrepl-hide-special-buffers t
-   cider-connection-message-fn #'cider-random-tip
+   ;; cider-connection-message-fn #'cider-random-tip
    cider-repl-display-help-banner nil
    cider-auto-select-error-buffer t
    cider-prompt-for-symbol t
@@ -683,6 +683,7 @@
 (use-package org
   ;; Org Mode
   :defer t
+  :after flycheck
   :commands (org-link-set-parameters)
   :bind (("C-c o" . (lambda () (interactive)
                       (find-file "~/Dropbox/org"))))
@@ -894,7 +895,7 @@
 
 (use-package flycheck-clojure
   ;; Clojure support for Flycheck
-  :after (clojure-mode)
+  :after clojure-mode
   :ensure t)
 
 (use-package flycheck-posframe
@@ -913,10 +914,9 @@
 
 (use-package auctex
   ;; TeX/LaTeX editing mode
-  :defer nil
-  :hook
-  (LaTeX-mode . turn-on-prettify-symbols-mode)
-  (LaTeX-mode . turn-on-flyspell))
+  :defer t
+  :hook  ((LaTeX-mode . turn-on-prettify-symbols-mode)
+          (LaTeX-mode . turn-on-flyspell)))
 
 ;;;===========================================================================
 ;;; PDF stuff
