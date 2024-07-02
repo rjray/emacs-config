@@ -327,7 +327,6 @@
    ("C-x l" . counsel-locate)
    ("C-c L" . counsel-git-log)
    ("C-c m" . counsel-linux-app)
-   ("C-c n" . counsel-fzf)
    ("C-c t" . counsel-load-theme)))
 
 (use-package ivy
@@ -389,8 +388,9 @@
   (which-key-sort-order 'which-key-key-order-alpha)
   (which-key-min-display-lines 3)
   (which-key-max-display-columns nil)
-  :config
+  :init
   (which-key-mode)
+  :config
   (which-key-setup-minibuffer))
 
 (use-package prescient
