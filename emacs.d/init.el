@@ -19,6 +19,8 @@
 
 ;; True if this system is MacOS. Used in a few places for paths, etc.
 (defconst *is-mac* (eq system-type 'darwin) "Is this a Mac system?")
+;; True if this system is Linux. Not used at the moment, but here for future use
+(defconst *is-linux* (eq system-type 'gnu/linux) "Is this a Linux system?")
 
 (require 'package)
 (setq package-enable-at-startup nil)
@@ -37,7 +39,20 @@
 ;; other `use-package' invocations.
 (use-package emacs
   :init
-  (require 'server)
+  (use-package xref
+    ;; A little configuration for Xref
+    :commands xref-show-definitions-completing-read
+    :config
+    ;; Have Xref use `completing-read' to select a target
+    (setq xref-show-definitions-function
+          #'xref-show-definitions-completing-read))
+
+  (use-package server
+    ;; Emacs in server mode
+    :commands server-running-p
+    :config
+    (unless (server-running-p)
+      (server-start)))
 
   ;; Some code for custom key commands:
   ;; Taken from crisp.el, written by Gary D. Foster
@@ -199,12 +214,7 @@
   (put 'narrow-to-region 'disabled nil)
   (subword-mode)
   (set-language-environment 'utf-8)
-  (add-to-list 'completion-ignored-extensions ".#")
-  (when (not (server-running-p))
-    (server-start))
-  (global-set-key (kbd "C-c l") #'org-store-link)
-  (global-set-key (kbd "C-c a") #'org-agenda)
-  (global-set-key (kbd "C-c c") #'org-capture))
+  (add-to-list 'completion-ignored-extensions ".#"))
 
 ;;;===========================================================================
 ;;; Start-up and general interface packages.
@@ -280,13 +290,6 @@
         recentf-max-menu-items 40
         recentf-max-saved-items 100
         recentf-exclude '("\\.ido\\.last" "/recentf$" ".emacs.d/elpa/")))
-
-(use-package server
-  ;; Emacs in server mode
-  :commands (server-running-p)
-  :config
-  (unless (server-running-p)
-    (server-start)))
 
 (use-package whitespace
   ;; Excess whitespace display
@@ -377,21 +380,6 @@
   :delight
   :config
   (add-hook 'after-init-hook 'global-company-mode))
-
-(use-package which-key
-  :ensure t
-  :delight which-key-mode
-  :commands (which-key-mode which-key-setup-minibuffer)
-  :custom
-  (which-key-idle-delay 0.3)
-  (which-key-prefix-prefix "◉ ")
-  (which-key-sort-order 'which-key-key-order-alpha)
-  (which-key-min-display-lines 3)
-  (which-key-max-display-columns nil)
-  :init
-  (which-key-mode)
-  :config
-  (which-key-setup-minibuffer))
 
 (use-package prescient
   :ensure t
@@ -687,10 +675,7 @@
   :commands (org-link-set-parameters)
   :bind (("C-c o" . (lambda () (interactive)
                       (find-file "~/Dropbox/org"))))
-  :hook ((org-mode . auto-revert-mode)
-         (org-mode . (lambda ()
-                       (progn
-                         (flycheck-mode -1)))))
+  :hook (org-mode . auto-revert-mode)
   :custom
   (org-insert-heading-respect-content t)
   (org-outline-path-complete-in-steps nil)
@@ -889,9 +874,12 @@
 (use-package flycheck
   ;; Flycheck
   :ensure t
+  :commands global-flycheck-mode
+  :config
+  (setq flycheck-global-modes '(not org-mode))
   :init
   (setq flycheck-emacs-lisp-load-path 'inherit)
-  (add-hook 'after-init-hook 'global-flycheck-mode))
+  (add-hook 'after-init-hook #'global-flycheck-mode))
 
 (use-package flycheck-clojure
   ;; Clojure support for Flycheck
@@ -1022,6 +1010,23 @@
   :custom
   (counsel-describe-function-function #'helpful-callable)
   (counsel-describe-variable-function #'helpful-variable))
+
+(use-package which-key
+  ;; Show in minibuffer the possible keybindings available based on what has
+  ;; been typed thus far.
+  :ensure t
+  :delight which-key-mode
+  :commands (which-key-mode which-key-setup-minibuffer)
+  :custom
+  (which-key-idle-delay 0.3)
+  (which-key-prefix-prefix "◉ ")
+  (which-key-sort-order 'which-key-key-order-alpha)
+  (which-key-min-display-lines 3)
+  (which-key-max-display-columns nil)
+  :init
+  (which-key-mode)
+  :config
+  (which-key-setup-minibuffer))
 
 ;;;===========================================================================
 ;;; Anything that is specific to an OS/platform.
