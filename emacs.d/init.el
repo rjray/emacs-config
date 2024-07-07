@@ -303,76 +303,85 @@
 ;;; Packages related to command-selection, completion, etc.
 ;;;===========================================================================
 
-(use-package counsel
-  ;; Provide versions of common commands customized to use Ivy
-  :ensure t
-  :bind
-  (;; Use this instead of hitting M-x all the time:
-   ("C-x C-m" . counsel-M-x)
-   ("C-c C-m" . counsel-M-x)
-   ;; Rest taken from https://oremacs.com/swiper/#global-key-bindings
-   ("C-x C-f" . counsel-find-file)
-   ("M-y" . counsel-yank-pop)
-   ("<f1> f" . counsel-describe-function)
-   ("<f1> v" . counsel-describe-variable)
-   ("<f1> l" . counsel-find-library)
-   ("<f2> i" . counsel-info-lookup-symbol)
-   ("<f2> u" . counsel-unicode-char)
-   ("<f2> j" . counsel-set-variable)
-   ("C-c b" . counsel-bookmark)
-   ("C-c c" . counsel-compile)
-   ("C-c d" . counsel-descbinds)
-   ("C-c F" . counsel-org-file)
-   ("C-c g" . counsel-git)
-   ("C-c j" . counsel-git-grep)
-   ("C-c J" . counsel-file-jump)
-   ("C-c k" . counsel-rg)
-   ("C-x l" . counsel-locate)
-   ("C-c L" . counsel-git-log)
-   ("C-c m" . counsel-linux-app)
-   ("C-c t" . counsel-load-theme)))
-
-(use-package ivy
-  ;; Ivy interactive interface completion
+;; Vertico for interactive completion
+(use-package vertico
   :ensure t
   :delight
-  :commands (ivy-mode)
-  :bind
-  (("C-x b" . ivy-switch-buffer)
-   ("C-c v" . ivy-push-view)
-   ("C-c V" . ivy-pop-view)
-   ("C-c C-r" . ivy-resume))
-  :custom
-  (ivy-use-virtual-buffers t)
-  (ivy-count-format "(%d/%d) ")
-  :config
-  (ivy-mode 1))
+  :commands vertico-mode
+  :init
+  (vertico-mode))
 
-(use-package swiper
-  ;; Isearch alternative that uses Ivy
+;; Consult for completing-read
+(use-package consult
   :ensure t
-  :bind (("C-s" . swiper-isearch)))
-
-(use-package projectile
-  ;; Projectile for project-level management
-  :ensure t
-  :delight '(:eval (concat " " (projectile-project-name)))
-  :commands (projectile-mode)
-  ;; Enable Projectile globally
-  :init (projectile-mode +1)
-  :config
-  ;; Recommended keymap prefix on MacOS
-  (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
-  ;; Recommended keymap prefix on Windows/Linux
-  (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map))
-
-(use-package dumb-jump
-  ;; A go-to-def package that uses ripgrep
-  :ensure t
-  :config
-  (setq dumb-jump-prefer-searcher 'rg)
-  (setq dumb-jump-rg-search-args "--hidden --pcre2")
-  (add-hook 'xref-backend-functions 'dumb-jump-xref-activate))
+  :defer nil
+  :delight
+  :commands (consult-register-format consult-register-window consult-xref)
+  :hook (completion-list-mode . consult-preview-at-point-mode)
+  :bind (;; C-c bindings in `mode-specific-map'
+         ("C-c M-x" . consult-mode-command)
+         ("C-c h" . consult-history)
+         ("C-c k" . consult-kmacro)
+         ("C-c m" . consult-man)
+         ("C-c i" . consult-info)
+         ([remap Info-search] . consult-info)
+         ;; C-x bindings in `ctl-x-map'
+         ("C-x M-:" . consult-complex-command)
+         ("C-x b" . consult-buffer)
+         ("C-x 4 b" . consult-buffer-other-window)
+         ("C-x 5 b" . consult-buffer-other-frame)
+         ("C-x t b" . consult-buffer-other-tab)
+         ("C-x r b" . consult-bookmark)
+         ("C-x p b" . consult-project-buffer)
+         ;; Custom M-# bindings for fast register access
+         ("M-#" . consult-register-load)
+         ("M-'" . consult-register-store)
+         ("C-M-#" . consult-register)
+         ;; Other custom bindings
+         ("M-y" . consult-yank-pop)
+         ;; M-g bindings in `goto-map'
+         ("M-g e" . consult-compile-error)
+         ("M-g f" . consult-flymake)
+         ("M-g g" . consult-goto-line)
+         ("M-g M-g" . consult-goto-line)
+         ("M-g o" . consult-outline)
+         ("M-g m" . consult-mark)
+         ("M-g k" . consult-global-mark)
+         ("M-g i" . consult-imenu)
+         ("M-g I" . consult-imenu-multi)
+         ;; M-s bindings in `search-map'
+         ("M-s d" . consult-find)
+         ("M-s c" . consult-locate)
+         ("M-s g" . consult-grep)
+         ("M-s G" . consult-git-grep)
+         ("M-s r" . consult-ripgrep)
+         ("M-s l" . consult-line)
+         ("M-s L" . consult-line-multi)
+         ("M-s k" . consult-keep-lines)
+         ("M-s u" . consult-focus-lines)
+         ;; Isearch integration
+         ("M-s e" . consult-isearch-history)
+         :map isearch-mode-map
+         ("M-e" . consult-isearch-history)
+         ("M-s e" . consult-isearch-history)
+         ("M-s l" . consult-line)
+         ("M-s L" . consult-line-multi)
+         ;; Minibuffer history
+         :map minibuffer-local-map
+         ("M-s" . consult-history)
+         ("M-r" . consult-history))
+  :init
+  ;; Optionally configure the register formatting. This improves the register
+  ;; preview for `consult-register', `consult-register-load',
+  ;; `consult-register-store' and the Emacs built-ins.
+  (setq register-preview-delay 0.5
+        register-preview-function #'consult-register-format)
+  ;; Optionally tweak the register preview window.
+  ;; This adds thin lines, sorting and hides the mode line of the window.
+  (advice-add #'register-preview :override #'consult-register-window)
+  ;; Use Consult to select xref locations with preview
+  (setq xref-show-xrefs-function #'consult-xref
+        xref-show-definitions-function #'consult-xref))
 
 (use-package company
   ;; Company mode for completion
@@ -389,17 +398,14 @@
   (setq-default prescient-history-length 1000) ;; More prescient history
   (prescient-persist-mode +1))
 
-;; Use `prescient' for Ivy menus.
-(use-package ivy-prescient
+;; Use `prescient' for Vertico menus.
+(use-package vertico-prescient
   :ensure t
-  :after ivy
-  :commands (ivy-prescient-mode)
+  :after vertico
+  :commands vertico-prescient-mode
   :config
   ;; don't prescient sort these commands
-  (dolist (command '(org-ql-view counsel-find-file))
-    (setq ivy-prescient-sort-commands (append ivy-prescient-sort-commands
-                                              (list command))))
-  (ivy-prescient-mode +1))
+  (vertico-prescient-mode +1))
 
 (use-package company-prescient
   :ensure t
@@ -407,6 +413,57 @@
   :commands (company-prescient-mode)
   :config
   (company-prescient-mode +1))
+
+(use-package embark
+  :ensure t
+  :commands (embark-prefix-help-command embark-eldoc-first-target)
+  :bind
+  (("C-]" . embark-act)
+   ("C-\\" . embark-dwim)
+   ("C-h B" . embark-bindings)) ;; alternative for `describe-bindings'
+  :init
+  ;; Optionally replace the key help with a completing-read interface
+  (setq prefix-help-command #'embark-prefix-help-command)
+  ;; Show the Embark target at point via Eldoc.  You may adjust the Eldoc
+  ;; strategy, if you want to see the documentation from multiple providers.
+  (add-hook 'eldoc-documentation-functions #'embark-eldoc-first-target)
+  ;; (setq eldoc-documentation-strategy #'eldoc-documentation-compose-eagerly)
+  :config
+  ;; Hide the mode line of the Embark live/completions buffers
+  (add-to-list 'display-buffer-alist
+               '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
+                 nil
+                 (window-parameters (mode-line-format . none)))))
+
+(use-package embark-consult
+  :ensure t
+  :after (embark consult))
+
+(use-package dumb-jump
+  ;; A go-to-def package that uses ripgrep
+  :ensure t
+  :commands dumb-jump-xref-activate
+  :config
+  (setq dumb-jump-prefer-searcher 'rg)
+  (setq dumb-jump-rg-search-args "--hidden --pcre2")
+  (add-hook 'xref-backend-functions #'dumb-jump-xref-activate))
+
+;;;===========================================================================
+;;; Project management
+;;;===========================================================================
+
+(use-package projectile
+  ;; Projectile for project-level management
+  :ensure t
+  :delight '(:eval (concat " " (projectile-project-name)))
+  :commands (projectile-mode)
+  ;; Enable Projectile globally
+  :init (projectile-mode +1)
+  :config
+  ;; Recommended keymap prefix on MacOS
+  (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
+  ;; Recommended keymap prefix on Windows/Linux
+  (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map))
 
 ;;;===========================================================================
 ;;; Language parsing, tree-sitter, non-language-specific bits
@@ -969,27 +1026,6 @@
   :custom (marginalia-annotators '(marginalia-annotators-light))
   :init
   (marginalia-mode))
-
-(use-package embark
-  :ensure t
-  :commands (embark-prefix-help-command embark-eldoc-first-target)
-  :bind
-  (("C-]" . embark-act)
-   ("C-\\" . embark-dwim)
-   ("C-h B" . embark-bindings)) ;; alternative for `describe-bindings'
-  :init
-  ;; Optionally replace the key help with a completing-read interface
-  (setq prefix-help-command #'embark-prefix-help-command)
-  ;; Show the Embark target at point via Eldoc.  You may adjust the Eldoc
-  ;; strategy, if you want to see the documentation from multiple providers.
-  (add-hook 'eldoc-documentation-functions #'embark-eldoc-first-target)
-  ;; (setq eldoc-documentation-strategy #'eldoc-documentation-compose-eagerly)
-  :config
-  ;; Hide the mode line of the Embark live/completions buffers
-  (add-to-list 'display-buffer-alist
-               '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
-                 nil
-                 (window-parameters (mode-line-format . none)))))
 
 (use-package windmove
   ;; (Slightly) Easier movement between windows.
