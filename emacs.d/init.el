@@ -125,6 +125,7 @@
   (fset 'quick-switch-buffer [?\C-x ?b return])
 
   :bind (:map global-map
+              ("C-x C-m" . execute-extended-command)
               ("C-h h" . nil)
               ("C-w" . my/kill-region-or-word)
               ;; Function-key bindings. Don't go above f8, though, because MacOS
