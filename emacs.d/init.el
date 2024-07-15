@@ -1055,7 +1055,7 @@
   :delight which-key-mode
   :commands (which-key-mode which-key-setup-minibuffer)
   :custom
-  (which-key-idle-delay 0.3)
+  (which-key-idle-delay 0.750)
   (which-key-prefix-prefix "◉ ")
   (which-key-sort-order 'which-key-key-order-alpha)
   (which-key-min-display-lines 3)
