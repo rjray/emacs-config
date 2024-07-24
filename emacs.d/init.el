@@ -1043,10 +1043,7 @@
          ("C-h k" . helpful-key)
          ("C-h x" . helpful-command)
          ("C-h d" . helpful-at-point)
-         ("C-h F" . helpful-function))
-  :custom
-  (counsel-describe-function-function #'helpful-callable)
-  (counsel-describe-variable-function #'helpful-variable))
+         ("C-h F" . helpful-function)))
 
 (use-package which-key
   ;; Show in minibuffer the possible keybindings available based on what has
