@@ -300,6 +300,12 @@
   :config
   (setq whitespace-style '(face tabs lines-tail)))
 
+(use-package editorconfig
+  ;; Support for EditorConfig files. See https://editorconfig.org/
+  :ensure t
+  :config
+  (editorconfig-mode 1))
+
 ;;;===========================================================================
 ;;; Packages related to command-selection, completion, etc.
 ;;;===========================================================================
