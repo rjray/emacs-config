@@ -39,13 +39,15 @@
 ;; other `use-package' invocations.
 (use-package emacs
   :init
+  (use-package bookmark)
+
   (use-package xref
     ;; A little configuration for Xref
     :commands xref-show-definitions-completing-read
     :config
     ;; Have Xref use `completing-read' to select a target
     (setq xref-show-definitions-function
-          #'xref-show-definitions-completing-read))
+      #'xref-show-definitions-completing-read))
 
   (use-package server
     ;; Emacs in server mode
@@ -63,23 +65,23 @@
     "Home - begin of line, once more - screen, once more - buffer."
     (interactive nil)
     (cond
-     ((and (eq last-command 'my/home) (eq last-last-command 'my/home))
-      (goto-char (point-min)))
-     ((eq last-command 'my/home)
-      (move-to-window-line 0))
-     (t (beginning-of-line)))
+      ((and (eq last-command 'my/home) (eq last-last-command 'my/home))
+        (goto-char (point-min)))
+      ((eq last-command 'my/home)
+        (move-to-window-line 0))
+      (t (beginning-of-line)))
     (setq last-last-command last-command))
 
   (defun my/end ()
     "End - end of line, once more - screen, once more - buffer."
     (interactive nil)
     (cond
-     ((and (eq last-command 'my/end) (eq last-last-command 'my/end))
-      (goto-char (point-max)))
-     ((eq last-command 'my/end)
-      (move-to-window-line -1)
-      (end-of-line))
-     (t (end-of-line)))
+      ((and (eq last-command 'my/end) (eq last-last-command 'my/end))
+        (goto-char (point-max)))
+      ((eq last-command 'my/end)
+        (move-to-window-line -1)
+        (end-of-line))
+      (t (end-of-line)))
     (setq last-last-command last-command))
 
   ;; I forget where I got this... this is a modified version, anyway.
@@ -87,27 +89,27 @@
     "Count lines, words and characters in region."
     (interactive)
     (let* ((start (if (region-active-p) (region-beginning) (point-min)))
-           (end (if (region-active-p) (region-end) (point-max)))
-           (l (count-lines start end))
-           (w (count-words start end))
-           (c (- end start)))
+            (end (if (region-active-p) (region-end) (point-max)))
+            (l (count-lines start end))
+            (w (count-words start end))
+            (c (- end start)))
       (message "%s has %d line%s, %d word%s and %d character%s."
-               (if (region-active-p) "Region" "Buffer")
-               l (if (= 1 l) "" "s")
-               w (if (= 1 w) "" "s")
-               c (if (= 1 c) "" "s"))))
+        (if (region-active-p) "Region" "Buffer")
+        l (if (= 1 l) "" "s")
+        w (if (= 1 w) "" "s")
+        c (if (= 1 c) "" "s"))))
 
   (defun my/fill-paragraph-or-region ()
     "If the region is active, call `fill-region'. Otherwise, `fill-paragraph'."
     (interactive)
     (cond ((region-active-p) (fill-region (region-beginning) (region-end)))
-          (t (fill-paragraph nil))))
+      (t (fill-paragraph nil))))
 
   (defun my/untabify-buffer-or-region ()
     "Untabify the entire buffer. If region is active, only untabify the region."
     (interactive)
     (cond ((region-active-p) (untabify (region-beginning) (region-end)))
-          (t (untabify (point-min) (point-max)))))
+      (t (untabify (point-min) (point-max)))))
 
   (defun my/text-scale-reset ()
     (interactive)
@@ -118,38 +120,38 @@
   (defun my/kill-region-or-word (arg)
     (interactive "p")
     (cond ((region-active-p)
-           (kill-region (region-beginning) (region-end)))
-          (t (backward-kill-word arg))))
+            (kill-region (region-beginning) (region-end)))
+      (t (backward-kill-word arg))))
 
   ;; Toggle two most recent buffers
   (fset 'quick-switch-buffer [?\C-x ?b return])
 
   :bind (:map global-map
-              ("C-x C-m" . execute-extended-command)
-              ("C-h h" . nil)
-              ("C-w" . my/kill-region-or-word)
-              ;; Function-key bindings. Don't go above f8, though, because MacOS
-              ;; grabs f9 through f12. And f1-f4 are already in use.
-              ("<f5>" . call-last-kbd-macro)
-              ("C-<f5>" . edit-last-kbd-macro)
-              ("<f6>" . search-forward-regexp)
-              ("C-<f6>" . search-backward-regexp)
-              ("<f7>" . my/fill-paragraph-or-region)
-              ("C-<f7>" . my/untabify-buffer-or-region)
-              ("<f8>" . cider-jack-in)
-              ("C-!" . my/count-region)
-              ("C-+" . text-scale-increase)
-              ("C--" . text-scale-decrease)
-              ("C-_" . my/text-scale-reset)
-              ("<home>" . my/home)
-              ("<end>" . my/end)
-              ("s-z" . quick-switch-buffer))
+          ("C-x C-m" . execute-extended-command)
+          ("C-h h" . nil)
+          ("C-w" . my/kill-region-or-word)
+          ;; Function-key bindings. Don't go above f8, though, because MacOS
+          ;; grabs f9 through f12. And f1-f4 are already in use.
+          ("<f5>" . call-last-kbd-macro)
+          ("C-<f5>" . edit-last-kbd-macro)
+          ("<f6>" . search-forward-regexp)
+          ("C-<f6>" . search-backward-regexp)
+          ("<f7>" . my/fill-paragraph-or-region)
+          ("C-<f7>" . my/untabify-buffer-or-region)
+          ("<f8>" . cider-jack-in)
+          ("C-!" . my/count-region)
+          ("C-+" . text-scale-increase)
+          ("C--" . text-scale-decrease)
+          ("C-_" . my/text-scale-reset)
+          ("<home>" . my/home)
+          ("<end>" . my/end)
+          ("s-z" . quick-switch-buffer))
 
   :hook ((text-mode . display-fill-column-indicator-mode)
-         (text-mode . hl-line-mode)
-         (prog-mode . display-fill-column-indicator-mode)
-         (prog-mode . hl-line-mode)
-         (prog-mode . flyspell-prog-mode))
+          (text-mode . hl-line-mode)
+          (prog-mode . display-fill-column-indicator-mode)
+          (prog-mode . hl-line-mode)
+          (prog-mode . flyspell-prog-mode))
 
   :custom
   (default-case-fold-search nil)
@@ -303,8 +305,23 @@
 (use-package editorconfig
   ;; Support for EditorConfig files. See https://editorconfig.org/
   :ensure t
+  :commands editorconfig-mode
   :config
   (editorconfig-mode 1))
+
+;;;===========================================================================
+;;; Various "porcelain" packages for interface enhancement.
+;;;===========================================================================
+
+(use-package casual-bookmarks
+  :ensure t
+  :bind (:map bookmark-bmenu-mode-map
+          ("C-o" . casual-bookmarks-tmenu)))
+
+(use-package casual-isearch
+  :ensure t
+  :bind (:map isearch-mode-map
+          ("<f2>" . casual-isearch-tmenu)))
 
 ;;;===========================================================================
 ;;; Packages related to command-selection, completion, etc.
@@ -326,69 +343,69 @@
   :commands (consult-register-format consult-register-window consult-xref)
   :hook (completion-list-mode . consult-preview-at-point-mode)
   :bind (;; C-c bindings in `mode-specific-map'
-         ("C-c M-x" . consult-mode-command)
-         ("C-c h" . consult-history)
-         ("C-c k" . consult-kmacro)
-         ("C-c m" . consult-man)
-         ("C-c i" . consult-info)
-         ([remap Info-search] . consult-info)
-         ;; C-x bindings in `ctl-x-map'
-         ("C-x M-:" . consult-complex-command)
-         ("C-x b" . consult-buffer)
-         ("C-x 4 b" . consult-buffer-other-window)
-         ("C-x 5 b" . consult-buffer-other-frame)
-         ("C-x t b" . consult-buffer-other-tab)
-         ("C-x r b" . consult-bookmark)
-         ("C-x p b" . consult-project-buffer)
-         ;; Custom M-# bindings for fast register access
-         ("M-#" . consult-register-load)
-         ("M-'" . consult-register-store)
-         ("C-M-#" . consult-register)
-         ;; Other custom bindings
-         ("M-y" . consult-yank-pop)
-         ;; M-g bindings in `goto-map'
-         ("M-g e" . consult-compile-error)
-         ("M-g f" . consult-flymake)
-         ("M-g g" . consult-goto-line)
-         ("M-g M-g" . consult-goto-line)
-         ("M-g o" . consult-outline)
-         ("M-g m" . consult-mark)
-         ("M-g k" . consult-global-mark)
-         ("M-g i" . consult-imenu)
-         ("M-g I" . consult-imenu-multi)
-         ;; M-s bindings in `search-map'
-         ("M-s d" . consult-find)
-         ("M-s c" . consult-locate)
-         ("M-s g" . consult-grep)
-         ("M-s G" . consult-git-grep)
-         ("M-s r" . consult-ripgrep)
-         ("M-s l" . consult-line)
-         ("M-s L" . consult-line-multi)
-         ("M-s k" . consult-keep-lines)
-         ("M-s u" . consult-focus-lines)
-         ;; Isearch integration
-         ("M-s e" . consult-isearch-history)
-         :map isearch-mode-map
-         ("M-e" . consult-isearch-history)
-         ("M-s e" . consult-isearch-history)
-         ("M-s l" . consult-line)
-         ("M-s L" . consult-line-multi)
-         ;; Minibuffer history
-         :map minibuffer-local-map
-         ("M-s" . consult-history)
-         ("M-r" . consult-history))
+          ("C-c M-x" . consult-mode-command)
+          ("C-c h" . consult-history)
+          ("C-c k" . consult-kmacro)
+          ("C-c m" . consult-man)
+          ("C-c i" . consult-info)
+          ([remap Info-search] . consult-info)
+          ;; C-x bindings in `ctl-x-map'
+          ("C-x M-:" . consult-complex-command)
+          ("C-x b" . consult-buffer)
+          ("C-x 4 b" . consult-buffer-other-window)
+          ("C-x 5 b" . consult-buffer-other-frame)
+          ("C-x t b" . consult-buffer-other-tab)
+          ("C-x r b" . consult-bookmark)
+          ("C-x p b" . consult-project-buffer)
+          ;; Custom M-# bindings for fast register access
+          ("M-#" . consult-register-load)
+          ("M-'" . consult-register-store)
+          ("C-M-#" . consult-register)
+          ;; Other custom bindings
+          ("M-y" . consult-yank-pop)
+          ;; M-g bindings in `goto-map'
+          ("M-g e" . consult-compile-error)
+          ("M-g f" . consult-flymake)
+          ("M-g g" . consult-goto-line)
+          ("M-g M-g" . consult-goto-line)
+          ("M-g o" . consult-outline)
+          ("M-g m" . consult-mark)
+          ("M-g k" . consult-global-mark)
+          ("M-g i" . consult-imenu)
+          ("M-g I" . consult-imenu-multi)
+          ;; M-s bindings in `search-map'
+          ("M-s d" . consult-find)
+          ("M-s c" . consult-locate)
+          ("M-s g" . consult-grep)
+          ("M-s G" . consult-git-grep)
+          ("M-s r" . consult-ripgrep)
+          ("M-s l" . consult-line)
+          ("M-s L" . consult-line-multi)
+          ("M-s k" . consult-keep-lines)
+          ("M-s u" . consult-focus-lines)
+          ;; Isearch integration
+          ("M-s e" . consult-isearch-history)
+          :map isearch-mode-map
+          ("M-e" . consult-isearch-history)
+          ("M-s e" . consult-isearch-history)
+          ("M-s l" . consult-line)
+          ("M-s L" . consult-line-multi)
+          ;; Minibuffer history
+          :map minibuffer-local-map
+          ("M-s" . consult-history)
+          ("M-r" . consult-history))
   :init
   ;; Optionally configure the register formatting. This improves the register
   ;; preview for `consult-register', `consult-register-load',
   ;; `consult-register-store' and the Emacs built-ins.
   (setq register-preview-delay 0.5
-        register-preview-function #'consult-register-format)
+    register-preview-function #'consult-register-format)
   ;; Optionally tweak the register preview window.
   ;; This adds thin lines, sorting and hides the mode line of the window.
   (advice-add #'register-preview :override #'consult-register-window)
   ;; Use Consult to select xref locations with preview
   (setq xref-show-xrefs-function #'consult-xref
-        xref-show-definitions-function #'consult-xref))
+    xref-show-definitions-function #'consult-xref))
 
 (use-package company
   ;; Company mode for completion
