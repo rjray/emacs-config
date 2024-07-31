@@ -163,6 +163,9 @@
   (warning-suppress-log-types '((comp) (bytecomp)))
   (warning-minimum-level :error)
 
+  ;; Enable indentation+completion using the TAB key.
+  ;; `completion-at-point' is often bound to M-TAB.
+  (tab-always-indent 'complete)
   ;; default to better frame titles
   (frame-title-format (concat "%b - emacs@" *system-name*))
 
@@ -492,6 +495,17 @@
 (use-package embark-consult
   :ensure t
   :after (embark consult))
+
+;; Use Dabbrev with Corfu.
+(use-package dabbrev
+  ;; Swap M-/ and C-M-/
+  :bind (("M-/" . dabbrev-completion)
+         ("C-M-/" . dabbrev-expand))
+  :config
+  (add-to-list 'dabbrev-ignored-buffer-regexps "\\` ")
+  (add-to-list 'dabbrev-ignored-buffer-modes 'doc-view-mode)
+  (add-to-list 'dabbrev-ignored-buffer-modes 'pdf-view-mode)
+  (add-to-list 'dabbrev-ignored-buffer-modes 'tags-table-mode))
 
 ;; A go-to-def package that uses ripgrep
 (use-package dumb-jump
