@@ -47,7 +47,7 @@
     :config
     ;; Have Xref use `completing-read' to select a target
     (setq xref-show-definitions-function
-      #'xref-show-definitions-completing-read))
+          #'xref-show-definitions-completing-read))
 
   (use-package server
     ;; Emacs in server mode
@@ -65,23 +65,23 @@
     "Home - begin of line, once more - screen, once more - buffer."
     (interactive nil)
     (cond
-      ((and (eq last-command 'my/home) (eq last-last-command 'my/home))
-        (goto-char (point-min)))
-      ((eq last-command 'my/home)
-        (move-to-window-line 0))
-      (t (beginning-of-line)))
+     ((and (eq last-command 'my/home) (eq last-last-command 'my/home))
+      (goto-char (point-min)))
+     ((eq last-command 'my/home)
+      (move-to-window-line 0))
+     (t (beginning-of-line)))
     (setq last-last-command last-command))
 
   (defun my/end ()
     "End - end of line, once more - screen, once more - buffer."
     (interactive nil)
     (cond
-      ((and (eq last-command 'my/end) (eq last-last-command 'my/end))
-        (goto-char (point-max)))
-      ((eq last-command 'my/end)
-        (move-to-window-line -1)
-        (end-of-line))
-      (t (end-of-line)))
+     ((and (eq last-command 'my/end) (eq last-last-command 'my/end))
+      (goto-char (point-max)))
+     ((eq last-command 'my/end)
+      (move-to-window-line -1)
+      (end-of-line))
+     (t (end-of-line)))
     (setq last-last-command last-command))
 
   ;; I forget where I got this... this is a modified version, anyway.
@@ -89,27 +89,27 @@
     "Count lines, words and characters in region."
     (interactive)
     (let* ((start (if (region-active-p) (region-beginning) (point-min)))
-            (end (if (region-active-p) (region-end) (point-max)))
-            (l (count-lines start end))
-            (w (count-words start end))
-            (c (- end start)))
+           (end (if (region-active-p) (region-end) (point-max)))
+           (l (count-lines start end))
+           (w (count-words start end))
+           (c (- end start)))
       (message "%s has %d line%s, %d word%s and %d character%s."
-        (if (region-active-p) "Region" "Buffer")
-        l (if (= 1 l) "" "s")
-        w (if (= 1 w) "" "s")
-        c (if (= 1 c) "" "s"))))
+               (if (region-active-p) "Region" "Buffer")
+               l (if (= 1 l) "" "s")
+               w (if (= 1 w) "" "s")
+               c (if (= 1 c) "" "s"))))
 
   (defun my/fill-paragraph-or-region ()
     "If the region is active, call `fill-region'. Otherwise, `fill-paragraph'."
     (interactive)
     (cond ((region-active-p) (fill-region (region-beginning) (region-end)))
-      (t (fill-paragraph nil))))
+          (t (fill-paragraph nil))))
 
   (defun my/untabify-buffer-or-region ()
     "Untabify the entire buffer. If region is active, only untabify the region."
     (interactive)
     (cond ((region-active-p) (untabify (region-beginning) (region-end)))
-      (t (untabify (point-min) (point-max)))))
+          (t (untabify (point-min) (point-max)))))
 
   (defun my/text-scale-reset ()
     (interactive)
@@ -120,38 +120,38 @@
   (defun my/kill-region-or-word (arg)
     (interactive "p")
     (cond ((region-active-p)
-            (kill-region (region-beginning) (region-end)))
-      (t (backward-kill-word arg))))
+           (kill-region (region-beginning) (region-end)))
+          (t (backward-kill-word arg))))
 
   ;; Toggle two most recent buffers
   (fset 'quick-switch-buffer [?\C-x ?b return])
 
   :bind (:map global-map
-          ("C-x C-m" . execute-extended-command)
-          ("C-h h" . nil)
-          ("C-w" . my/kill-region-or-word)
-          ;; Function-key bindings. Don't go above f8, though, because MacOS
-          ;; grabs f9 through f12. And f1-f4 are already in use.
-          ("<f5>" . call-last-kbd-macro)
-          ("C-<f5>" . edit-last-kbd-macro)
-          ("<f6>" . search-forward-regexp)
-          ("C-<f6>" . search-backward-regexp)
-          ("<f7>" . my/fill-paragraph-or-region)
-          ("C-<f7>" . my/untabify-buffer-or-region)
-          ("<f8>" . cider-jack-in)
-          ("C-!" . my/count-region)
-          ("C-+" . text-scale-increase)
-          ("C--" . text-scale-decrease)
-          ("C-_" . my/text-scale-reset)
-          ("<home>" . my/home)
-          ("<end>" . my/end)
-          ("s-z" . quick-switch-buffer))
+              ("C-x C-m" . execute-extended-command)
+              ("C-h h" . nil)
+              ("C-w" . my/kill-region-or-word)
+              ;; Function-key bindings. Don't go above f8, though, because MacOS
+              ;; grabs f9 through f12. And f1-f4 are already in use.
+              ("<f5>" . call-last-kbd-macro)
+              ("C-<f5>" . edit-last-kbd-macro)
+              ("<f6>" . search-forward-regexp)
+              ("C-<f6>" . search-backward-regexp)
+              ("<f7>" . my/fill-paragraph-or-region)
+              ("C-<f7>" . my/untabify-buffer-or-region)
+              ("<f8>" . cider-jack-in)
+              ("C-!" . my/count-region)
+              ("C-+" . text-scale-increase)
+              ("C--" . text-scale-decrease)
+              ("C-_" . my/text-scale-reset)
+              ("<home>" . my/home)
+              ("<end>" . my/end)
+              ("s-z" . quick-switch-buffer))
 
   :hook ((text-mode . display-fill-column-indicator-mode)
-          (text-mode . hl-line-mode)
-          (prog-mode . display-fill-column-indicator-mode)
-          (prog-mode . hl-line-mode)
-          (prog-mode . flyspell-prog-mode))
+         (text-mode . hl-line-mode)
+         (prog-mode . display-fill-column-indicator-mode)
+         (prog-mode . hl-line-mode)
+         (prog-mode . flyspell-prog-mode))
 
   :custom
   (default-case-fold-search nil)
@@ -223,13 +223,12 @@
 ;;; Start-up and general interface packages.
 ;;;===========================================================================
 
+;; Minor-mode visibility control.
 (use-package delight
-  ;; Minor-mode visibility control. Load this early so that later use-package
-  ;; invocations can use it.
   :ensure t)
 
+;; General desktop stuff (history, etc.)
 (use-package desktop
-  ;; General desktop stuff (history, etc.)
   :custom
   (desktop-save t)
   (desktop-restore-eager 5)
@@ -249,16 +248,16 @@
   :config
   (desktop-save-mode 1))
 
+;; Number ALL the lines
 (use-package display-line-numbers
-  ;; Number ALL the lines
   :if (display-graphic-p)
   :config
   ;; No, seriously... all the lines.
   (global-display-line-numbers-mode t)
   (setq display-line-numbers-grow-only t))
 
+;; Theming: https://protesilaos.com/emacs/ef-themes
 (use-package ef-themes
-  ;; Theming: https://protesilaos.com/emacs/ef-themes
   :ensure t
   :custom
   (ef-themes-to-toggle '(ef-elea-dark ef-elea-light))
@@ -274,8 +273,8 @@
   ;; Set up the exec-path by reading $PATH from a shell
   :hook (after-init-hook . exec-path-from-shell-initialize))
 
+;; Recent-file tracking and opening
 (use-package recentf
-  ;; Recent-file tracking and opening
   :bind
   (("C-x C-r" .
     ;; From https://www.emacswiki.org/emacs/RecentFiles
@@ -294,16 +293,16 @@
         recentf-max-saved-items 100
         recentf-exclude '("\\.ido\\.last" "/recentf$" ".emacs.d/elpa/")))
 
+;; Excess whitespace display
 (use-package whitespace
-  ;; Excess whitespace display
   :delight global-whitespace-mode
   :init
   (add-hook 'after-init-hook 'global-whitespace-mode)
   :config
   (setq whitespace-style '(face tabs lines-tail)))
 
+;; Support for EditorConfig files. See https://editorconfig.org/
 (use-package editorconfig
-  ;; Support for EditorConfig files. See https://editorconfig.org/
   :ensure t
   :commands editorconfig-mode
   :config
@@ -316,12 +315,12 @@
 (use-package casual-bookmarks
   :ensure t
   :bind (:map bookmark-bmenu-mode-map
-          ("C-o" . casual-bookmarks-tmenu)))
+              ("C-o" . casual-bookmarks-tmenu)))
 
 (use-package casual-isearch
   :ensure t
   :bind (:map isearch-mode-map
-          ("<f2>" . casual-isearch-tmenu)))
+              ("<f2>" . casual-isearch-tmenu)))
 
 ;;;===========================================================================
 ;;; Packages related to command-selection, completion, etc.
@@ -343,72 +342,72 @@
   :commands (consult-register-format consult-register-window consult-xref)
   :hook (completion-list-mode . consult-preview-at-point-mode)
   :bind (;; C-c bindings in `mode-specific-map'
-          ("C-c M-x" . consult-mode-command)
-          ("C-c h" . consult-history)
-          ("C-c k" . consult-kmacro)
-          ("C-c m" . consult-man)
-          ("C-c i" . consult-info)
-          ([remap Info-search] . consult-info)
-          ;; C-x bindings in `ctl-x-map'
-          ("C-x M-:" . consult-complex-command)
-          ("C-x b" . consult-buffer)
-          ("C-x 4 b" . consult-buffer-other-window)
-          ("C-x 5 b" . consult-buffer-other-frame)
-          ("C-x t b" . consult-buffer-other-tab)
-          ("C-x r b" . consult-bookmark)
-          ("C-x p b" . consult-project-buffer)
-          ;; Custom M-# bindings for fast register access
-          ("M-#" . consult-register-load)
-          ("M-'" . consult-register-store)
-          ("C-M-#" . consult-register)
-          ;; Other custom bindings
-          ("M-y" . consult-yank-pop)
-          ;; M-g bindings in `goto-map'
-          ("M-g e" . consult-compile-error)
-          ("M-g f" . consult-flymake)
-          ("M-g g" . consult-goto-line)
-          ("M-g M-g" . consult-goto-line)
-          ("M-g o" . consult-outline)
-          ("M-g m" . consult-mark)
-          ("M-g k" . consult-global-mark)
-          ("M-g i" . consult-imenu)
-          ("M-g I" . consult-imenu-multi)
-          ;; M-s bindings in `search-map'
-          ("M-s d" . consult-find)
-          ("M-s c" . consult-locate)
-          ("M-s g" . consult-grep)
-          ("M-s G" . consult-git-grep)
-          ("M-s r" . consult-ripgrep)
-          ("M-s l" . consult-line)
-          ("M-s L" . consult-line-multi)
-          ("M-s k" . consult-keep-lines)
-          ("M-s u" . consult-focus-lines)
-          ;; Isearch integration
-          ("M-s e" . consult-isearch-history)
-          :map isearch-mode-map
-          ("M-e" . consult-isearch-history)
-          ("M-s e" . consult-isearch-history)
-          ("M-s l" . consult-line)
-          ("M-s L" . consult-line-multi)
-          ;; Minibuffer history
-          :map minibuffer-local-map
-          ("M-s" . consult-history)
-          ("M-r" . consult-history))
+         ("C-c M-x" . consult-mode-command)
+         ("C-c h" . consult-history)
+         ("C-c k" . consult-kmacro)
+         ("C-c m" . consult-man)
+         ("C-c i" . consult-info)
+         ([remap Info-search] . consult-info)
+         ;; C-x bindings in `ctl-x-map'
+         ("C-x M-:" . consult-complex-command)
+         ("C-x b" . consult-buffer)
+         ("C-x 4 b" . consult-buffer-other-window)
+         ("C-x 5 b" . consult-buffer-other-frame)
+         ("C-x t b" . consult-buffer-other-tab)
+         ("C-x r b" . consult-bookmark)
+         ("C-x p b" . consult-project-buffer)
+         ;; Custom M-# bindings for fast register access
+         ("M-#" . consult-register-load)
+         ("M-'" . consult-register-store)
+         ("C-M-#" . consult-register)
+         ;; Other custom bindings
+         ("M-y" . consult-yank-pop)
+         ;; M-g bindings in `goto-map'
+         ("M-g e" . consult-compile-error)
+         ("M-g f" . consult-flymake)
+         ("M-g g" . consult-goto-line)
+         ("M-g M-g" . consult-goto-line)
+         ("M-g o" . consult-outline)
+         ("M-g m" . consult-mark)
+         ("M-g k" . consult-global-mark)
+         ("M-g i" . consult-imenu)
+         ("M-g I" . consult-imenu-multi)
+         ;; M-s bindings in `search-map'
+         ("M-s d" . consult-find)
+         ("M-s c" . consult-locate)
+         ("M-s g" . consult-grep)
+         ("M-s G" . consult-git-grep)
+         ("M-s r" . consult-ripgrep)
+         ("M-s l" . consult-line)
+         ("M-s L" . consult-line-multi)
+         ("M-s k" . consult-keep-lines)
+         ("M-s u" . consult-focus-lines)
+         ;; Isearch integration
+         ("M-s e" . consult-isearch-history)
+         :map isearch-mode-map
+         ("M-e" . consult-isearch-history)
+         ("M-s e" . consult-isearch-history)
+         ("M-s l" . consult-line)
+         ("M-s L" . consult-line-multi)
+         ;; Minibuffer history
+         :map minibuffer-local-map
+         ("M-s" . consult-history)
+         ("M-r" . consult-history))
   :init
   ;; Optionally configure the register formatting. This improves the register
   ;; preview for `consult-register', `consult-register-load',
   ;; `consult-register-store' and the Emacs built-ins.
   (setq register-preview-delay 0.5
-    register-preview-function #'consult-register-format)
+        register-preview-function #'consult-register-format)
   ;; Optionally tweak the register preview window.
   ;; This adds thin lines, sorting and hides the mode line of the window.
   (advice-add #'register-preview :override #'consult-register-window)
   ;; Use Consult to select xref locations with preview
   (setq xref-show-xrefs-function #'consult-xref
-    xref-show-definitions-function #'consult-xref))
+        xref-show-definitions-function #'consult-xref))
 
+;; Company mode for completion
 (use-package company
-  ;; Company mode for completion
   :ensure t
   :delight
   :config
@@ -431,6 +430,7 @@
   ;; don't prescient sort these commands
   (vertico-prescient-mode +1))
 
+;; Use `prescient' for Company
 (use-package company-prescient
   :ensure t
   :after company
@@ -463,8 +463,8 @@
   :ensure t
   :after (embark consult))
 
+;; A go-to-def package that uses ripgrep
 (use-package dumb-jump
-  ;; A go-to-def package that uses ripgrep
   :ensure t
   :commands dumb-jump-xref-activate
   :config
@@ -476,8 +476,8 @@
 ;;; Project management
 ;;;===========================================================================
 
+;; Projectile for project-level management
 (use-package projectile
-  ;; Projectile for project-level management
   :ensure t
   :delight '(:eval (concat " " (projectile-project-name)))
   :commands (projectile-mode)
@@ -493,8 +493,8 @@
 ;;; Language parsing, tree-sitter, non-language-specific bits
 ;;;===========================================================================
 
+;; Just using this for the ease of commenting lines language-independent.
 (use-package evil-nerd-commenter
-  ;; Just using this for the ease of commenting lines language-independent.
   :ensure t
   :bind (("C-/" . evilnc-comment-or-uncomment-lines)))
 
@@ -575,8 +575,8 @@
 ;;          (typescript-ts-mode-hook . combobulate-mode)
 ;;          (tsx-ts-mode-hook . combobulate-mode)))
 
+;; Text snippets/templates expansion
 (use-package yasnippet
-  ;; Text snippets/templates expansion
   :ensure t
   :commands (yas-global-mode)
   :bind (("C-c C-y" . yas-insert-snippet))
@@ -639,24 +639,24 @@
 ;;; Elisp, Lisp, and Clojure support.
 ;;;===========================================================================
 
+;; Aggressive indenting for some modes
 (use-package aggressive-indent
-  ;; Aggressive indenting for some modes
   :ensure t
   :delight
   :hook ((clojure-mode . aggressive-indent-mode)
          (emacs-lisp-mode . aggressive-indent-mode)
          (lisp-mode . aggressive-indent-mode)))
 
+;; Parens highlighting
 (use-package highlight-parentheses
-  ;; Parens highlighting
   :ensure t
   :delight
   :hook ((clojure-mode . highlight-parentheses-mode)
          (emacs-lisp-mode . highlight-parentheses-mode)
          (lisp-mode . highlight-parentheses-mode)))
 
+;; CIDER for Clojure editing
 (use-package cider
-  ;; CIDER for Clojure editing
   :ensure t
   :defer t
   :hook (clojure-mode . cider-mode)
@@ -670,17 +670,17 @@
    cider-repl-display-in-current-window nil
    cider-repl-history-size 1000))
 
+;; Clojure
 (use-package clojure-mode
-  ;; Clojure
   :ensure t
   :defer t)
 
+;; Clojars.org searching
 (use-package clojars
-  ;; Clojars.org searching
   :ensure t)
 
+;; ElDoc
 (use-package eldoc
-  ;; ElDoc
   :delight eldoc-mode)
 
 ;; Couldn't quite get this to work with use-package and :delight.
@@ -689,8 +689,8 @@
          '("EL/" (lexical-binding "l" "d"))
          :major)
 
+;; Parens-editing supercharging
 (use-package paredit
-  ;; Parens-editing supercharging
   :ensure t
   :delight
   :hook ((clojure-mode . paredit-mode)
@@ -701,8 +701,8 @@
 ;;; Perl development
 ;;;===========================================================================
 
+;; Preferred Perl mode
 (use-package cperl-mode
-  ;; Preferred Perl mode
   :defer t
   :custom
   (cperl-indent-parens-as-block t)
@@ -720,8 +720,8 @@
 ;;; Markdown
 ;;;===========================================================================
 
+;; Markdown editing
 (use-package markdown-mode
-  ;; Markdown editing
   :ensure t
   :mode ("README\\.md\\'" . gfm-mode)
   :custom
@@ -749,8 +749,8 @@
 ;;; Org Mode and related
 ;;;===========================================================================
 
+;; Org Mode
 (use-package org
-  ;; Org Mode
   :defer t
   :after flycheck
   :commands (org-link-set-parameters)
@@ -767,14 +767,6 @@
   (org-link-set-parameters "copy"
                            :follow (lambda (link) (kill-new link))
                            :export (lambda (_ desc &rest _) desc)))
-
-(use-package org-journal
-  ;; Org journaling mode
-  :ensure t
-  :defer t
-  :hook ((org-journal-mode . auto-fill-mode))
-  :custom
-  (org-journal-dir "~/Dropbox/org/journal"))
 
 ;; (use-package org-bullets
 ;;   :ensure t
@@ -815,8 +807,8 @@
   :config
   (global-diff-hl-mode))
 
+;; Git-related decorations in the gutter
 (use-package git-gutter
-  ;; Git-related decorations in the gutter
   :if (display-graphic-p)
   :ensure t
   :commands (global-git-gutter-mode)
@@ -824,8 +816,8 @@
   :config
   (global-git-gutter-mode +1))
 
+;; Supercharged git interface
 (use-package magit
-  ;; Supercharged git interface
   :ensure t
   :bind (("C-c m" . magit-status))
   :custom
@@ -906,8 +898,8 @@
 ;;; Treemacs for navigation
 ;;;===========================================================================
 
+;; File-explorer tree
 (use-package treemacs
-  ;; File-explorer tree
   :ensure t
   :defer t
   :bind
@@ -927,8 +919,8 @@
 ;;; Dired-related bits
 ;;;===========================================================================
 
+;; Dired mode
 (use-package dired
-  ;; Dired mode
   :defer t
   :config
   (defadvice dired-create-directory (after revert-buffer-after-create activate)
@@ -938,8 +930,8 @@
     "Revert the buffer after aborting wdired change."
     (revert-buffer)))
 
+;; Writable-dired package
 (use-package wdired
-  ;; Writable-dired package
   :defer t
   :config
   (define-key wdired-mode-map (kbd "C-a") 'dired-back-to-start-of-files)
@@ -952,8 +944,8 @@
 ;;; Flycheck bits
 ;;;===========================================================================
 
+;; Flycheck
 (use-package flycheck
-  ;; Flycheck
   :ensure t
   :commands global-flycheck-mode
   :config
@@ -962,8 +954,8 @@
   (setq flycheck-emacs-lisp-load-path 'inherit)
   (add-hook 'after-init-hook #'global-flycheck-mode))
 
+;; Clojure support for Flycheck
 (use-package flycheck-clojure
-  ;; Clojure support for Flycheck
   :after clojure-mode
   :ensure t)
 
@@ -981,8 +973,8 @@
 ;;; TeX/LaTeX stuff
 ;;;===========================================================================
 
+;; TeX/LaTeX editing mode
 (use-package auctex
-  ;; TeX/LaTeX editing mode
   :defer t
   :hook  ((LaTeX-mode . turn-on-prettify-symbols-mode)
           (LaTeX-mode . turn-on-flyspell)))
@@ -991,8 +983,8 @@
 ;;; PDF stuff
 ;;;===========================================================================
 
+;; Handle viewing/annotating/etc. PDF files
 (use-package pdf-tools
-  ;; Handle viewing/annotating/etc. PDF files
   :ensure t
   :defer t
   :commands (pdf-loader-install)
@@ -1007,8 +999,8 @@
 ;;; Region/selection-related
 ;;;===========================================================================
 
+;; Set up keys/actions to only be available when there's an active selection
 (use-package selected
-  ;; Set up keys/actions to only be available when there's an active selection
   :ensure t
   :delight (selected-minor-mode)
   :commands (selected-global-mode)
@@ -1028,8 +1020,8 @@
   :config
   (selected-global-mode))
 
+;; Region expansion with a simple key
 (use-package expand-region
-  ;; Region expansion with a simple key
   :ensure t
   :bind ("C-=" . er/expand-region))
 
@@ -1037,29 +1029,29 @@
 ;;; Misc tools
 ;;;===========================================================================
 
+;; Ripgrep super-tool
 (use-package deadgrep
-  ;; Ripgrep super-tool
   :ensure t
   :defer t
   :bind ("M-/" . deadgrep))
 
+;; Provides context to items in minibuffer completions, etc.
 (use-package marginalia
-  ;; Provides context to items in minibuffer completions, etc.
   :ensure t
   :commands (marginalia-mode)
   :custom (marginalia-annotators '(marginalia-annotators-light))
   :init
   (marginalia-mode))
 
+;; (Slightly) Easier movement between windows.
 (use-package windmove
-  ;; (Slightly) Easier movement between windows.
   :bind (("C-c <up>" . windmove-up)
          ("C-c <right>" . windmove-right)
          ("C-c <down>" . windmove-down)
          ("C-c <left>" . windmove-left)))
 
+;; Buffed-up Help mode and buffers.
 (use-package helpful
-  ;; Buffed-up Help mode and buffers.
   :ensure t
   :bind (("C-h f" . helpful-callable)
          ("C-h v" . helpful-variable)
@@ -1068,9 +1060,9 @@
          ("C-h d" . helpful-at-point)
          ("C-h F" . helpful-function)))
 
+;; Show in minibuffer the possible keybindings available based on what has
+;; been typed thus far.
 (use-package which-key
-  ;; Show in minibuffer the possible keybindings available based on what has
-  ;; been typed thus far.
   :ensure t
   :delight which-key-mode
   :commands (which-key-mode which-key-setup-minibuffer)
