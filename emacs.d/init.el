@@ -348,7 +348,7 @@
   :init
   (vertico-mode))
 
-;; Corfu (in-buffer completion popup)
+;; Corfu (in-buffer completion popup), taken from Protesilaos Stavrou.
 (use-package corfu
   :ensure t
   :hook (after-init . global-corfu-mode)
@@ -506,6 +506,47 @@
   (add-to-list 'dabbrev-ignored-buffer-modes 'doc-view-mode)
   (add-to-list 'dabbrev-ignored-buffer-modes 'pdf-view-mode)
   (add-to-list 'dabbrev-ignored-buffer-modes 'tags-table-mode))
+
+;; Orderless completion style, also taken from Protesilaos Stavrou.
+(use-package orderless
+  :ensure t
+  :after minibuffer
+  :config
+  (setq orderless-matching-styles '(orderless-prefixes orderless-regexp))
+
+  ;; These taken from Prot, renamed to my convention here.
+  (defun my/orderless-literal (word _index _total)
+    "Read WORD= as a literal string."
+    (when (string-suffix-p "=" word)
+      ;; The `orderless-literal' is how this should be treated by
+      ;; orderless.  The `substring' form omits the `=' from the
+      ;; pattern.
+      `(orderless-literal . ,(substring word 0 -1))))
+
+  (defun my/orderless-file-ext (word _index _total)
+    "Expand WORD. to a file suffix when completing file names."
+    (when (and minibuffer-completing-file-name
+               (string-suffix-p "." word))
+      `(orderless-regexp . ,(format "\\.%s\\'" (substring word 0 -1)))))
+
+  (defun my/orderless-beg-or-end (word _index _total)
+    "Expand WORD~ to \\(^WORD\\|WORD$\\)."
+    (when-let (((string-suffix-p "~" word))
+               (word (substring word 0 -1)))
+      `(orderless-regexp . ,(format "\\(^%s\\|%s$\\)" word word))))
+
+  (setq orderless-style-dispatchers
+        '(my/orderless-literal
+          my/orderless-file-ext
+          my/orderless-beg-or-end))
+
+  (setq completion-styles '(basic substring initials flex orderless))
+
+  ;; SPC should never complete: use it for `orderless' groups.
+  ;; The `?' is a regexp construct.
+  :bind (:map minibuffer-local-completion-map
+              ("SPC" . nil)
+              ("?" . nil)))
 
 ;; A go-to-def package that uses ripgrep
 (use-package dumb-jump
