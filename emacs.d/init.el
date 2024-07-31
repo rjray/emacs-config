@@ -219,6 +219,17 @@
   (set-language-environment 'utf-8)
   (add-to-list 'completion-ignored-extensions ".#"))
 
+;; `savehist' (minibuffer and related histories)
+(use-package savehist
+  :ensure nil
+  :hook (after-init . savehist-mode)
+  :config
+  (setq savehist-file (locate-user-emacs-file "savehist"))
+  (setq history-length 100)
+  (setq history-delete-duplicates t)
+  (setq savehist-save-minibuffer-history t)
+  (add-to-list 'savehist-additional-variables 'kill-ring))
+
 ;;;===========================================================================
 ;;; Start-up and general interface packages.
 ;;;===========================================================================
@@ -334,6 +345,25 @@
   :init
   (vertico-mode))
 
+;; Corfu (in-buffer completion popup)
+(use-package corfu
+  :ensure t
+  :hook (after-init . global-corfu-mode)
+  ;; I also have (setq tab-always-indent 'complete) for TAB to complete
+  ;; when it does not need to perform an indentation change.
+  :bind (:map corfu-map ("<tab>" . corfu-complete))
+  :config
+  (setq corfu-preview-current nil)
+  (setq corfu-min-width 20)
+
+  (setq corfu-popupinfo-delay '(1.25 . 0.5))
+  (corfu-popupinfo-mode 1) ; shows documentation after `corfu-popupinfo-delay'
+
+  ;; Sort by input history (no need to modify `corfu-sort-function').
+  (with-eval-after-load 'savehist
+    (corfu-history-mode 1)
+    (add-to-list 'savehist-additional-variables 'corfu-history)))
+
 ;; Consult for completing-read
 (use-package consult
   :ensure t
@@ -407,11 +437,11 @@
         xref-show-definitions-function #'consult-xref))
 
 ;; Company mode for completion
-(use-package company
-  :ensure t
-  :delight
-  :config
-  (add-hook 'after-init-hook 'global-company-mode))
+;; (use-package company
+;;   :ensure t
+;;   :delight
+;;   :config
+;;   (add-hook 'after-init-hook 'global-company-mode))
 
 (use-package prescient
   :ensure t
@@ -431,12 +461,12 @@
   (vertico-prescient-mode +1))
 
 ;; Use `prescient' for Company
-(use-package company-prescient
-  :ensure t
-  :after company
-  :commands (company-prescient-mode)
-  :config
-  (company-prescient-mode +1))
+;; (use-package company-prescient
+;;   :ensure t
+;;   :after company
+;;   :commands (company-prescient-mode)
+;;   :config
+;;   (company-prescient-mode +1))
 
 (use-package embark
   :ensure t
@@ -1024,6 +1054,28 @@
 (use-package expand-region
   :ensure t
   :bind ("C-=" . er/expand-region))
+
+;;;===========================================================================
+;;; Icons
+;;;===========================================================================
+
+(use-package nerd-icons
+  :ensure t)
+
+(use-package nerd-icons-completion
+  :ensure t
+  :hook (marginalia-mode . nerd-icons-completion-marginalia-setup))
+
+(use-package nerd-icons-corfu
+  :ensure t
+  :after corfu
+  :config
+  (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter))
+
+(use-package nerd-icons-dired
+  :ensure t
+  :hook
+  (dired-mode . nerd-icons-dired-mode))
 
 ;;;===========================================================================
 ;;; Misc tools
