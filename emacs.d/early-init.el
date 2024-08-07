@@ -22,10 +22,11 @@
       inhibit-startup-screen t)
 
 ;; Unwanted UI elements
-(menu-bar-mode -1)
-(blink-cursor-mode -1)
-(tool-bar-mode -1)
-(scroll-bar-mode -1)
+(unless (display-graphic-p)
+  (menu-bar-mode -1)
+  (blink-cursor-mode -1)
+  (tool-bar-mode -1)
+  (scroll-bar-mode -1))
 
 ;; Don't pop up error window on native-comp issues
 (defvar native-comp-async-report-warnings-errors 'silent)
