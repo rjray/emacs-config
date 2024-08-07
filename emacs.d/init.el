@@ -410,15 +410,6 @@
     (corfu-history-mode 1)
     (add-to-list 'savehist-additional-variables 'corfu-history)))
 
-(use-package corfu-terminal
-  :ensure t
-  :after corfu
-  :defer t
-  :commands corfu-terminal-mode
-  :config
-  (unless (display-graphic-p)
-    (corfu-terminal-mode +1)))
-
 ;; Consult for completing-read
 (use-package consult
   :ensure t
