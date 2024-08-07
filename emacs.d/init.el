@@ -954,7 +954,6 @@
   :config
   (add-hook 'magit-pre-refresh-hook 'diff-hl-magit-pre-refresh)
   (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)
-  (setq magit-completing-read-function 'ivy-completing-read)
   (define-key magit-status-mode-map (kbd "W")
               (lambda ()
                 (interactive)
