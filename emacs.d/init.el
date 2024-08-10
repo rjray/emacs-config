@@ -1171,7 +1171,11 @@
 
 (use-package nerd-icons-completion
   :ensure t
-  :hook (marginalia-mode . nerd-icons-completion-marginalia-setup))
+  :after marginalia
+  :commands (nerd-icons-completion-mode)
+  :hook (marginalia-mode . nerd-icons-completion-marginalia-setup)
+  :config
+  (nerd-icons-completion-mode))
 
 (use-package nerd-icons-corfu
   :ensure t
