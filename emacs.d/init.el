@@ -954,6 +954,10 @@
   :config
   (global-git-gutter-mode +1))
 
+;; Git "time machine"
+(use-package git-timemachine
+  :ensure t)
+
 ;; Supercharged git interface
 (use-package magit
   :ensure t
@@ -970,6 +974,11 @@
                 (if magit-diff-paint-whitespace
                     (setq magit-diff-paint-whitespace nil)
                   (setq magit-diff-paint-whitespace t)))))
+
+;; Magit support for range-diff
+(use-package magit-tbdiff
+  :ensure t
+  :after magit)
 
 ;; Technically only git-related in the sense that it's a Github service...
 (use-package igist
