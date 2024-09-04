@@ -325,6 +325,18 @@
   ;; Enable the theme
   (load-theme 'ef-elea-dark t))
 
+;; Pulse the current line for things like window switching, etc.
+(use-package pulsar
+  :ensure t
+  :commands (pulsar-global-mode pulsar-pulse-line pulsar-highlight-line)
+  :config
+  (setq pulsar-face 'pulsar-cyan)
+  (setq pulsar-delay 0.1)
+  (pulsar-global-mode 1)
+  (let ((map global-map))
+    (define-key map (kbd "C-x C-p") #'pulsar-pulse-line)
+    (define-key map (kbd "C-x C-h") #'pulsar-highlight-line)))
+
 (use-package exec-path-from-shell
   ;; Set up the exec-path by reading $PATH from a shell
   :hook (after-init-hook . exec-path-from-shell-initialize))
