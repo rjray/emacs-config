@@ -376,6 +376,11 @@
   :config
   (editorconfig-mode 1))
 
+(use-package show-font
+  :ensure t
+  :bind (("C-c s f" . show-font-select-preview)
+         ("C-c s l" . show-font-list)))
+
 ;;;===========================================================================
 ;;; Various "porcelain" packages for interface enhancement.
 ;;;===========================================================================
