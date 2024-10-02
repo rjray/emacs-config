@@ -395,6 +395,10 @@
   :bind (:map isearch-mode-map
               ("<f2>" . casual-isearch-tmenu)))
 
+(use-package casual-editkit
+  :ensure t
+  :bind (("C-o" . casual-editkit-main-tmenu)))
+
 ;;;===========================================================================
 ;;; Packages related to command-selection, completion, etc.
 ;;;===========================================================================
@@ -996,6 +1000,12 @@
 (use-package magit-tbdiff
   :ensure t
   :after magit)
+
+;; Highlighting of to-do-like and similar keywords in Magit buffers
+(use-package magit-todos
+  :after magit
+  :commands (magit-todos-mode)
+  :config (magit-todos-mode 1))
 
 ;; Technically only git-related in the sense that it's a Github service...
 (use-package igist
