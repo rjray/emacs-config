@@ -341,6 +341,14 @@
   ;; Set up the exec-path by reading $PATH from a shell
   :hook (after-init-hook . exec-path-from-shell-initialize))
 
+(use-package dwim-shell-command
+  :ensure t
+  :bind (([remap shell-command] . dwim-shell-command)
+         :map dired-mode-map
+         ([remap dired-do-async-shell-command] . dwim-shell-command)
+         ([remap dired-do-shell-command] . dwim-shell-command)
+         ([remap dired-smart-shell-command] . dwim-shell-command)))
+
 ;; Recent-file tracking and opening
 (use-package recentf
   :bind
