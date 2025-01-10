@@ -332,6 +332,7 @@
   :config
   (setq pulsar-face 'pulsar-cyan)
   (setq pulsar-delay 0.1)
+  (setq pulsar-pulse-region-functions pulsar-pulse-region-common-functions)
   (pulsar-global-mode 1)
   (let ((map global-map))
     (define-key map (kbd "C-x C-p") #'pulsar-pulse-line)
@@ -396,16 +397,16 @@
 (use-package casual-bookmarks
   :ensure t
   :bind (:map bookmark-bmenu-mode-map
-              ("C-o" . casual-bookmarks-tmenu)))
+              ("C-S-o" . casual-bookmarks-tmenu)))
 
 (use-package casual-isearch
   :ensure t
   :bind (:map isearch-mode-map
               ("<f2>" . casual-isearch-tmenu)))
 
-(use-package casual-editkit
-  :ensure t
-  :bind (("C-o" . casual-editkit-main-tmenu)))
+;; (use-package casual-editkit
+;;   :ensure t
+;;   :bind (("C-o" . casual-editkit-main-tmenu)))
 
 ;;;===========================================================================
 ;;; Packages related to command-selection, completion, etc.
@@ -1014,6 +1015,12 @@
   :after magit
   :commands (magit-todos-mode)
   :config (magit-todos-mode 1))
+
+(use-package eldoc-diffstat
+  :ensure t
+  :after magit
+  :commands (global-eldoc-diffstat-mode)
+  :config (global-eldoc-diffstat-mode))
 
 ;; Technically only git-related in the sense that it's a Github service...
 (use-package igist
