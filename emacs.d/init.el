@@ -522,13 +522,6 @@
   (setq xref-show-xrefs-function #'consult-xref
         xref-show-definitions-function #'consult-xref))
 
-;; Company mode for completion
-;; (use-package company
-;;   :ensure t
-;;   :delight
-;;   :config
-;;   (add-hook 'after-init-hook 'global-company-mode))
-
 (use-package prescient
   :ensure t
   :commands (prescient-persist-mode)
@@ -545,14 +538,6 @@
   :config
   ;; don't prescient sort these commands
   (vertico-prescient-mode +1))
-
-;; Use `prescient' for Company
-;; (use-package company-prescient
-;;   :ensure t
-;;   :after company
-;;   :commands (company-prescient-mode)
-;;   :config
-;;   (company-prescient-mode +1))
 
 (use-package embark
   :ensure t
@@ -1290,6 +1275,10 @@
   (which-key-mode)
   :config
   (which-key-setup-minibuffer))
+
+;; Interface to ChatGPT/Ollama/etc.
+(use-package chatgpt-shell
+  :ensure t)
 
 ;;;===========================================================================
 ;;; Anything that is specific to an OS/platform.
