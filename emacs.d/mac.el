@@ -8,7 +8,7 @@
 (require 'dwim-shell-command)
 
 (setq mac-option-modifier 'super
-      mac-right-option-modifier 'hyper)
+      mac-right-option-modifier 'none)
 
 (defun dwim-shell-commands-macos-toggle-menu-bar-autohide ()
   "Toggle macOS menu bar auto-hide."
