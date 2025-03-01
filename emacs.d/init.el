@@ -339,6 +339,7 @@
     (define-key map (kbd "C-x C-h") #'pulsar-highlight-line)))
 
 (use-package exec-path-from-shell
+  :ensure t
   ;; Set up the exec-path by reading $PATH from a shell
   :hook (after-init-hook . exec-path-from-shell-initialize))
 
