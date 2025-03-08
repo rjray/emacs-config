@@ -908,8 +908,6 @@
   :defer t
   :after flycheck
   :commands (org-link-set-parameters)
-  :bind (("C-c o" . (lambda () (interactive)
-                      (find-file "~/Dropbox/org"))))
   :hook (org-mode . auto-revert-mode)
   :custom
   (org-insert-heading-respect-content t)
@@ -1226,6 +1224,20 @@
   (dired-mode . nerd-icons-dired-mode))
 
 ;;;===========================================================================
+;;; AI/LLM/Ollama tools
+;;;===========================================================================
+
+;; Interface to ChatGPT/Ollama/etc.
+(use-package chatgpt-shell
+  :ensure t
+  :defer t)
+
+(use-package ollama-buddy
+  :ensure t
+  :defer t
+  :bind ("C-c o" . ollama-buddy-menu))
+
+;;;===========================================================================
 ;;; Misc tools
 ;;;===========================================================================
 
@@ -1276,10 +1288,6 @@
   (which-key-mode)
   :config
   (which-key-setup-minibuffer))
-
-;; Interface to ChatGPT/Ollama/etc.
-(use-package chatgpt-shell
-  :ensure t)
 
 ;;;===========================================================================
 ;;; Anything that is specific to an OS/platform.
