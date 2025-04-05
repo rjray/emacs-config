@@ -395,19 +395,27 @@
 ;;; Various "porcelain" packages for interface enhancement.
 ;;;===========================================================================
 
+(use-package casual
+  :ensure t)
+
 (use-package casual-bookmarks
-  :ensure t
   :bind (:map bookmark-bmenu-mode-map
               ("C-S-o" . casual-bookmarks-tmenu)))
 
-(use-package casual-isearch
-  :ensure t
-  :bind (:map isearch-mode-map
-              ("<f2>" . casual-isearch-tmenu)))
+(use-package casual-image
+  :after image-mode
+  :bind (:map image-mode-map
+              ("C-o" . casual-image-tmenu)))
 
-;; (use-package casual-editkit
-;;   :ensure t
-;;   :bind (("C-o" . casual-editkit-main-tmenu)))
+(use-package casual-isearch
+  :bind (:map isearch-mode-map
+              ("C-o" . casual-isearch-tmenu)))
+
+(use-package casual-re-builder
+  :bind ((:map reb-mode-map
+               ("C-o" . casual-re-builder-tmenu))
+         (:map reb-lisp-mode-map
+               ("C-o" . casual-re-builder-tmenu))))
 
 ;;;===========================================================================
 ;;; Packages related to command-selection, completion, etc.
