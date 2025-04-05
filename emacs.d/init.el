@@ -1297,6 +1297,31 @@
   :config
   (which-key-setup-minibuffer))
 
+;; Clear out trailing whitespace on saves
+(use-package stripspace
+  :ensure t
+  :commands stripspace-local-mode
+
+  ;; Enable for prog-mode-hook, text-mode-hook, prog-mode-hook
+  :hook ((prog-mode . stripspace-local-mode)
+         (text-mode . stripspace-local-mode)
+         (conf-mode . stripspace-local-mode))
+
+  :custom
+  ;; The `stripspace-only-if-initially-clean' option:
+  ;; - nil to always delete trailing whitespace.
+  ;; - Non-nil to only delete whitespace when the buffer is clean initially.
+  ;; (The initial cleanliness check is performed when `stripspace-local-mode'
+  ;; is enabled.)
+  (stripspace-only-if-initially-clean nil)
+
+  ;; Enabling `stripspace-restore-column' preserves the cursor's column position
+  ;; even after stripping spaces. This is useful in scenarios where you add
+  ;; extra spaces and then save the file. Although the spaces are removed in the
+  ;; saved file, the cursor remains in the same position, ensuring a consistent
+  ;; editing experience without affecting cursor placement.
+  (stripspace-restore-column t))
+
 ;;;===========================================================================
 ;;; Anything that is specific to an OS/platform.
 ;;;===========================================================================
