@@ -1123,6 +1123,28 @@
   (define-key wdired-mode-map (vector 'remap 'end-of-buffer)
               'dired-jump-to-bottom))
 
+;; Prot's dired-preview package
+(use-package dired-preview
+  :ensure t
+  :after (dired)
+  :commands dired-preview-global-mode
+  :custom
+  (dired-preview-delay 0.25)
+  (dired-preview-max-size (expt 2 20))
+  (dired-preview-ignored-extensions-regexp
+   (concat "\\."
+           "\\(gz\\|"
+           "zst\\|"
+           "tar\\|"
+           "xz\\|"
+           "rar\\|"
+           "zip\\|"
+           "iso\\|"
+           "epub"
+           "\\)"))
+  :init
+  (dired-preview-global-mode 1))
+
 ;;;===========================================================================
 ;;; Flycheck bits
 ;;;===========================================================================
