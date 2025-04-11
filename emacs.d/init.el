@@ -916,6 +916,9 @@
   :defer t
   :after flycheck
   :commands (org-link-set-parameters)
+  :bind (("C-c C-o" . (lambda ()
+                        (interactive)
+                        (find-file "~/Dropbox/org"))))
   :hook (org-mode . auto-revert-mode)
   :custom
   (org-insert-heading-respect-content t)
