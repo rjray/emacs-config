@@ -266,14 +266,12 @@
 
 ;; `savehist' (minibuffer and related histories)
 (use-package savehist
-  :ensure nil
   :hook (after-init . savehist-mode)
-  :config
-  (setq savehist-file (locate-user-emacs-file "savehist"))
-  (setq history-length 100)
-  (setq history-delete-duplicates t)
-  (setq savehist-save-minibuffer-history t)
-  (add-to-list 'savehist-additional-variables 'kill-ring))
+  :custom
+  (savehist-file (locate-user-emacs-file "savehist"))
+  (history-length 100)
+  (history-delete-duplicates t)
+  (savehist-save-minibuffer-history t))
 
 ;;;===========================================================================
 ;;; Start-up and general interface packages.
@@ -307,10 +305,12 @@
 ;; Number ALL the lines
 (use-package display-line-numbers
   :if (display-graphic-p)
+  :custom
+  (display-line-numbers-grow-only t)
   :config
   ;; No, seriously... all the lines.
-  (global-display-line-numbers-mode t)
-  (setq display-line-numbers-grow-only t))
+  :hook
+  (after-init . global-display-line-numbers-mode))
 
 ;; Theming: https://protesilaos.com/emacs/ef-themes
 (use-package ef-themes
@@ -341,7 +341,7 @@
 (use-package exec-path-from-shell
   :ensure t
   ;; Set up the exec-path by reading $PATH from a shell
-  :hook (after-init-hook . exec-path-from-shell-initialize))
+  :hook (after-init . exec-path-from-shell-initialize))
 
 (use-package dwim-shell-command
   :ensure t
@@ -364,20 +364,19 @@
              (fname (completing-read "File name: " tocpl nil nil)))
         (when fname
           (find-file (cdr (assoc-string fname tocpl))))))))
-  :init
-  (add-hook 'after-init-hook 'recentf-mode)
-  (setq recentf-auto-cleanup 'never
-        recentf-max-menu-items 40
-        recentf-max-saved-items 100
-        recentf-exclude '("\\.ido\\.last" "/recentf$" ".emacs.d/elpa/")))
+  :custom
+  (recentf-auto-cleanup 'never)
+  (recentf-max-menu-items 40)
+  (recentf-max-saved-items 100)
+  (recentf-exclude '("\\.ido\\.last" "/recentf$" ".emacs.d/elpa/"))
+  :hook (after-init . recentf-mode))
 
 ;; Excess whitespace display
 (use-package whitespace
   :delight global-whitespace-mode
-  :init
-  (add-hook 'after-init-hook 'global-whitespace-mode)
-  :config
-  (setq whitespace-style '(face tabs lines-tail)))
+  :hook (after-init . global-whitespace-mode)
+  :custom
+  (whitespace-style '(face tabs lines-tail)))
 
 ;; Support for EditorConfig files. See https://editorconfig.org/
 (use-package editorconfig
@@ -426,8 +425,7 @@
   :ensure t
   :delight
   :commands vertico-mode
-  :init
-  (vertico-mode))
+  :hook (after-init . vertico-mode))
 
 ;; Corfu (in-buffer completion popup), taken from Protesilaos Stavrou.
 (use-package corfu
@@ -451,18 +449,14 @@
     (add-to-list 'savehist-additional-variables 'corfu-history)))
 
 (use-package corfu-terminal
+  :if (not (display-graphic-p))
   :ensure t
   :after corfu
-  :defer t
-  :commands corfu-terminal-mode
-  :config
-  (unless (display-graphic-p)
-    (corfu-terminal-mode +1)))
+  :hook (after-init . corfu-terminal-mode))
 
 ;; Consult for completing-read
 (use-package consult
   :ensure t
-  :defer nil
   :delight
   :commands (consult-register-format consult-register-window consult-xref)
   :hook (completion-list-mode . consult-preview-at-point-mode)
@@ -745,8 +739,7 @@
   :custom
   (yas-wrap-around-region t)
   (yas-snippet-dirs '("~/.emacs.d/snippets/"))
-  :config
-  (yas-global-mode 1))
+  :hook (after-init . yas-global-mode))
 
 ;;;===========================================================================
 ;;; Eglot setup
@@ -822,15 +815,13 @@
   :ensure t
   :defer t
   :hook (clojure-mode . cider-mode)
-  :config
-  (setq
-   nrepl-hide-special-buffers t
-   ;; cider-connection-message-fn #'cider-random-tip
-   cider-repl-display-help-banner nil
-   cider-auto-select-error-buffer t
-   cider-prompt-for-symbol t
-   cider-repl-display-in-current-window nil
-   cider-repl-history-size 1000))
+  :custom
+  (nrepl-hide-special-buffers t)
+  (cider-repl-display-help-banner nil)
+  (cider-auto-select-error-buffer t)
+  (cider-prompt-for-symbol t)
+  (cider-repl-display-in-current-window nil)
+  (cider-repl-history-size 1000))
 
 ;; Clojure
 (use-package clojure-mode
@@ -967,8 +958,7 @@
   :ensure t
   :defer nil
   :commands (global-diff-hl-mode)
-  :config
-  (global-diff-hl-mode))
+  :hook (after-init . global-diff-hl-mode))
 
 ;; Git-related decorations in the gutter
 (use-package git-gutter
@@ -976,8 +966,7 @@
   :ensure t
   :commands (global-git-gutter-mode)
   :delight
-  :config
-  (global-git-gutter-mode +1))
+  :hook (after-init . global-git-gutter-mode))
 
 ;; Git "time machine"
 (use-package git-timemachine
@@ -1085,10 +1074,9 @@
 (use-package treemacs
   :ensure t
   :defer t
-  :bind
-  (("C-c t" . treemacs))
-  :config
-  (setq treemacs-width 30))
+  :bind (("C-c t" . treemacs))
+  :custom
+  (treemacs-width 30))
 
 (use-package treemacs-magit
   :after (treemacs magit)
@@ -1115,13 +1103,7 @@
 
 ;; Writable-dired package
 (use-package wdired
-  :defer t
-  :config
-  (define-key wdired-mode-map (kbd "C-a") 'dired-back-to-start-of-files)
-  (define-key wdired-mode-map (vector 'remap 'beginning-of-buffer)
-              'dired-back-to-top)
-  (define-key wdired-mode-map (vector 'remap 'end-of-buffer)
-              'dired-jump-to-bottom))
+  :defer t)
 
 ;; Prot's dired-preview package
 (use-package dired-preview
@@ -1142,8 +1124,7 @@
            "iso\\|"
            "epub"
            "\\)"))
-  :init
-  (dired-preview-global-mode 1))
+  :hook (after-init . dired-preview-global-mode))
 
 ;;;===========================================================================
 ;;; Flycheck bits
@@ -1325,6 +1306,7 @@
 ;; Clear out trailing whitespace on saves
 (use-package stripspace
   :ensure t
+  :delight
   :commands stripspace-local-mode
 
   ;; Enable for prog-mode-hook, text-mode-hook, prog-mode-hook
