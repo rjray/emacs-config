@@ -1,5 +1,7 @@
 ;;; init.el --- Master Emacs configuration file.  -*- lexical-binding: t; -*-
 
+;; Time-stamp: <2025-04-27 12:16:10>
+
 ;; Package-Requires: ((emacs "29.1"))
 
 ;;; Commentary:
@@ -249,6 +251,11 @@
   (grep-command "rg -nS --no-heading ")
   (grep-use-null-device nil)
 
+  ;; Update time-stamp markers on save (if present in file)
+  (time-stamp-active t)
+  (time-stamp-line-limit 10)
+  (time-stamp-format "%Y-%02m-%02d %02H:%02M:%02S")
+
   :config
   (setq visible-bell t)
   ;; Settings that are predicated on whether this is a graphical UI.
@@ -262,7 +269,9 @@
   (put 'narrow-to-region 'disabled nil)
   (subword-mode)
   (set-language-environment 'utf-8)
-  (add-to-list 'completion-ignored-extensions ".#"))
+  (add-to-list 'completion-ignored-extensions ".#")
+  ;; Having this in the :hook section didn't work
+  (add-hook 'write-file-functions 'time-stamp))
 
 ;; `savehist' (minibuffer and related histories)
 (use-package savehist
