@@ -1,8 +1,8 @@
 ;;; init.el --- Master Emacs configuration file.  -*- lexical-binding: t; -*-
 
-;; Time-stamp: <2025-04-27 12:16:10>
+;; Time-stamp: <2025-05-10 10:29:17>
 
-;; Package-Requires: ((emacs "29.1"))
+;; Package-Requires: ((emacs "30.1"))
 
 ;;; Commentary:
 ;; Latest iteration of my Emacs configuration. This is a complete rewrite done
@@ -1337,6 +1337,11 @@
   ;; saved file, the cursor remains in the same position, ensuring a consistent
   ;; editing experience without affecting cursor placement.
   (stripspace-restore-column t))
+
+;; Run web searches within Emacs
+(use-package emacs-websearch
+  :vc (:url "https://github.com/zhenhua-wang/emacs-websearch")
+  :bind (("C-c l" . emacs-websearch)))
 
 ;;;===========================================================================
 ;;; Anything that is specific to an OS/platform.
