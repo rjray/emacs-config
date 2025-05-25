@@ -1,6 +1,6 @@
 ;;; init.el --- Master Emacs configuration file.  -*- lexical-binding: t; -*-
 
-;; Time-stamp: <2025-05-10 10:29:17>
+;; Time-stamp: <2025-05-13 10:55:10>
 
 ;; Package-Requires: ((emacs "30.1"))
 
@@ -988,6 +988,7 @@
   :custom
   (magit-diff-highlight-trailing t)
   (magit-diff-paint-whitespace t)
+  (magit-process-finish-apply-ansi-colors t)
   :config
   (add-hook 'magit-pre-refresh-hook 'diff-hl-magit-pre-refresh)
   (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)
