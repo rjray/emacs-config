@@ -1,6 +1,6 @@
 ;;; init.el --- Master Emacs configuration file.  -*- lexical-binding: t; -*-
 
-;; Time-stamp: <2025-05-13 10:55:10>
+;; Time-stamp: <2025-07-12 13:03:47>
 
 ;; Package-Requires: ((emacs "30.1"))
 
@@ -958,6 +958,11 @@
   (org-roam-db-autosync-mode)
   ;; If using org-roam-protocol
   (require 'org-roam-protocol))
+
+(use-package org-transclusion
+  :ensure t
+  :after org
+  :hook (org-mode . org-transclusion-mode))
 
 ;;;===========================================================================
 ;;; Magit and git-related code
