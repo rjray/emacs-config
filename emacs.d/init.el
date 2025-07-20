@@ -1,6 +1,6 @@
 ;;; init.el --- Master Emacs configuration file.  -*- lexical-binding: t; -*-
 
-;; Time-stamp: <2025-07-12 13:03:47>
+;; Time-stamp: <2025-07-19 17:15:04>
 
 ;; Package-Requires: ((emacs "30.1"))
 
@@ -963,6 +963,11 @@
   :ensure t
   :after org
   :hook (org-mode . org-transclusion-mode))
+
+(use-package org-table-highlight
+  :ensure t
+  :after org
+  :hook (org-mode . org-table-highlight-mode))
 
 ;;;===========================================================================
 ;;; Magit and git-related code
