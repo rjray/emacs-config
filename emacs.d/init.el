@@ -1,8 +1,8 @@
 ;;; init.el --- Master Emacs configuration file.  -*- lexical-binding: t; -*-
 
-;; Time-stamp: <2025-07-19 17:15:04>
+;; Time-stamp: <2025-09-20 11:43:58>
 
-;; Package-Requires: ((emacs "30.1"))
+;; Package-Requires: ((emacs "30.2"))
 
 ;;; Commentary:
 ;; Latest iteration of my Emacs configuration. This is a complete rewrite done
@@ -30,6 +30,7 @@
       '(("melpa" . "https://melpa.org/packages/")
         ("elpa" . "https://elpa.gnu.org/packages/")
         ("nongnu" . "https://elpa.nongnu.org/nongnu/")))
+;;(setq package-vc-allow-build-commands t)
 (package-initialize)
 
 ;; This directory holds files that are taken whole from other sources
@@ -118,14 +119,6 @@
     (interactive)
     (text-scale-set 0))
 
-  ;; This one makes C-w kill a region when the region is active, or
-  ;; otherwise do a backward-kill-word like C-w behaves in things like bash.
-  (defun my/kill-region-or-word (arg)
-    (interactive "p")
-    (cond ((region-active-p)
-           (kill-region (region-beginning) (region-end)))
-          (t (backward-kill-word arg))))
-
   (defun my/view-exit ()
     "Advice function to disable highlighting upon exiting view-mode."
     (hl-line-mode -1))
@@ -173,7 +166,6 @@
   :bind (:map global-map
               ("C-x C-m" . execute-extended-command)
               ("C-h h" . nil)
-              ("C-w" . my/kill-region-or-word)
               ;; Function-key bindings. Don't go above f8, though, because MacOS
               ;; grabs f9 through f12. And f1-f4 are already in use.
               ("<f5>" . call-last-kbd-macro)
@@ -212,13 +204,6 @@
   (tab-always-indent 'complete)
   ;; default to better frame titles
   (frame-title-format (concat "%b - emacs@" *system-name*))
-
-  ;; Backup stuff
-  (backup-inhibited t)
-  (make-backup-files nil)
-  (auto-save-default nil)
-  (auto-save-list-file-name nil)
-  (delete-auto-save-files t)
 
   ;; Inhibit "magic" mode selection
   (magic-mode-alist nil)
@@ -281,6 +266,16 @@
   (history-length 100)
   (history-delete-duplicates t)
   (savehist-save-minibuffer-history t))
+
+;; Backup stuff
+(setq backup-directory-alist '(("\\.env$" . nil)
+                               ("." . "~/.config/emacs/backups")))
+(with-eval-after-load 'tramp
+  (setq tramp-backup-directory-alist nil))
+(setq delete-old-versions -1)
+(setq version-control t)
+(setq auto-save-file-name-transforms
+      '((".*" "~/.config/emacs/auto-save-list/" t)))
 
 ;;;===========================================================================
 ;;; Start-up and general interface packages.
@@ -845,6 +840,12 @@
 (use-package eldoc
   :delight eldoc-mode)
 
+;; Semel - Semantic highlighting
+(use-package semel
+  :vc (:url "https://github.com/eshelyaron/semel")
+  :hook ((emacs-lisp-mode . semel-mode)
+         (emacs-lisp-mode . cursor-sensor-mode)))
+
 ;; Couldn't quite get this to work with use-package and :delight.
 (require 'delight)
 (delight 'emacs-lisp-mode
@@ -990,6 +991,11 @@
 ;; Git "time machine"
 (use-package git-timemachine
   :ensure t)
+
+;; GitHub CLI client using Consult
+(use-package consult-gh
+  :ensure t
+  :after consult)
 
 ;; Supercharged git interface
 (use-package magit
@@ -1186,20 +1192,24 @@
           (LaTeX-mode . turn-on-flyspell)))
 
 ;;;===========================================================================
-;;; PDF stuff
+;;; PDF/eBook/etc. stuff
 ;;;===========================================================================
 
 ;; Handle viewing/annotating/etc. PDF files
-(use-package pdf-tools
-  :ensure t
-  :defer t
-  :commands (pdf-loader-install)
-  :mode "\\.pdf\\'"
-  :bind (:map pdf-view-mode-map
-              ("j" . pdf-view-next-line-or-next-page)
-              ("k" . pdf-view-previous-line-or-previous-page))
-  :init (pdf-loader-install)
-  :config (add-to-list 'revert-without-query ".pdf"))
+;; (use-package pdf-tools
+;;   :ensure t
+;;   :defer t
+;;   :commands (pdf-loader-install)
+;;   :mode "\\.pdf\\'"
+;;   :bind (:map pdf-view-mode-map
+;;               ("j" . pdf-view-next-line-or-next-page)
+;;               ("k" . pdf-view-previous-line-or-previous-page))
+;;   :init (pdf-loader-install)
+;;   :config (add-to-list 'revert-without-query ".pdf"))
+
+;; (use-package reader
+;;   :vc (:url "https://codeberg.org/divyaranjan/emacs-reader"
+;;   	        :make "all"))
 
 ;;;===========================================================================
 ;;; Region/selection-related
@@ -1230,6 +1240,11 @@
 (use-package expand-region
   :ensure t
   :bind ("C-=" . er/expand-region))
+
+;; Set up common kill/copy commands to be remapped.
+(use-package whole-line-or-region
+  :ensure t
+  :hook (after-init . whole-line-or-region-global-mode))
 
 ;;;===========================================================================
 ;;; Icons
@@ -1353,6 +1368,13 @@
 (use-package emacs-websearch
   :vc (:url "https://github.com/zhenhua-wang/emacs-websearch")
   :bind (("C-c l" . emacs-websearch)))
+
+(use-package backup-walker
+  :vc (:url "https://github.com/lewang/backup-walker")
+  :commands backup-walker-start
+  :init
+  (defalias 'string-to-int 'string-to-number)  ; removed in 26.1
+  (defalias 'display-buffer-other-window 'display-buffer))
 
 ;;;===========================================================================
 ;;; Anything that is specific to an OS/platform.
