@@ -1,6 +1,6 @@
 ;;; init.el --- Master Emacs configuration file.  -*- lexical-binding: t; -*-
 
-;; Time-stamp: <2025-09-20 11:43:58>
+;; Time-stamp: <2026-01-01 11:40:27>
 
 ;; Package-Requires: ((emacs "30.2"))
 
@@ -1186,6 +1186,9 @@
 ;;;===========================================================================
 
 ;; TeX/LaTeX editing mode
+(use-package tex-site
+  :ensure auctex)
+
 (use-package auctex
   :defer t
   :hook  ((LaTeX-mode . turn-on-prettify-symbols-mode)
@@ -1273,7 +1276,7 @@
   (dired-mode . nerd-icons-dired-mode))
 
 ;;;===========================================================================
-;;; AI/LLM/Ollama tools
+;;; AI/LLM/Ollama and related tools
 ;;;===========================================================================
 
 ;; Interface to ChatGPT/Ollama/etc.
@@ -1285,6 +1288,13 @@
   :ensure t
   :defer t
   :bind ("C-c o" . ollama-buddy-menu))
+
+(use-package beads
+  :ensure t
+  :defer t
+  :vc (:url "https://codeberg.org/ctietze/beads.el"
+            :rev :newest
+            :lisp-dir "lisp/"))
 
 ;;;===========================================================================
 ;;; Misc tools
