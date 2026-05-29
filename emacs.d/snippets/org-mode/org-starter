@@ -1,0 +1,18 @@
+# -*- mode: snippet -*-
+# -*- coding: utf-8 -*-
+# name: org-starter
+# key: <<
+# --
+#+title: ${1:title}
+#+author: Randy J. Ray
+#+created: [`(format-time-string "%Y-%m-%d %H:%M:%S")`]
+#+updated: []
+:PROPERTIES:
+#+OPTIONS:
+:END:
+
+$0
+
+# Local Variables:
+# time-stamp-pattern: "^#\\+updated:[ 	]+\\[%%]$"
+# End:
