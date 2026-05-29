@@ -1,6 +1,6 @@
 ;;; init.el --- Master Emacs configuration file.  -*- lexical-binding: t; -*-
 
-;; Time-stamp: <2026-01-01 11:40:27>
+;; Time-stamp: <2026-05-28 18:01:42>
 
 ;; Package-Requires: ((emacs "30.2"))
 
@@ -249,7 +249,7 @@
   ;; cperl-mode is preferred to perl-mode
   (defalias 'perl-mode 'cperl-mode)
   ;; Don't care for typing out "yes" and "no" all the time...
-  (defvar use-short-answers t)
+  (setopt use-short-answers t)
   ;;enable narrowing
   (put 'narrow-to-region 'disabled nil)
   (subword-mode)
@@ -393,6 +393,16 @@
   :ensure t
   :bind (("C-c s f" . show-font-select-preview)
          ("C-c s l" . show-font-list)))
+
+;; Can't use anju with `use-package':
+(require 'anju)
+(add-hook 'prog-mode-hook #'context-menu-mode)
+(add-hook 'text-mode-hook #'context-menu-mode)
+(add-hook 'dired-mode-hook #'context-menu-mode)
+(add-hook 'shell-mode-hook #'context-menu-mode)
+
+(anju-init)
+(keymap-global-set "C-x 1" #'anju-toggle-one-window)
 
 ;;;===========================================================================
 ;;; Various "porcelain" packages for interface enhancement.
@@ -917,9 +927,6 @@
   :defer t
   :after flycheck
   :commands (org-link-set-parameters)
-  :bind (("C-c C-o" . (lambda ()
-                        (interactive)
-                        (find-file "~/Dropbox/org"))))
   :hook (org-mode . auto-revert-mode)
   :custom
   (org-insert-heading-respect-content t)
@@ -927,7 +934,9 @@
   (org-goto-interface 'outline-path-completion)
   (org-default-notes-file "~/Dropbox/org/organizer.org")
   (org-refile-targets '((org-agenda-files . (:maxlevel . 6))))
+  (org-export-backends '(ascii html icalendar latex md odt))
   :config
+  (require 'org-mouse)
   (org-link-set-parameters "copy"
                            :follow (lambda (link) (kill-new link))
                            :export (lambda (_ desc &rest _) desc)))
