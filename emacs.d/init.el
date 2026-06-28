@@ -1,6 +1,6 @@
 ;;; init.el --- Master Emacs configuration file.  -*- lexical-binding: t; -*-
 
-;; Time-stamp: <2026-05-28 18:01:42>
+;; Time-stamp: <2026-06-28 14:23:59>
 
 ;; Package-Requires: ((emacs "30.2"))
 
@@ -969,11 +969,6 @@
   ;; If using org-roam-protocol
   (require 'org-roam-protocol))
 
-(use-package org-transclusion
-  :ensure t
-  :after org
-  :hook (org-mode . org-transclusion-mode))
-
 (use-package org-table-highlight
   :ensure t
   :after org
@@ -1189,6 +1184,30 @@
 ;;;===========================================================================
 ;;; Shell/terminal
 ;;;===========================================================================
+
+;; Ghostel term package for using libghostty
+(use-package ghostel
+  :commands ghostel
+  :ensure t)
+
+;; Related config for ghostel, didn't work when put in a :config block above.
+(defun my/ghostel-buffer ()
+  "Return the active ghostel buffer, or nil if none exists."
+  (seq-find (lambda (buf)
+              (string-match-p "\\*ghostel:" (buffer-name buf)))
+            (buffer-list)))
+(defun my/ghostel-toggle ()
+  "Toggle between the current buffer and a Ghostel buffer."
+  (interactive)
+  (let ((buf (my/ghostel-buffer)))
+    (cond
+     ((not buf)
+      (ghostel))
+     ((eq (current-buffer) buf)
+      (bury-buffer))
+     (t
+      (switch-to-buffer buf)))))
+(bind-key* "<f2>" 'my/ghostel-toggle)
 
 ;;;===========================================================================
 ;;; TeX/LaTeX stuff
