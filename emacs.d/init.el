@@ -1,6 +1,6 @@
 ;;; init.el --- Master Emacs configuration file.  -*- lexical-binding: t; -*-
 
-;; Time-stamp: <2026-06-28 14:23:59>
+;; Time-stamp: <2026-07-13 16:11:12>
 
 ;; Package-Requires: ((emacs "30.2"))
 
@@ -186,8 +186,7 @@
   :hook ((text-mode . display-fill-column-indicator-mode)
          (text-mode . hl-line-mode)
          (prog-mode . display-fill-column-indicator-mode)
-         (prog-mode . hl-line-mode)
-         (prog-mode . flyspell-prog-mode))
+         (prog-mode . hl-line-mode))
 
   :custom
   (default-case-fold-search nil)
@@ -1219,8 +1218,7 @@
 
 (use-package auctex
   :defer t
-  :hook  ((LaTeX-mode . turn-on-prettify-symbols-mode)
-          (LaTeX-mode . turn-on-flyspell)))
+  :hook  ((LaTeX-mode . turn-on-prettify-symbols-mode)))
 
 ;;;===========================================================================
 ;;; PDF/eBook/etc. stuff
@@ -1413,6 +1411,15 @@
   :init
   (defalias 'string-to-int 'string-to-number)  ; removed in 26.1
   (defalias 'display-buffer-other-window 'display-buffer))
+
+;; Spell-checking package
+(use-package jinx
+  :ensure t
+  :hook (emacs-startup . global-jinx-mode)
+  :custom
+  (jinx-languages "en_US fr ru")
+  :bind (("M-$" . jinx-correct)
+         ("C-M-$" . jinx-languages)))
 
 ;;;===========================================================================
 ;;; Anything that is specific to an OS/platform.
