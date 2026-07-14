@@ -1,6 +1,6 @@
 ;;; init.el --- Master Emacs configuration file.  -*- lexical-binding: t; -*-
 
-;; Time-stamp: <2026-07-13 16:11:12>
+;; Time-stamp: <2026-07-13 21:25:52>
 
 ;; Package-Requires: ((emacs "30.2"))
 
@@ -1417,8 +1417,10 @@
   :ensure t
   :hook (emacs-startup . global-jinx-mode)
   :custom
-  (jinx-languages "en_US fr ru")
+  (jinx-languages "en_US")
   :bind (("M-$" . jinx-correct)
+         ("M-n" . jinx-next)
+         ("M-p" . jinx-previous)
          ("C-M-$" . jinx-languages)))
 
 ;;;===========================================================================
