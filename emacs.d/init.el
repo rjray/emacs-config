@@ -1,6 +1,6 @@
 ;;; init.el --- Master Emacs configuration file.  -*- lexical-binding: t; -*-
 
-;; Time-stamp: <2026-07-13 21:25:52>
+;; Time-stamp: <2026-07-19 14:32:05>
 
 ;; Package-Requires: ((emacs "30.2"))
 
@@ -559,8 +559,8 @@
   :ensure t
   :commands (embark-prefix-help-command embark-eldoc-first-target)
   :bind
-  (("C-]" . embark-act)
-   ("C-\\" . embark-dwim)
+  (("C-." . embark-act)
+   ("C-;" . embark-dwim)
    ("C-h B" . embark-bindings)) ;; alternative for `describe-bindings'
   :init
   ;; Optionally replace the key help with a completing-read interface
