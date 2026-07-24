@@ -1,0 +1,45 @@
+# -*- mode: snippet -*-
+# -*- coding: utf-8 -*-
+# name: model-project
+# key: <model
+# --
+#+title: ${1:title}
+#+author: Randy J. Ray
+#+created: [`(format-time-string "%Y-%m-%d %H:%M:%S")`]
+#+updated: []
+
+* ${1}
+
+${0:summary}
+
+** Materials
+
+*** Kits/Aftermarket
+
+Elements required to complete the basic subject itself. Base kit(s), conversion
+sets, decals.
+
+| Name                    | Manufacturer/Part #  | Type            | Have? |
+|-------------------------+----------------------+-----------------+-------|
+|
+
+*** Accessories
+
+Additional elements used for dressing up the build, finishing the build to
+match specific photographs, etc.
+
+| Name | Manufacturer/Part # | Type | Have? |
+|------+---------------------+------+-------|
+|
+
+** References
+
+*** Books/Magazines
+
+*** Web References
+
+** Web References
+
+** Steps
+
+** Notes
