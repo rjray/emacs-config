@@ -1,6 +1,6 @@
 ;;; init.el --- Master Emacs configuration file.  -*- lexical-binding: t; -*-
 
-;; Time-stamp: <2026-07-19 14:32:05>
+;; Time-stamp: <2026-08-02 10:04:37>
 
 ;; Package-Requires: ((emacs "30.2"))
 
@@ -212,6 +212,18 @@
   ;; No double-spaces when I fill a paragraph
   (sentence-end-double-space nil)
 
+  ;; regexp-builder configuration
+  (reb-re-syntax 'string)
+
+  ;; find-file-at-point
+  (ffap-machine-p-known 'reject)
+
+  ;; mark ring stuff
+  (set-mark-command-repeat-pop t)
+
+  ;; Help-system related
+  (help-window-select t)
+
   ;; Always number lines and columns in the status line
   (line-number-mode t)
   (column-number-mode t)
@@ -239,6 +251,13 @@
   (time-stamp-active t)
   (time-stamp-line-limit 10)
   (time-stamp-format "%Y-%02m-%02d %02H:%02M:%02S")
+
+  ;; Some performance stuff
+  (redisplay-skip-fontification-on-input t)
+  (read-process-output-max (* 4 1024 1024)) ; 4MB
+
+  ;; Kill ring-related
+  (kill-do-not-save-duplicates t)
 
   :config
   (setq visible-bell t)
@@ -379,7 +398,25 @@
   :delight global-whitespace-mode
   :hook (after-init . global-whitespace-mode)
   :custom
-  (whitespace-style '(face tabs lines-tail)))
+  (whitespace-style '(face          ; Use faces to colorize
+                      tabs          ; Look for tabs
+                      tab-mark      ; Visualize tabs
+                      newline       ; Look for newlines
+                      newline-mark  ; Visualize newlines
+                      trailing      ; Show trailing spaces
+                      lines-tail))  ; Highlight portions of lines >max-length
+  (whitespace-display-mappings '(
+                                 ;; Customize the tab marker
+                                 ;; 9 is the ASCII code for Tab.
+                                 ;; ?\u2192 is the Unicode character '→'
+                                 ;; [?\t] is fallback if arrow can't be rendered
+                                 (tab-mark 9 [?\u2192 ?\t] [?\t])
+
+                                 ;; Customize the newline/return marker
+                                 ;; 10 is the ASCII code for Newline (Line Feed).
+                                 ;; ?\u21b5 is the Unicode character '↵'
+                                 (newline-mark 10 [?\u21b5 ?\n] [?\n])
+                                 )))
 
 ;; Support for EditorConfig files. See https://editorconfig.org/
 (use-package editorconfig
@@ -1455,3 +1492,7 @@
 
 ;; LocalWords:  init Theming deadgrep minibuffer Eglot elpa Treemacs
 ;; LocalWords:  RecentFiles
+
+;; Local Variables:
+;; jinx-local-words: "emacs"
+;; End:
