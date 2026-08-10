@@ -1,6 +1,6 @@
 ;;; init.el --- Master Emacs configuration file.  -*- lexical-binding: t; -*-
 
-;; Time-stamp: <2026-08-02 10:04:37>
+;; Time-stamp: <2026-08-10 13:07:05>
 
 ;; Package-Requires: ((emacs "30.2"))
 
@@ -1165,7 +1165,8 @@
     (revert-buffer))
   (defadvice wdired-abort-changes (after revert-buffer-after-abort activate)
     "Revert the buffer after aborting wdired change."
-    (revert-buffer)))
+    (revert-buffer))
+  (if *is-mac* (setq insert-directory-program "gls" dired-use-ls-dired t)))
 
 ;; Writable-dired package
 (use-package wdired
@@ -1490,9 +1491,6 @@
 
 ;;; init.el ends here
 
-;; LocalWords:  init Theming deadgrep minibuffer Eglot elpa Treemacs
-;; LocalWords:  RecentFiles
-
 ;; Local Variables:
-;; jinx-local-words: "emacs"
+;; jinx-local-words: "Ghostel cperl el elpa melpa minibuffer nongnu"
 ;; End:
